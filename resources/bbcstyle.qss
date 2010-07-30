@@ -293,7 +293,7 @@ QTabBar::tab {
 
 QTabBar::tab:selected {
     color: rgb(255, 84, 174);
-    background: rgb(50,50,50); 
+    background: rgb(50,50,50);
     border-color: rgb(140,140,140) rgb(100,100,100) rgb(50,50,50);
 }
 
@@ -366,7 +366,7 @@ QPushButton#switchButton,  QToolBox#channelToolBox::tab {
     background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0,
         stop:0 rgb(0, 0, 0), stop:0.48 rgb(0, 0, 0),
         stop:0.5 rgb(59, 59, 59), stop:1 rgb(125, 125, 125));
-    min-width: 2em;
+    min-width: 1.2em;
 }
 
 QPushButton#switchButton:checked, QToolBox#channelToolBox::tab:selected {
@@ -405,3 +405,7 @@ QPushButton#pushButtonDownLoad:pressed {
     border-color: rgb(230, 0, 246);
 }
 
+QWebView {
+/*    background: rgb(125,130,130);
+*/
+}

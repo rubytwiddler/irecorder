@@ -24,6 +24,7 @@ require 'singleton'
 
 # additional libs
 require 'korundum4'
+require 'qtwebkit'
 
 #
 # my libraries and programs
@@ -37,7 +38,7 @@ require "download"
 # require "settings"
 
 
-#---------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------
 #
 # singleton object Option
 #
@@ -63,14 +64,14 @@ $Option = Option.instance
 
 
 
-#---------------------------------------------------------------------------------------------------
-#---------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------
 
 
 
 
 
-#---------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------
 #
 #
 class ProgrammeTableWidget < Qt::TableWidget
@@ -115,6 +116,8 @@ class ProgrammeTableWidget < Qt::TableWidget
     #------------------------------------------------------------------------
     #
     #
+    attr_accessor :mediaFilter
+
     def initialize()
         super(0, 3)
 
@@ -124,6 +127,8 @@ class ProgrammeTableWidget < Qt::TableWidget
         self.alternatingRowColors = true
         self.sortingEnabled = true
         sortByColumn(2, Qt::DescendingOrder )
+
+        @mediaFilter = ''
 
         # Hash table : key column_0_item  => Programme entry.
         @table = Hash.new
@@ -150,6 +155,9 @@ class ProgrammeTableWidget < Qt::TableWidget
 
     def filterChanged(text)
         return unless text
+
+        text += ' ' + @mediaFilter unless @mediaFilter.empty?
+
         regxs = text.split(/[,\s]+/).map do |w|
                     /#{Regexp.escape(w.strip)}/i
         end
@@ -168,11 +176,7 @@ class ProgrammeTableWidget < Qt::TableWidget
 
     protected
     def contextMenuEvent(e)
-        puts "right button is clicked."
         item = itemAt(e.pos)
-        if item
-            puts "right clicked item (row:#{item.row}, column:#{item.column}})"
-        end
         menu = createPopup
         execPopup(menu, e.globalPos, item)
     end
@@ -227,8 +231,7 @@ class ProgrammeTableWidget < Qt::TableWidget
             args = args.split(/\s+/).map do |a|
                 a.gsub(/%\w/, url)
             end
-#             cmd = './testwarg.rb'     # debug test
-            $log.debug { "execute cmd '#{cmd}', args '#{args.inspect}'" }
+#             $log.debug { "execute cmd '#{cmd}', args '#{args.inspect}'" }
             proc = Qt::Process.new(self)
             proc.start(cmd, args)
 
@@ -241,13 +244,15 @@ end
 
 
 
-#---------------------------------------------------------------------------------------------------
-#---------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------
 #
 #  Main Window Class
 #
 class MainWindow < KDE::MainWindow
     slots   :startDownload, :updateTask, :getList, :reloadStyleSheet, :clearStyleSheet
+    slots   :mediaFilterChanged
+    slots   'programmeCellClicked(int,int)'
 
 
     #
@@ -322,7 +327,7 @@ class MainWindow < KDE::MainWindow
         about = i18n(<<-ABOUT
 #{APP_NAME} #{APP_VERSION}
 
-#{APP_NAME} BBC iPlayer like audio/video (rtsp) stream recorder.
+BBC iPlayer like audio (mms/rtsp) stream recorder.
         ABOUT
         )
         helpMenu = KDE::HelpMenu.new(self, about)
@@ -353,13 +358,17 @@ class MainWindow < KDE::MainWindow
         # Left Side Channel ToolBox & ListType Buttons
         VBoxLayoutWidget.new do |vbxw|
             mainTabPage.addWidget(vbxw)
-            @leftToolBox = createChannelListToolBox
-            vbxw.addWidget(@leftToolBox)
+            @channelTypeToolBox = createChannelListToolBox
+            vbxw.addWidget(@channelTypeToolBox)
             vbxw.addLayout(createListTypeButtons)
         end
 
         # Main Tab page. programme table area
-        mainTabPage.addWidget(createProgrammeAreaWidget)
+#         mainTabPage.addWidget(createProgrammeAreaWidget)
+        progTableFrame = Qt::Splitter.new(Qt::Vertical)
+        progTableFrame.addWidget(createProgrammeAreaWidget)
+        progTableFrame.addWidget(createProgrammeContentWidget)
+        mainTabPage.addWidget(progTableFrame)
 
         # parameter : Qt::Splitter.setStretchFactor( int index, int stretch )
         mainTabPage.setStretchFactor( 0, 0 )
@@ -500,12 +509,16 @@ class MainWindow < KDE::MainWindow
         listTypeHLayout
     end
 
+
     #-------------------------------------------------------------
     #
     #
     def createProgrammeAreaWidget
         VBoxLayoutWidget.new do |vbxw|
-            @programmeTable = ProgrammeTableWidget.new
+            @programmeTable = ProgrammeTableWidget.new do |w|
+                connect(w, SIGNAL('cellClicked(int,int)'),
+                        self, SLOT('programmeCellClicked(int,int)'))
+            end
             vbxw.addWidget(HBoxLayoutWidget.new do |hw|
                     hw.addWidget(Qt::Label.new(i18n('Look for:')))
                     hw.addWidget(
@@ -520,15 +533,38 @@ class MainWindow < KDE::MainWindow
             vbxw.addWidget(@programmeTable)
 
             # 'Start Download' Button
-            vbxw.layout.addWidgetAtCenter(
-                KDE::PushButton.new( KDE::Icon.new('arrow-down'), i18n("Start Download")) do |w|
-                    w.objectName = 'downloadButton'
-                    connect( w, SIGNAL(:clicked), self, SLOT(:startDownload) )
-                end
-            )
+            @tvFilterBtn = KDE::PushButton.new(i18n("TV")) do |w|
+                w.objectName = 'mediaButton'
+                w.checkable = true
+                w.autoExclusive = true
+                connect( w, SIGNAL(:clicked), self, SLOT(:mediaFilterChanged) )
+            end
+
+            @radioFilterBtn = KDE::PushButton.new(i18n("Radio")) do |w|
+                w.objectName = 'mediaButton'
+                w.checkable = true
+                w.autoExclusive = true
+                w.checked = true
+                connect( w, SIGNAL(:clicked), self, SLOT(:mediaFilterChanged) )
+            end
+
+            downloadBtn = KDE::PushButton.new( KDE::Icon.new('arrow-down'), i18n("Start Download")) do |w|
+                w.objectName = 'downloadButton'
+                connect( w, SIGNAL(:clicked), self, SLOT(:startDownload) )
+            end
+
+            vbxw.addWidgets( @tvFilterBtn, @radioFilterBtn, nil, downloadBtn, nil )
         end
     end
 
+    #-------------------------------------------------------------
+    #
+    #
+    def createProgrammeContentWidget
+        @webView = Qt::WebView.new do |w|
+            w.page.linkDelegationPolicy = Qt::WebPage::DelegateAllLinks
+        end
+    end
 
     # ------------------------------------------------------------------------
     # slot :
@@ -544,6 +580,27 @@ class MainWindow < KDE::MainWindow
     end
 
 
+    # slot :
+    def programmeCellClicked(row, col)
+        prog = @programmeTable[row]
+        color = self.palette.color(Qt::Palette::Text).value >= 128 ? 'white' : 'black'
+
+        html = <<-EOF
+        <font color="#{color}">
+          #{prog.content}
+        </font>
+        EOF
+
+        @webView.setHtml(html)
+    end
+
+    # slot :
+    def mediaFilterChanged
+        setMediaFilter
+        @programmeTable.filterChanged(@filterLineEdit.text)
+    end
+
+
     # ------------------------------------------------------------------------
     #
     # slot: called when 'Get List' Button clicked signal invoked.
@@ -553,14 +610,14 @@ class MainWindow < KDE::MainWindow
         feedAdr = getFeedAdr
         return if feedAdr.nil?
 
-        msg = "feeding from '#{feedAdr}'"
-        $log.info{ msg }
+        $log.info{ "feeding from '#{feedAdr}'" }
 
         begin
             makeTablefromRss( BBCNet.read(feedAdr) )
         rescue IOError, OpenURI::HTTPError => e
             $log.error { e }
         end
+        mediaFilterChanged
     end
 
     #
@@ -568,17 +625,22 @@ class MainWindow < KDE::MainWindow
     #
     protected
     def getFeedAdr
+        @channelType = @channelTypeToolBox.currentIndex
+
         channelStr = nil
-        case  @leftToolBox.currentIndex
+        case  @channelType
         when 0
             # get TV channel
-            channelStr = TVChannelRssTbl[ @tvChannelListBox.currentRow ][1]
+            @channelIndex = @tvChannelListBox.currentRow
+            channelStr = TVChannelRssTbl[ @channelIndex ][1]
         when 1
             # get Radio channel
-            channelStr = RadioChannelRssTbl[ @radioChannelListBox.currentRow ][1]
+            @channelIndex = @radioChannelListBox.currentRow
+            channelStr = RadioChannelRssTbl[ @channelIndex ][1]
         when 2
             # get Category
-            channelStr = 'categories/' + CategoryRssTbl[ @categoryListBox.currentRow ][1]
+            @channelIndex = @categoryListBox.currentRow
+            channelStr = 'categories/' + CategoryRssTbl[ @channelIndex ][1]
         end
 
         return nil  if channelStr.nil?
@@ -588,6 +650,7 @@ class MainWindow < KDE::MainWindow
         "http://feeds.bbc.co.uk/iplayer/#{channelStr}/#{list}"
     end
 
+
     protected
     def makeTablefromRss(rssRaw)
         rss = RSS::Parser.parse(rssRaw)
@@ -596,6 +659,7 @@ class MainWindow < KDE::MainWindow
         @programmeTable.clearContents
         @filterLineEdit.clear
         @programmeTable.rowCount = rss.entries.size
+        setMediaFilter
 
         # ['Title', 'Category', 'Updated' ]
         rss.entries.each_with_index do |i, r|
@@ -606,11 +670,24 @@ class MainWindow < KDE::MainWindow
             $log.misc { title }
             @programmeTable.addEntry( r, title, categories, updated, contents )
         end
+
         @programmeTable.sortingEnabled = sortFlag
     end
 
-    class NoRamFileError < IOError
+    def setMediaFilter
+        @programmeTable.mediaFilter =
+            case  @channelType
+            when 2
+                @tvFilterBtn.enabled = true
+                @radioFilterBtn.enabled = true
+                @tvFilterBtn.checked ? 'tv' : 'radio'
+            else
+                @tvFilterBtn.enabled = false
+                @radioFilterBtn.enabled = false
+                ''
+            end
     end
+
 
     # ------------------------------------------------------------------------
     #
@@ -632,7 +709,7 @@ class MainWindow < KDE::MainWindow
                 url = BBCNet.getWmaFromUrl(url)
 
                 fName = getSavePath(prog, 'wma')
-                $log.debug { "save path : #{fName}" }
+                $log.info { "save path : #{fName}" }
 
                 startDownOneFile(url, fName)
             rescue => e
@@ -684,13 +761,13 @@ class MainWindow < KDE::MainWindow
     end
 
     def getChannelTitle
-        case  @leftToolBox.currentIndex
+        case  @channelType
         when 0
         # get TV channel
-            TVChannelRssTbl[ @tvChannelListBox.currentRow ][0]
+            TVChannelRssTbl[ @channelIndex ][0]
         when 1
         # get Radio channel
-            RadioChannelRssTbl[ @radioChannelListBox.currentRow ][0]
+            RadioChannelRssTbl[ @channelIndex ][0]
         else
             nil
         end

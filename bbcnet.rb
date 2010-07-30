@@ -11,8 +11,6 @@ class BBCNet
     MmsRegexp = URI.regexp(['mms'])
 
 
-    class MissingIPlayerPathError < IOError
-    end
 
     # convert Ulr from epsode Url
     # example
@@ -24,7 +22,7 @@ class BBCNet
         uri = URI.parse(url)
         spath = uri.path.split('/')
 
-        raise MissingIPlayerPathError unless spath[1] == 'iplayer'
+        raise 'Missing IPlayer path' unless spath[1] == 'iplayer'
 
         newpath = '/iplayer/console/' + spath[3]
         uri.path = newpath
@@ -52,7 +50,7 @@ class BBCNet
         uri = URI.parse(url)
         spath = uri.path.split('/')
 
-        raise MissingIPlayerPathError unless spath[1] == 'iplayer'
+        raise 'Missing IPlayer path' unless spath[1] == 'iplayer'
 
         self.getRawUrlsFromPid(spath[3])
     end
@@ -91,8 +89,7 @@ class BBCNet
 
         fileUrls = Hash.new
         node.content .to_s. split(/,/).each do |a|
-            a.gsub!(/[\r\n]+/,'')
-            k,v = a.split(/=/, 2)
+            k,v = a.strip.split(/=/, 2)
             fileUrls[k] = v
         end
 
@@ -110,7 +107,6 @@ class BBCNet
             newSrc= res[ RtspRegexp ]  # 1st
             if newSrc.nil? then
                 raise 'Cannot get RA url from RAM url'
-                retur nil
             else
                 url = newSrc
             end
