@@ -1,0 +1,14 @@
+<RCC>
+  <qresource prefix="images" >
+    <file>bbcradio1.png</file>
+    <file>bbcradio1x.png</file>
+    <file>bbcradio2.png</file>
+    <file>bbcradio3.png</file>
+    <file>bbcradio4.png</file>
+    <file>bbcradio5.png</file>
+    <file>bbcradio5x.png</file>
+    <file>bbcradio6.png</file>
+    <file>bbcradio7.png</file>
+    <file>bbcradioasian.png</file>
+  </qresource>
+</RCC>

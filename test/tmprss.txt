@@ -1,0 +1,3349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet href="http://www.bbc.co.uk/iplayer/style/rss.css" type="text/css"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="en-GB">
+  <title>BBC iPlayer - BBC Radio 7 programmes</title>
+  <subtitle>All available programmes on BBC Radio 7</subtitle>
+  <updated>2009-09-13T04:50:03Z</updated>
+  <id>tag:feeds.bbc.co.uk,2008:/iplayer/feed/bbc_7/list</id>
+  <link rel="related" href="http://www.bbc.co.uk/iplayer" type="text/html" />
+  <link rel="self" href="http://feeds.bbc.co.uk/iplayer/bbc_7/list" type="application/atom+xml" />
+  <author>
+    <name>BBC</name>
+    <uri>http://www.bbc.co.uk</uri>
+  </author>
+  <entry>
+    <title type="text">Miss Marple: The Body in the Library</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jvht</id>
+    <updated>2009-09-13T04:41:36Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jvht/Miss_Marple_The_Body_in_the_Library/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jvht_150_84.jpg&quot; alt=&quot;Miss Marple: The Body in the Library&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        A young blonde is found dead, so the amateur sleuth sets out to find her killer.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Crime" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jvht/Miss_Marple_The_Body_in_the_Library/" type="text/html" title="Miss Marple: The Body in the Library">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jvht_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jvht" type="application/atom+xml" title="Miss Marple: The Body in the Library" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b007jvht" type="text/html" title="Miss Marple: The Body in the Library" />
+  </entry>
+  <entry>
+    <title type="text">Hothouse: Episode 4</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mpnkm</id>
+    <updated>2009-09-12T23:33:07Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mpnkm/Hothouse_Episode_4/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mpnkm_150_84.jpg&quot; alt=&quot;Hothouse: Episode 4&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Yattmur has led Gren and Poyly from the volcano - but where can they go now?
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="SciFi &amp; Fantasy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mpnkm/Hothouse_Episode_4/" type="text/html" title="Hothouse: Episode 4">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mpnkm_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mpnkm" type="application/atom+xml" title="Episode 4" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00mbvzc/microsite" type="text/html" title="Hothouse" />
+  </entry>
+  <entry>
+    <title type="text">The Fall of the House of Usher: Episode 2</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jsry</id>
+    <updated>2009-09-13T04:04:29Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jsry/The_Fall_of_the_House_of_Usher_Episode_2/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jsry_150_84.jpg&quot; alt=&quot;The Fall of the House of Usher: Episode 2&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        What is Roderick's terrible secret? Edgar Allan Poe's classic tale is read by Sean Barrett
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Horror &amp; Supernatural" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jsry/The_Fall_of_the_House_of_Usher_Episode_2/" type="text/html" title="The Fall of the House of Usher: Episode 2">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jsry_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jsry" type="application/atom+xml" title="Episode 2" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00dm4zw/microsite" type="text/html" title="The Fall of the House of Usher" />
+  </entry>
+  <entry>
+    <title type="text">Undone: Series 1: Mind the Gaps</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00dyb0m</id>
+    <updated>2009-09-13T04:41:42Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00dyb0m/Undone_Series_1_Mind_the_Gaps/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00dyb0m_150_84.jpg&quot; alt=&quot;Undone: Series 1: Mind the Gaps&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Edna Turner's adventures in London's bizarre parallel city. Ben Moor's sci-fi comedy.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="SciFi &amp; Fantasy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00dyb0m/Undone_Series_1_Mind_the_Gaps/" type="text/html" title="Undone: Series 1: Mind the Gaps">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00dyb0m_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00dyb0m" type="application/atom+xml" title="1. Mind the Gaps" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00dzp17/microsite" type="text/html" title="Undone" />
+  </entry>
+  <entry>
+    <title type="text">Garrison Keillor's Radio Show: 25/10/2008</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00f5wrl</id>
+    <updated>2009-09-13T04:35:37Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00f5wrl/Garrison_Keillors_Radio_Show_25_10_2008/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b00f5wrl_150_84.jpg&quot; alt=&quot;Garrison Keillor's Radio Show: 25/10/2008&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        With Nashville band Old Crow Medicine Show.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Entertainment" />
+    <category term="Satire" />
+    <category term="Variety Shows" />
+    <category term="Music" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00f5wrl/Garrison_Keillors_Radio_Show_25_10_2008/" type="text/html" title="Garrison Keillor's Radio Show: 25/10/2008">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b00f5wrl_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00f5wrl" type="application/atom+xml" title="25/10/2008" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b0072tt7/microsite" type="text/html" title="Garrison Keillor's Radio Show" />
+  </entry>
+  <entry>
+    <title type="text">Crime Catch Up: Lord Peter Wimsey - The Unpleasantness at the Bellona Club: Ann Dorland</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mp51s</id>
+    <updated>2009-09-13T00:58:21Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mp51s/Crime_Catch_Up_Lord_Peter_Wimsey_The_Unpleasantness_at_the_Bellona_Club_Ann_Dorland/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mp51s_150_84.jpg&quot; alt=&quot;Crime Catch Up: Lord Peter Wimsey - The Unpleasantness at the Bellona Club: Ann Dorland&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        With two suspects missing, the posh sleuth battles to pinpoint the poisoner.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Crime" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mp51s/Crime_Catch_Up_Lord_Peter_Wimsey_The_Unpleasantness_at_the_Bellona_Club_Ann_Dorland/" type="text/html" title="Crime Catch Up: Lord Peter Wimsey - The Unpleasantness at the Bellona Club: Ann Dorland">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mp51s_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mp51s" type="application/atom+xml" title="Lord Peter Wimsey - The Unpleasantness at the Bellona Club: Ann Dorland" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00jqgrb/microsite" type="text/html" title="Crime Catch Up" />
+  </entry>
+  <entry>
+    <title type="text">Crime Catch Up: Lord Peter Wimsey - The Unpleasantness at the Bellona Club: At Lady Dormer's</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mp51q</id>
+    <updated>2009-09-13T01:42:38Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mp51q/Crime_Catch_Up_Lord_Peter_Wimsey_The_Unpleasantness_at_the_Bellona_Club_At_Lady_Dormers/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mp51q_150_84.jpg&quot; alt=&quot;Crime Catch Up: Lord Peter Wimsey - The Unpleasantness at the Bellona Club: At Lady Dormer's&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Knowing the general was poisoned, the posh sleuth probes Miss Dorland's hobby.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Crime" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mp51q/Crime_Catch_Up_Lord_Peter_Wimsey_The_Unpleasantness_at_the_Bellona_Club_At_Lady_Dormers/" type="text/html" title="Crime Catch Up: Lord Peter Wimsey - The Unpleasantness at the Bellona Club: At Lady Dormer's">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mp51q_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mp51q" type="application/atom+xml" title="Lord Peter Wimsey - The Unpleasantness at the Bellona Club: At Lady Dormer's" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00jqgrb/microsite" type="text/html" title="Crime Catch Up" />
+  </entry>
+  <entry>
+    <title type="text">Crime Catch Up: Lord Peter Wimsey - The Unpleasantness at the Bellona Club: Exhumation</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mp51n</id>
+    <updated>2009-09-13T00:58:33Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mp51n/Crime_Catch_Up_Lord_Peter_Wimsey_The_Unpleasantness_at_the_Bellona_Club_Exhumation/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mp51n_150_84.jpg&quot; alt=&quot;Crime Catch Up: Lord Peter Wimsey - The Unpleasantness at the Bellona Club: Exhumation&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The posh sleuth awaits the doctor's verdict and there's a revelation at a party.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Crime" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mp51n/Crime_Catch_Up_Lord_Peter_Wimsey_The_Unpleasantness_at_the_Bellona_Club_Exhumation/" type="text/html" title="Crime Catch Up: Lord Peter Wimsey - The Unpleasantness at the Bellona Club: Exhumation">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mp51n_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mp51n" type="application/atom+xml" title="Lord Peter Wimsey - The Unpleasantness at the Bellona Club: Exhumation" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00jqgrb/microsite" type="text/html" title="Crime Catch Up" />
+  </entry>
+  <entry>
+    <title type="text">Crime Catch Up: Lord Peter Wimsey - The Unpleasantness at the Bellona Club: Mr Oliver</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mp51l</id>
+    <updated>2009-09-13T00:48:13Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mp51l/Crime_Catch_Up_Lord_Peter_Wimsey_The_Unpleasantness_at_the_Bellona_Club_Mr_Oliver/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b00mp51l_150_84.jpg&quot; alt=&quot;Crime Catch Up: Lord Peter Wimsey - The Unpleasantness at the Bellona Club: Mr Oliver&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Probing the general's last movements, the posh sleuth seeks out his grandson.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Crime" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mp51l/Crime_Catch_Up_Lord_Peter_Wimsey_The_Unpleasantness_at_the_Bellona_Club_Mr_Oliver/" type="text/html" title="Crime Catch Up: Lord Peter Wimsey - The Unpleasantness at the Bellona Club: Mr Oliver">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b00mp51l_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mp51l" type="application/atom+xml" title="Lord Peter Wimsey - The Unpleasantness at the Bellona Club: Mr Oliver" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00jqgrb/microsite" type="text/html" title="Crime Catch Up" />
+  </entry>
+  <entry>
+    <title type="text">Crime Catch Up: Lord Peter Wimsey - The Unpleasantness at the Bellona Club: The General's Last Evening</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mp51j</id>
+    <updated>2009-09-12T23:53:16Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mp51j/Crime_Catch_Up_Lord_Peter_Wimsey_The_Unpleasantness_at_the_Bellona_Club_The_Generals_Last_Evening/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mp51j_150_84.jpg&quot; alt=&quot;Crime Catch Up: Lord Peter Wimsey - The Unpleasantness at the Bellona Club: The General's Last Evening&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The posh sleuth probes the mysterious Mr Oliver - and a pair of tricky wills.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Crime" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mp51j/Crime_Catch_Up_Lord_Peter_Wimsey_The_Unpleasantness_at_the_Bellona_Club_The_Generals_Last_Evening/" type="text/html" title="Crime Catch Up: Lord Peter Wimsey - The Unpleasantness at the Bellona Club: The General's Last Evening">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mp51j_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mp51j" type="application/atom+xml" title="Lord Peter Wimsey - The Unpleasantness at the Bellona Club: The General's Last Evening" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00jqgrb/microsite" type="text/html" title="Crime Catch Up" />
+  </entry>
+  <entry>
+    <title type="text">Black Bartlemy's Treasure</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jwdn</id>
+    <updated>2009-09-13T04:25:29Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jwdn/Black_Bartlemys_Treasure/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jwdn_150_84.jpg&quot; alt=&quot;Black Bartlemy's Treasure&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Jeffrey Farnol's swashbuckling tale of piracy, love and death on a desert island.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Action &amp; Adventure" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jwdn/Black_Bartlemys_Treasure/" type="text/html" title="Black Bartlemy's Treasure">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jwdn_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jwdn" type="application/atom+xml" title="Black Bartlemy's Treasure" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b007jwdn" type="text/html" title="Black Bartlemy's Treasure" />
+  </entry>
+  <entry>
+    <title type="text">Open Mike: Mike Craig's Radio Memoirs</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00c0077</id>
+    <updated>2009-09-13T03:51:51Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00c0077/Open_Mike_Mike_Craigs_Radio_Memoirs/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00c0077_150_84.jpg&quot; alt=&quot;Open Mike: Mike Craig's Radio Memoirs&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Including Castle's on the Air, Jimmy's Cricket Team and Bernie Clifton's Comedy Shop.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00c0077/Open_Mike_Mike_Craigs_Radio_Memoirs/" type="text/html" title="Open Mike: Mike Craig's Radio Memoirs">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00c0077_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00c0077" type="application/atom+xml" title="Open Mike: Mike Craig's Radio Memoirs" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00c0077" type="text/html" title="Open Mike: Mike Craig's Radio Memoirs" />
+  </entry>
+  <entry>
+    <title type="text">Daphne Du Maurier: Frenchman's Creek: Episode 1</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007k4fj</id>
+    <updated>2009-09-13T04:04:31Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007k4fj/Daphne_Du_Maurier_Frenchmans_Creek_Episode_1/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007k4fj_150_84.jpg&quot; alt=&quot;Daphne Du Maurier: Frenchman's Creek: Episode 1&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Ducking London society, Lady Dona St Columb finds passion and adventure in Cornwall.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Classic &amp; Period" />
+    <category term="Relationships &amp; Romance" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007k4fj/Daphne_Du_Maurier_Frenchmans_Creek_Episode_1/" type="text/html" title="Daphne Du Maurier: Frenchman's Creek: Episode 1">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007k4fj_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007k4fj" type="application/atom+xml" title="Episode 1" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b007gffj/microsite" type="text/html" title="Daphne Du Maurier: Frenchman's Creek" />
+  </entry>
+  <entry>
+    <title type="text">Take It from the Chorus: Early Stages</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007k283</id>
+    <updated>2009-09-13T04:41:31Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007k283/Take_It_from_the_Chorus_Early_Stages/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b007k283_150_84.jpg&quot; alt=&quot;Take It from the Chorus: Early Stages&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Digs, dressing rooms and dancing at the right height - all part of life in the chorus line
+      &lt;/p&gt;
+    </content>
+    <category term="Factual" />
+    <category term="Arts, Culture &amp; the Media" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007k283/Take_It_from_the_Chorus_Early_Stages/" type="text/html" title="Take It from the Chorus: Early Stages">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b007k283_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007k283" type="application/atom+xml" title="1. Early Stages" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00cnk6p/microsite" type="text/html" title="Take It from the Chorus" />
+  </entry>
+  <entry>
+    <title type="text">Big Toe Books: 12/09/2009</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mp51g</id>
+    <updated>2009-09-12T18:05:44Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mp51g/Big_Toe_Books_12_09_2009/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mp51g_150_84.jpg&quot; alt=&quot;Big Toe Books: 12/09/2009&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Featuring The Fish in Room, Henry's Cat: The Restaurant and Funny Day.
+      &lt;/p&gt;
+    </content>
+    <category term="Children's" />
+    <category term="Entertainment &amp; Comedy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mp51g/Big_Toe_Books_12_09_2009/" type="text/html" title="Big Toe Books: 12/09/2009">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mp51g_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mp51g" type="application/atom+xml" title="12/09/2009" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b0072tp2/microsite" type="text/html" title="Big Toe Books" />
+  </entry>
+  <entry>
+    <title type="text">Naked Radio: 11/09/2009</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mlxkc</id>
+    <updated>2009-09-12T09:20:19Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mlxkc/Naked_Radio_11_09_2009/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b00mlxkc_150_84.jpg&quot; alt=&quot;Naked Radio: 11/09/2009&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The Scottish comedy team pokes fun at topical events. From Glasgow's Citizens Theatre.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mlxkc/Naked_Radio_11_09_2009/" type="text/html" title="Naked Radio: 11/09/2009">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b00mlxkc_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mlxkc" type="application/atom+xml" title="11/09/2009" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00lkk4k/microsite" type="text/html" title="Naked Radio" />
+  </entry>
+  <entry>
+    <title type="text">And Now In Colour: Series 2: Stately Home</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jscz</id>
+    <updated>2009-09-12T08:52:24Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jscz/And_Now_In_Colour_Series_2_Stately_Home/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jscz_150_84.jpg&quot; alt=&quot;And Now In Colour: Series 2: Stately Home&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The team take the audience on a posh day out. Starring Tim de Jongh. From January 1991.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sketch" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jscz/And_Now_In_Colour_Series_2_Stately_Home/" type="text/html" title="And Now In Colour: Series 2: Stately Home">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jscz_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jscz" type="application/atom+xml" title="1. Stately Home" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00c8yfy/microsite" type="text/html" title="And Now In Colour" />
+  </entry>
+  <entry>
+    <title type="text">The Jason Byrne Show: Relationships</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mlxk9</id>
+    <updated>2009-09-12T08:14:20Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mlxk9/The_Jason_Byrne_Show_Relationships/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b00mlxk9_150_84.jpg&quot; alt=&quot;The Jason Byrne Show: Relationships&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Exploring a fresh theme each week, the Irish comedian hosts stand-up and sketches.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sketch" />
+    <category term="Standup" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mlxk9/The_Jason_Byrne_Show_Relationships/" type="text/html" title="The Jason Byrne Show: Relationships">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b00mlxk9_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mlxk9" type="application/atom+xml" title="3. Relationships" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00mbyh4/microsite" type="text/html" title="The Jason Byrne Show" />
+  </entry>
+  <entry>
+    <title type="text">Jokester</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jwnj</id>
+    <updated>2009-09-12T10:16:27Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jwnj/Jokester/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jwnj_150_84.jpg&quot; alt=&quot;Jokester&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Where does man's sense of humour come from? Isaac Asimov offers his answer.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="SciFi &amp; Fantasy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jwnj/Jokester/" type="text/html" title="Jokester">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jwnj_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jwnj" type="application/atom+xml" title="Jokester" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b007jwnj" type="text/html" title="Jokester" />
+  </entry>
+  <entry>
+    <title type="text">The Laxian Key: Episode 4</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007k30w</id>
+    <updated>2009-09-12T09:59:45Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007k30w/The_Laxian_Key_Episode_4/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007k30w_150_84.jpg&quot; alt=&quot;The Laxian Key: Episode 4&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Evans the Welsh vigilante aims to bomb the planetary decontaminationists for melting Earth
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="SciFi &amp; Fantasy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007k30w/The_Laxian_Key_Episode_4/" type="text/html" title="The Laxian Key: Episode 4">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007k30w_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007k30w" type="application/atom+xml" title="Episode 4" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00c8r32/microsite" type="text/html" title="The Laxian Key" />
+  </entry>
+  <entry>
+    <title type="text">Big Toe Books: 11/09/2009</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mlxk7</id>
+    <updated>2009-09-12T02:15:55Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mlxk7/Big_Toe_Books_11_09_2009/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mlxk7_150_84.jpg&quot; alt=&quot;Big Toe Books: 11/09/2009&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        With The Five Lost Aunts of Harriet Bean, The Twitches: Bath Day, Flat Stanley and Dizzy.
+      &lt;/p&gt;
+    </content>
+    <category term="Children's" />
+    <category term="Entertainment &amp; Comedy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mlxk7/Big_Toe_Books_11_09_2009/" type="text/html" title="Big Toe Books: 11/09/2009">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mlxk7_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mlxk7" type="application/atom+xml" title="11/09/2009" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b0072tp2/microsite" type="text/html" title="Big Toe Books" />
+  </entry>
+  <entry>
+    <title type="text">How to Beat Sir Humphrey: Episode 2</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007js1n</id>
+    <updated>2009-09-12T14:12:41Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007js1n/How_to_Beat_Sir_Humphrey_Episode_2/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007js1n_150_84.jpg&quot; alt=&quot;How to Beat Sir Humphrey: Episode 2&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        How to fund a protest and acquire a good legal team. Read by Derek Fowlds.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007js1n/How_to_Beat_Sir_Humphrey_Episode_2/" type="text/html" title="How to Beat Sir Humphrey: Episode 2">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007js1n_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007js1n" type="application/atom+xml" title="Episode 2" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00fjc5j/microsite" type="text/html" title="How to Beat Sir Humphrey" />
+  </entry>
+  <entry>
+    <title type="text">Even As We Speak: Destination Europe and Running Beside Ron Clarke</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b009xyzb</id>
+    <updated>2009-09-12T13:46:18Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b009xyzb/Even_As_We_Speak_Destination_Europe_and_Running_Beside_Ron_Clarke/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b009xyzb_150_84.jpg&quot; alt=&quot;Even As We Speak: Destination Europe and Running Beside Ron Clarke&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Clive James offers us his thoughts on European Unity and The Joy of Gyms. From July 2001.
+      &lt;/p&gt;
+    </content>
+    <category term="Factual" />
+    <category term="Life Stories" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b009xyzb/Even_As_We_Speak_Destination_Europe_and_Running_Beside_Ron_Clarke/" type="text/html" title="Even As We Speak: Destination Europe and Running Beside Ron Clarke">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b009xyzb_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b009xyzb" type="application/atom+xml" title="5. Destination Europe and Running Beside Ron Clarke" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b009zbvk/microsite" type="text/html" title="Even As We Speak" />
+  </entry>
+  <entry>
+    <title type="text">This Sceptred Isle: The 20th Century: 1956 - The Suez Crisis</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mlxk5</id>
+    <updated>2009-09-12T13:17:56Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mlxk5/This_Sceptred_Isle_The_20th_Century_1956_The_Suez_Crisis/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mlxk5_150_84.jpg&quot; alt=&quot;This Sceptred Isle: The 20th Century: 1956 - The Suez Crisis&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Across the decades, Christopher Lee's vivid account of Britain's fast-paced history.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Factual" />
+    <category term="Historical" />
+    <category term="History" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mlxk5/This_Sceptred_Isle_The_20th_Century_1956_The_Suez_Crisis/" type="text/html" title="This Sceptred Isle: The 20th Century: 1956 - The Suez Crisis">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mlxk5_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mlxk5" type="application/atom+xml" title="49. 1956 - The Suez Crisis" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00lkmyl/microsite" type="text/html" title="This Sceptred Isle: The 20th Century" />
+  </entry>
+  <entry>
+    <title type="text">Fatherland: Episode 5</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jmtf</id>
+    <updated>2009-09-12T11:10:02Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jmtf/Fatherland_Episode_5/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b007jmtf_150_84.jpg&quot; alt=&quot;Fatherland: Episode 5&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Detective Xavier March uncovers the terrible secret of Adolf Hitler's totalitarian state.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="SciFi &amp; Fantasy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jmtf/Fatherland_Episode_5/" type="text/html" title="Fatherland: Episode 5">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b007jmtf_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jmtf" type="application/atom+xml" title="Episode 5" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00fsbnf/microsite" type="text/html" title="Fatherland" />
+  </entry>
+  <entry>
+    <title type="text">Lord Peter Wimsey: Lord Peter Wimsey: The Unpleasantness at the Bellona Club: Ann Dorland</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jvn3</id>
+    <updated>2009-09-12T10:59:53Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jvn3/Lord_Peter_Wimsey_Lord_Peter_Wimsey_The_Unpleasantness_at_the_Bellona_Club_Ann_Dorland/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b007jvn3_150_84.jpg&quot; alt=&quot;Lord Peter Wimsey: Lord Peter Wimsey: The Unpleasantness at the Bellona Club: Ann Dorland&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        With two suspects missing, the posh sleuth battles to pinpoint the poisoner.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Crime" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jvn3/Lord_Peter_Wimsey_Lord_Peter_Wimsey_The_Unpleasantness_at_the_Bellona_Club_Ann_Dorland/" type="text/html" title="Lord Peter Wimsey: Lord Peter Wimsey: The Unpleasantness at the Bellona Club: Ann Dorland">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b007jvn3_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jvn3" type="application/atom+xml" title="6. Ann Dorland" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00d515g/microsite" type="text/html" title="Lord Peter Wimsey" />
+  </entry>
+  <entry>
+    <title type="text">Mind Your Own Business: Series 1: Two Fingers of Suspicion</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b009sczf</id>
+    <updated>2009-09-12T05:08:44Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b009sczf/Mind_Your_Own_Business_Series_1_Two_Fingers_of_Suspicion/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b009sczf_150_84.jpg&quot; alt=&quot;Mind Your Own Business: Series 1: Two Fingers of Suspicion&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The company's defence job secrets are being leaked to a foreign power - but who by?
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sitcoms" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b009sczf/Mind_Your_Own_Business_Series_1_Two_Fingers_of_Suspicion/" type="text/html" title="Mind Your Own Business: Series 1: Two Fingers of Suspicion">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b009sczf_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b009sczf" type="application/atom+xml" title="5. Two Fingers of Suspicion" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b006z29z/microsite" type="text/html" title="Mind Your Own Business" />
+  </entry>
+  <entry>
+    <title type="text">Time Added on for Injuries</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007qw0x</id>
+    <updated>2009-09-12T12:06:26Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007qw0x/Time_Added_on_for_Injuries/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b007qw0x_150_84.jpg&quot; alt=&quot;Time Added on for Injuries&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Passengers on a train uncover the story that linked their families 150 years ago.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007qw0x/Time_Added_on_for_Injuries/" type="text/html" title="Time Added on for Injuries">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b007qw0x_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007qw0x" type="application/atom+xml" title="Time Added on for Injuries" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b007qw0x" type="text/html" title="Time Added on for Injuries" />
+  </entry>
+  <entry>
+    <title type="text">Valley of the Dolls: Episode 15</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mlxk3</id>
+    <updated>2009-09-12T11:37:23Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mlxk3/Valley_of_the_Dolls_Episode_15/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b00mlxk3_150_84.jpg&quot; alt=&quot;Valley of the Dolls: Episode 15&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Betrayed by Neely and with Lyon becoming more distant, Anne turns to the dolls.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mlxk3/Valley_of_the_Dolls_Episode_15/" type="text/html" title="Valley of the Dolls: Episode 15">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b00mlxk3_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mlxk3" type="application/atom+xml" title="Episode 15" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00mbwgb/microsite" type="text/html" title="Valley of the Dolls" />
+  </entry>
+  <entry>
+    <title type="text">A Pair of Blue Eyes: Episode 3</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jpjg</id>
+    <updated>2009-09-12T13:07:10Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jpjg/A_Pair_of_Blue_Eyes_Episode_3/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jpjg_150_84.jpg&quot; alt=&quot;A Pair of Blue Eyes: Episode 3&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        After seeing Stephen at the church, Elfride procrastinates over telling Henry of her past.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jpjg/A_Pair_of_Blue_Eyes_Episode_3/" type="text/html" title="A Pair of Blue Eyes: Episode 3">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jpjg_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jpjg" type="application/atom+xml" title="Episode 3" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00bfyxv/microsite" type="text/html" title="A Pair of Blue Eyes" />
+  </entry>
+  <entry>
+    <title type="text">Millport: Series 2: Story</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b0076258</id>
+    <updated>2009-09-12T03:18:15Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b0076258/Millport_Series_2_Story/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b0076258_150_84.jpg&quot; alt=&quot;Millport: Series 2: Story&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        People are telling tales, Moira's acting oddly, Bob is ignored - and Irene's confused.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sitcoms" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b0076258/Millport_Series_2_Story/" type="text/html" title="Millport: Series 2: Story">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b0076258_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b0076258" type="application/atom+xml" title="4. Story" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00m623f/microsite" type="text/html" title="Millport" />
+  </entry>
+  <entry>
+    <title type="text">Tony's: Is This True Love?</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007k2tv</id>
+    <updated>2009-09-12T02:55:38Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007k2tv/Tonys_Is_This_True_Love/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007k2tv_150_84.jpg&quot; alt=&quot;Tony's: Is This True Love?&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Italian hairdresser Tony is still single at the tender age of 41.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sitcoms" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007k2tv/Tonys_Is_This_True_Love/" type="text/html" title="Tony's: Is This True Love?">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007k2tv_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007k2tv" type="application/atom+xml" title="4. Is This True Love?" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00c4fjz/microsite" type="text/html" title="Tony's" />
+  </entry>
+  <entry>
+    <title type="text">Married: Series 1: Episode 6</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007wqdc</id>
+    <updated>2009-09-12T07:47:29Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007wqdc/Married_Series_1_Episode_6/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b007wqdc_150_84.jpg&quot; alt=&quot;Married: Series 1: Episode 6&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Branded a wife-beater in his parallel universe, a joke backfires for bachelor Robin.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sitcoms" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007wqdc/Married_Series_1_Episode_6/" type="text/html" title="Married: Series 1: Episode 6">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b007wqdc_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007wqdc" type="application/atom+xml" title="Episode 6" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00cp3v1/microsite" type="text/html" title="Married" />
+  </entry>
+  <entry>
+    <title type="text">Round The Horne: Series 3: Episode 12</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mlxk1</id>
+    <updated>2009-09-12T04:56:56Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mlxk1/Round_The_Horne_Series_3_Episode_12/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mlxk1_150_84.jpg&quot; alt=&quot;Round The Horne: Series 3: Episode 12&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Kenneth Williams saddles up, but Kenneth Horne seeks advice on Bona Bijou Tourettes.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mlxk1/Round_The_Horne_Series_3_Episode_12/" type="text/html" title="Round The Horne: Series 3: Episode 12">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mlxk1_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mlxk1" type="application/atom+xml" title="Episode 12" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00c7q4l/microsite" type="text/html" title="Round The Horne" />
+  </entry>
+  <entry>
+    <title type="text">Adolf Hitler: My Part in His Downfall: Episode 3</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00g27cc</id>
+    <updated>2009-09-11T09:39:44Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00g27cc/Adolf_Hitler_My_Part_in_His_Downfall_Episode_3/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b00g27cc_150_84.jpg&quot; alt=&quot;Adolf Hitler: My Part in His Downfall: Episode 3&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Some noxious nocturnal bodily habits come to the fore.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Biographical" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00g27cc/Adolf_Hitler_My_Part_in_His_Downfall_Episode_3/" type="text/html" title="Adolf Hitler: My Part in His Downfall: Episode 3">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b00g27cc_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00g27cc" type="application/atom+xml" title="Episode 3" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00fyjyz/microsite" type="text/html" title="Adolf Hitler: My Part in His Downfall" />
+  </entry>
+  <entry>
+    <title type="text">Rigor Mortis: Series 1: Episode 5</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007k4xd</id>
+    <updated>2009-09-11T09:23:07Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007k4xd/Rigor_Mortis_Series_1_Episode_5/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007k4xd_150_84.jpg&quot; alt=&quot;Rigor Mortis: Series 1: Episode 5&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Dr Webster is puzzled when his 13-year-old daughter isn't keen on a trip to the path lab.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sitcoms" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007k4xd/Rigor_Mortis_Series_1_Episode_5/" type="text/html" title="Rigor Mortis: Series 1: Episode 5">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007k4xd_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007k4xd" type="application/atom+xml" title="Episode 5" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00b2f13/microsite" type="text/html" title="Rigor Mortis" />
+  </entry>
+  <entry>
+    <title type="text">Jelly Mountain: Episode 5</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00ftk74</id>
+    <updated>2009-09-11T08:26:52Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00ftk74/Jelly_Mountain_Episode_5/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00ftk74_150_84.jpg&quot; alt=&quot;Jelly Mountain: Episode 5&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Musings on a footkerchief and a forest full of girls. Songs and stories from Ivor Cutler.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sketch" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00ftk74/Jelly_Mountain_Episode_5/" type="text/html" title="Jelly Mountain: Episode 5">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00ftk74_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00ftk74" type="application/atom+xml" title="Episode 5" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00ffpxl/microsite" type="text/html" title="Jelly Mountain" />
+  </entry>
+  <entry>
+    <title type="text">Quando, Quando, Quando: Spies</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00800m4</id>
+    <updated>2009-09-11T08:04:25Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00800m4/Quando_Quando_Quando_Spies/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00800m4_150_84.jpg&quot; alt=&quot;Quando, Quando, Quando: Spies&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        A secret tonic formula is stolen from the brothers' hair salon. From December 1999.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sitcoms" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00800m4/Quando_Quando_Quando_Spies/" type="text/html" title="Quando, Quando, Quando: Spies">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00800m4_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00800m4" type="application/atom+xml" title="4. Spies" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00ckbvm/microsite" type="text/html" title="Quando, Quando, Quando" />
+  </entry>
+  <entry>
+    <title type="text">Ancient Sorceries: Episode 4</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jvy3</id>
+    <updated>2009-09-11T10:41:15Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jvy3/Ancient_Sorceries_Episode_4/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b007jvy3_150_84.jpg&quot; alt=&quot;Ancient Sorceries: Episode 4&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Vezin is wary over mother and daughter's witches' Sabbath invitation. Read by Philip Madoc
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="SciFi &amp; Fantasy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jvy3/Ancient_Sorceries_Episode_4/" type="text/html" title="Ancient Sorceries: Episode 4">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b007jvy3_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jvy3" type="application/atom+xml" title="Episode 4" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00crdd3/microsite" type="text/html" title="Ancient Sorceries" />
+  </entry>
+  <entry>
+    <title type="text">The Laxian Key: Episode 3</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007k2tx</id>
+    <updated>2009-09-11T09:57:17Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007k2tx/The_Laxian_Key_Episode_3/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b007k2tx_150_84.jpg&quot; alt=&quot;The Laxian Key: Episode 3&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        With the planetary decontaminationists on the run, Arnold's apologetic call is traced.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="SciFi &amp; Fantasy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007k2tx/The_Laxian_Key_Episode_3/" type="text/html" title="The Laxian Key: Episode 3">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b007k2tx_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007k2tx" type="application/atom+xml" title="Episode 3" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00c8r32/microsite" type="text/html" title="The Laxian Key" />
+  </entry>
+  <entry>
+    <title type="text">Big Toe Books: 10/09/2009</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mk8gw</id>
+    <updated>2009-09-11T02:46:28Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mk8gw/Big_Toe_Books_10_09_2009/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mk8gw_150_84.jpg&quot; alt=&quot;Big Toe Books: 10/09/2009&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        With The Five Lost Aunts of Harriet Bean, Jerry and the Inventions, Flat Stanley and Dizzy
+      &lt;/p&gt;
+    </content>
+    <category term="Children's" />
+    <category term="Entertainment &amp; Comedy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mk8gw/Big_Toe_Books_10_09_2009/" type="text/html" title="Big Toe Books: 10/09/2009">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mk8gw_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mk8gw" type="application/atom+xml" title="10/09/2009" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b0072tp2/microsite" type="text/html" title="Big Toe Books" />
+  </entry>
+  <entry>
+    <title type="text">How to Beat Sir Humphrey: Episode 1</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007js17</id>
+    <updated>2009-09-11T14:25:31Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007js17/How_to_Beat_Sir_Humphrey_Episode_1/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007js17_150_84.jpg&quot; alt=&quot;How to Beat Sir Humphrey: Episode 1&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        From public protests to action committees - Anthony Jay's guide to beating bureaucracy.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007js17/How_to_Beat_Sir_Humphrey_Episode_1/" type="text/html" title="How to Beat Sir Humphrey: Episode 1">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007js17_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007js17" type="application/atom+xml" title="Episode 1" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00fjc5j/microsite" type="text/html" title="How to Beat Sir Humphrey" />
+  </entry>
+  <entry>
+    <title type="text">Even As We Speak: Thorpie, Hoogie and the Golden Lolly</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b009xxq9</id>
+    <updated>2009-09-11T14:03:13Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b009xxq9/Even_As_We_Speak_Thorpie_Hoogie_and_the_Golden_Lolly/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b009xxq9_150_84.jpg&quot; alt=&quot;Even As We Speak: Thorpie, Hoogie and the Golden Lolly&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Clive James ponders on the mania surrounding the swimmer they called the 'Thorpedo'.
+      &lt;/p&gt;
+    </content>
+    <category term="Factual" />
+    <category term="Life Stories" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b009xxq9/Even_As_We_Speak_Thorpie_Hoogie_and_the_Golden_Lolly/" type="text/html" title="Even As We Speak: Thorpie, Hoogie and the Golden Lolly">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b009xxq9_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b009xxq9" type="application/atom+xml" title="4. Thorpie, Hoogie and the Golden Lolly" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b009zbvk/microsite" type="text/html" title="Even As We Speak" />
+  </entry>
+  <entry>
+    <title type="text">This Sceptred Isle: The 20th Century: 1955 - The Warsaw Pact and the Departure of Churchill</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mk68b</id>
+    <updated>2009-09-11T13:45:06Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mk68b/This_Sceptred_Isle_The_20th_Century_1955_The_Warsaw_Pact_and_the_Departure_of_Churchill/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mk68b_150_84.jpg&quot; alt=&quot;This Sceptred Isle: The 20th Century: 1955 - The Warsaw Pact and the Departure of Churchill&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Across the decades, Christopher Lee's vivid account of Britain's fast-paced history.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Factual" />
+    <category term="Historical" />
+    <category term="History" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mk68b/This_Sceptred_Isle_The_20th_Century_1955_The_Warsaw_Pact_and_the_Departure_of_Churchill/" type="text/html" title="This Sceptred Isle: The 20th Century: 1955 - The Warsaw Pact and the Departure of Churchill">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mk68b_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mk68b" type="application/atom+xml" title="48. 1955 - The Warsaw Pact and the Departure of Churchill" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00lkmyl/microsite" type="text/html" title="This Sceptred Isle: The 20th Century" />
+  </entry>
+  <entry>
+    <title type="text">Fatherland: Episode 4</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jmsy</id>
+    <updated>2009-09-11T11:30:39Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jmsy/Fatherland_Episode_4/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jmsy_150_84.jpg&quot; alt=&quot;Fatherland: Episode 4&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        As Hitler's 75th birthday nears, Kriminalpolizei detective Xavier March is in trouble.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="SciFi &amp; Fantasy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jmsy/Fatherland_Episode_4/" type="text/html" title="Fatherland: Episode 4">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jmsy_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jmsy" type="application/atom+xml" title="Episode 4" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00fsbnf/microsite" type="text/html" title="Fatherland" />
+  </entry>
+  <entry>
+    <title type="text">Lord Peter Wimsey: Lord Peter Wimsey: The Unpleasantness at the Bellona Club: At Lady Dormer's</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jvn1</id>
+    <updated>2009-09-11T11:13:38Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jvn1/Lord_Peter_Wimsey_Lord_Peter_Wimsey_The_Unpleasantness_at_the_Bellona_Club_At_Lady_Dormers/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jvn1_150_84.jpg&quot; alt=&quot;Lord Peter Wimsey: Lord Peter Wimsey: The Unpleasantness at the Bellona Club: At Lady Dormer's&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Knowing the general was poisoned, the posh sleuth probes Miss Dorland's hobby.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Crime" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jvn1/Lord_Peter_Wimsey_Lord_Peter_Wimsey_The_Unpleasantness_at_the_Bellona_Club_At_Lady_Dormers/" type="text/html" title="Lord Peter Wimsey: Lord Peter Wimsey: The Unpleasantness at the Bellona Club: At Lady Dormer's">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jvn1_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jvn1" type="application/atom+xml" title="5. At Lady Dormer's" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00d515g/microsite" type="text/html" title="Lord Peter Wimsey" />
+  </entry>
+  <entry>
+    <title type="text">The Personality Test: Series 2: Rick Wakeman</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mk68l</id>
+    <updated>2009-09-11T05:43:16Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mk68l/The_Personality_Test_Series_2_Rick_Wakeman/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b00mk68l_150_84.jpg&quot; alt=&quot;The Personality Test: Series 2: Rick Wakeman&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The progressive rock legend quizzes a panel about himself. From December 2006.
+      &lt;/p&gt;
+    </content>
+    <category term="Entertainment" />
+    <category term="Games &amp; Quizzes" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mk68l/The_Personality_Test_Series_2_Rick_Wakeman/" type="text/html" title="The Personality Test: Series 2: Rick Wakeman">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b00mk68l_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mk68l" type="application/atom+xml" title="2. Rick Wakeman" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b006r07n/microsite" type="text/html" title="The Personality Test" />
+  </entry>
+  <entry>
+    <title type="text">Only a Matter of Time</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007qrqk</id>
+    <updated>2009-09-11T12:34:09Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007qrqk/Only_a_Matter_of_Time/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007qrqk_150_84.jpg&quot; alt=&quot;Only a Matter of Time&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        When time was standardised in the 19th century, not everyone was convinced by the idea.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Historical" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007qrqk/Only_a_Matter_of_Time/" type="text/html" title="Only a Matter of Time">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007qrqk_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007qrqk" type="application/atom+xml" title="Only a Matter of Time" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b007qrqk" type="text/html" title="Only a Matter of Time" />
+  </entry>
+  <entry>
+    <title type="text">Valley of the Dolls: Episode 14</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mk688</id>
+    <updated>2009-09-11T11:53:02Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mk688/Valley_of_the_Dolls_Episode_14/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mk688_150_84.jpg&quot; alt=&quot;Valley of the Dolls: Episode 14&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Lyon is back and Anne still has feelings for him, despite being engaged to Kevin.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mk688/Valley_of_the_Dolls_Episode_14/" type="text/html" title="Valley of the Dolls: Episode 14">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mk688_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mk688" type="application/atom+xml" title="Episode 14" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00mbwgb/microsite" type="text/html" title="Valley of the Dolls" />
+  </entry>
+  <entry>
+    <title type="text">A Pair of Blue Eyes: Episode 2</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jpj0</id>
+    <updated>2009-09-11T13:40:11Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jpj0/A_Pair_of_Blue_Eyes_Episode_2/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b007jpj0_150_84.jpg&quot; alt=&quot;A Pair of Blue Eyes: Episode 2&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        After failing to marry Stephen, Elfride meets and falls in love with his mentor Henry.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jpj0/A_Pair_of_Blue_Eyes_Episode_2/" type="text/html" title="A Pair of Blue Eyes: Episode 2">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b007jpj0_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jpj0" type="application/atom+xml" title="Episode 2" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00bfyxv/microsite" type="text/html" title="A Pair of Blue Eyes" />
+  </entry>
+  <entry>
+    <title type="text">Life, Death and Sex with Mike and Sue: Series 1: Episode 5</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jq4v</id>
+    <updated>2009-09-11T03:27:22Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jq4v/Life_Death_and_Sex_with_Mike_and_Sue_Series_1_Episode_5/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jq4v_150_84.jpg&quot; alt=&quot;Life, Death and Sex with Mike and Sue: Series 1: Episode 5&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The sofa-bound presenters look at shopaholics and dangerous ducks. From May 1996.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Spoof" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jq4v/Life_Death_and_Sex_with_Mike_and_Sue_Series_1_Episode_5/" type="text/html" title="Life, Death and Sex with Mike and Sue: Series 1: Episode 5">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jq4v_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jq4v" type="application/atom+xml" title="Episode 5" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00m152k/microsite" type="text/html" title="Life, Death and Sex with Mike and Sue" />
+  </entry>
+  <entry>
+    <title type="text">The Brothers: Episode 4</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007mc8t</id>
+    <updated>2009-09-11T03:05:31Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007mc8t/The_Brothers_Episode_4/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007mc8t_150_84.jpg&quot; alt=&quot;The Brothers: Episode 4&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Arson and revolving bow ties - just another day for Nigel and Michael. From June 2004.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sitcoms" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007mc8t/The_Brothers_Episode_4/" type="text/html" title="The Brothers: Episode 4">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007mc8t_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007mc8t" type="application/atom+xml" title="Episode 4" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00m61xh/microsite" type="text/html" title="The Brothers" />
+  </entry>
+  <entry>
+    <title type="text">Chambers: Series 2: The Phantom Barrister</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jp6n</id>
+    <updated>2009-09-11T08:21:53Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jp6n/Chambers_Series_2_The_Phantom_Barrister/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jp6n_150_84.jpg&quot; alt=&quot;Chambers: Series 2: The Phantom Barrister&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        A new worker puzzles John Fuller-Carp, and Ruth's mum visits. From May 1998.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sitcoms" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jp6n/Chambers_Series_2_The_Phantom_Barrister/" type="text/html" title="Chambers: Series 2: The Phantom Barrister">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jp6n_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jp6n" type="application/atom+xml" title="3. The Phantom Barrister" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00dzkln/microsite" type="text/html" title="Chambers" />
+  </entry>
+  <entry>
+    <title type="text">Dad Made Me Laugh: Series 2: Jenny Secombe</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00cyywj</id>
+    <updated>2009-09-11T05:04:28Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00cyywj/Dad_Made_Me_Laugh_Series_2_Jenny_Secombe/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00cyywj_150_84.jpg&quot; alt=&quot;Dad Made Me Laugh: Series 2: Jenny Secombe&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Harry Secombe's daughter chats to Sally Magnusson about growing up with her funny father.
+      &lt;/p&gt;
+    </content>
+    <category term="Factual" />
+    <category term="Comedy" />
+    <category term="Entertainment" />
+    <category term="Life Stories" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00cyywj/Dad_Made_Me_Laugh_Series_2_Jenny_Secombe/" type="text/html" title="Dad Made Me Laugh: Series 2: Jenny Secombe">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00cyywj_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00cyywj" type="application/atom+xml" title="2. Jenny Secombe" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b007nl0q/microsite" type="text/html" title="Dad Made Me Laugh" />
+  </entry>
+  <entry>
+    <title type="text">The Masterson Inheritance: Series 1: The Mastersons and Johnson</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jspx</id>
+    <updated>2009-09-10T20:24:49Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jspx/The_Masterson_Inheritance_Series_1_The_Mastersons_and_Johnson/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b007jspx_150_84.jpg&quot; alt=&quot;The Masterson Inheritance: Series 1: The Mastersons and Johnson&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The family's fate is linked with that of a tumble dryer. From April 1993.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Entertainment" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jspx/The_Masterson_Inheritance_Series_1_The_Mastersons_and_Johnson/" type="text/html" title="The Masterson Inheritance: Series 1: The Mastersons and Johnson">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b007jspx_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jspx" type="application/atom+xml" title="2. The Mastersons and Johnson" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00cgn50/microsite" type="text/html" title="The Masterson Inheritance" />
+  </entry>
+  <entry>
+    <title type="text">Giles Wemmbley-Hogg Goes Off: Series 1: China</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00fnfnq</id>
+    <updated>2009-09-10T10:21:08Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00fnfnq/Giles_WemmbleyHogg_Goes_Off_Series_1_China/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00fnfnq_150_84.jpg&quot; alt=&quot;Giles Wemmbley-Hogg Goes Off: Series 1: China&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The naive gap year student lands in Beijing for his Duke of Edinburgh Award challenge.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Spoof" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00fnfnq/Giles_WemmbleyHogg_Goes_Off_Series_1_China/" type="text/html" title="Giles Wemmbley-Hogg Goes Off: Series 1: China">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00fnfnq_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00fnfnq" type="application/atom+xml" title="2. China" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b007rdqh/microsite" type="text/html" title="Giles Wemmbley-Hogg Goes Off" />
+  </entry>
+  <entry>
+    <title type="text">Miranda Hart's Joke Shop: What a Job!</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mk4bz</id>
+    <updated>2009-09-10T09:18:59Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mk4bz/Miranda_Harts_Joke_Shop_What_a_Job!/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mk4bz_150_84.jpg&quot; alt=&quot;Miranda Hart's Joke Shop: What a Job!&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The tall, life-embracing shop-keeper tries to prove that she can get a proper job.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sitcoms" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mk4bz/Miranda_Harts_Joke_Shop_What_a_Job!/" type="text/html" title="Miranda Hart's Joke Shop: What a Job!">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mk4bz_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mk4bz" type="application/atom+xml" title="2. What a Job!" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00d3hzr/microsite" type="text/html" title="Miranda Hart's Joke Shop" />
+  </entry>
+  <entry>
+    <title type="text">Ancient Sorceries: Episode 3</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jvxy</id>
+    <updated>2009-09-10T11:53:29Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jvxy/Ancient_Sorceries_Episode_3/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jvxy_150_84.jpg&quot; alt=&quot;Ancient Sorceries: Episode 3&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        When Vezin declares his love for Ilse, he fears for his actions. Read by Philip Madoc.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="SciFi &amp; Fantasy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jvxy/Ancient_Sorceries_Episode_3/" type="text/html" title="Ancient Sorceries: Episode 3">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jvxy_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jvxy" type="application/atom+xml" title="Episode 3" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00crdd3/microsite" type="text/html" title="Ancient Sorceries" />
+  </entry>
+  <entry>
+    <title type="text">The Laxian Key: Episode 2</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007k2m3</id>
+    <updated>2009-09-10T11:54:02Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007k2m3/The_Laxian_Key_Episode_2/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b007k2m3_150_84.jpg&quot; alt=&quot;The Laxian Key: Episode 2&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        London is melting, but planetary decontaminationists Arnold and Gregor get the blame.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="SciFi &amp; Fantasy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007k2m3/The_Laxian_Key_Episode_2/" type="text/html" title="The Laxian Key: Episode 2">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b007k2m3_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007k2m3" type="application/atom+xml" title="Episode 2" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00c8r32/microsite" type="text/html" title="The Laxian Key" />
+  </entry>
+  <entry>
+    <title type="text">Hothouse: Episode 2</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mdx7n</id>
+    <updated>2009-09-12T23:32:43Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mdx7n/Hothouse_Episode_2/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mdx7n_150_84.jpg&quot; alt=&quot;Hothouse: Episode 2&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The adult tribe members have Gone Up, leaving the children in the jungle.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="SciFi &amp; Fantasy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mdx7n/Hothouse_Episode_2/" type="text/html" title="Hothouse: Episode 2">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mdx7n_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mdx7n" type="application/atom+xml" title="Episode 2" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00mbvzc/microsite" type="text/html" title="Hothouse" />
+  </entry>
+  <entry>
+    <title type="text">Big Toe Books: 09/09/2009</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mjs2q</id>
+    <updated>2009-09-10T02:53:32Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mjs2q/Big_Toe_Books_09_09_2009/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mjs2q_150_84.jpg&quot; alt=&quot;Big Toe Books: 09/09/2009&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Featuring The Five Lost Aunts of Harriet Bean, Jerry and the Inventions, and Dizzy.
+      &lt;/p&gt;
+    </content>
+    <category term="Children's" />
+    <category term="Entertainment &amp; Comedy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mjs2q/Big_Toe_Books_09_09_2009/" type="text/html" title="Big Toe Books: 09/09/2009">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mjs2q_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mjs2q" type="application/atom+xml" title="09/09/2009" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b0072tp2/microsite" type="text/html" title="Big Toe Books" />
+  </entry>
+  <entry>
+    <title type="text">Born Free: Episode 8</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007k3n6</id>
+    <updated>2009-09-10T14:13:40Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007k3n6/Born_Free_Episode_8/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b007k3n6_150_84.jpg&quot; alt=&quot;Born Free: Episode 8&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Elsa the Lion is adapting to the wild, but it's not all plain sailing.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007k3n6/Born_Free_Episode_8/" type="text/html" title="Born Free: Episode 8">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b007k3n6_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007k3n6" type="application/atom+xml" title="Episode 8" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b0072vmb/microsite" type="text/html" title="Born Free" />
+  </entry>
+  <entry>
+    <title type="text">Even As We Speak: Noble Talking Heads</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b009x79j</id>
+    <updated>2009-09-10T13:57:16Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b009x79j/Even_As_We_Speak_Noble_Talking_Heads/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b009x79j_150_84.jpg&quot; alt=&quot;Even As We Speak: Noble Talking Heads&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Clive James muses on the first day of the televising of the House of Lords in 1985.
+      &lt;/p&gt;
+    </content>
+    <category term="Factual" />
+    <category term="Life Stories" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b009x79j/Even_As_We_Speak_Noble_Talking_Heads/" type="text/html" title="Even As We Speak: Noble Talking Heads">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b009x79j_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b009x79j" type="application/atom+xml" title="3. Noble Talking Heads" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b009zbvk/microsite" type="text/html" title="Even As We Speak" />
+  </entry>
+  <entry>
+    <title type="text">This Sceptred Isle: The 20th Century: 1954 - The Four-Minute Mile, the H-Bomb and Eden's Frustration</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mjs2n</id>
+    <updated>2009-09-10T13:35:06Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mjs2n/This_Sceptred_Isle_The_20th_Century_1954_The_FourMinute_Mile_the_HBomb_and_Edens_Frustration/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mjs2n_150_84.jpg&quot; alt=&quot;This Sceptred Isle: The 20th Century: 1954 - The Four-Minute Mile, the H-Bomb and Eden's Frustration&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Across the decades, Christopher Lee's vivid account of Britain's fast-paced history.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Factual" />
+    <category term="Historical" />
+    <category term="History" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mjs2n/This_Sceptred_Isle_The_20th_Century_1954_The_FourMinute_Mile_the_HBomb_and_Edens_Frustration/" type="text/html" title="This Sceptred Isle: The 20th Century: 1954 - The Four-Minute Mile, the H-Bomb and Eden's Frustration">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mjs2n_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mjs2n" type="application/atom+xml" title="47. 1954 - The Four-Minute Mile, the H-Bomb and Eden's Frustration" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00lkmyl/microsite" type="text/html" title="This Sceptred Isle: The 20th Century" />
+  </entry>
+  <entry>
+    <title type="text">Fatherland: Episode 3</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007r49s</id>
+    <updated>2009-09-10T12:00:12Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007r49s/Fatherland_Episode_3/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007r49s_150_84.jpg&quot; alt=&quot;Fatherland: Episode 3&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Xavier March probes the deaths of senior party officials in Hitler's post-war Germany.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="SciFi &amp; Fantasy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007r49s/Fatherland_Episode_3/" type="text/html" title="Fatherland: Episode 3">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007r49s_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007r49s" type="application/atom+xml" title="Episode 3" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00fsbnf/microsite" type="text/html" title="Fatherland" />
+  </entry>
+  <entry>
+    <title type="text">Lord Peter Wimsey: Lord Peter Wimsey: The Unpleasantness at the Bellona Club: Exhumation</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jvmz</id>
+    <updated>2009-09-10T11:53:57Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jvmz/Lord_Peter_Wimsey_Lord_Peter_Wimsey_The_Unpleasantness_at_the_Bellona_Club_Exhumation/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jvmz_150_84.jpg&quot; alt=&quot;Lord Peter Wimsey: Lord Peter Wimsey: The Unpleasantness at the Bellona Club: Exhumation&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The posh sleuth awaits the doctor's verdict and there's a revelation at a party.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Crime" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jvmz/Lord_Peter_Wimsey_Lord_Peter_Wimsey_The_Unpleasantness_at_the_Bellona_Club_Exhumation/" type="text/html" title="Lord Peter Wimsey: Lord Peter Wimsey: The Unpleasantness at the Bellona Club: Exhumation">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jvmz_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jvmz" type="application/atom+xml" title="4. Exhumation" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00d515g/microsite" type="text/html" title="Lord Peter Wimsey" />
+  </entry>
+  <entry>
+    <title type="text">The Burkiss Way: Series 5: Settle Out of Court the Burkiss Way</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jsnb</id>
+    <updated>2009-09-10T06:15:08Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jsnb/The_Burkiss_Way_Series_5_Settle_Out_of_Court_the_Burkiss_Way/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jsnb_150_84.jpg&quot; alt=&quot;The Burkiss Way: Series 5: Settle Out of Court the Burkiss Way&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Find out 'What's My Gender', plus a galactic 'Panorama'. From November 1980.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sketch" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jsnb/The_Burkiss_Way_Series_5_Settle_Out_of_Court_the_Burkiss_Way/" type="text/html" title="The Burkiss Way: Series 5: Settle Out of Court the Burkiss Way">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jsnb_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jsnb" type="application/atom+xml" title="5. Settle Out of Court the Burkiss Way" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00c8x5n/microsite" type="text/html" title="The Burkiss Way" />
+  </entry>
+  <entry>
+    <title type="text">The Devil's Music: Beacons</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007qss0</id>
+    <updated>2009-09-10T12:38:56Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007qss0/The_Devils_Music_Beacons/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b007qss0_150_84.jpg&quot; alt=&quot;The Devil's Music: Beacons&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Musical detective Megan's mystery tune quest comes full circle - thanks to a surprise.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007qss0/The_Devils_Music_Beacons/" type="text/html" title="The Devil's Music: Beacons">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b007qss0_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007qss0" type="application/atom+xml" title="3. Beacons" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00fl777/microsite" type="text/html" title="The Devil's Music" />
+  </entry>
+  <entry>
+    <title type="text">Valley of the Dolls: Episode 13</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mjs2l</id>
+    <updated>2009-09-10T11:59:52Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mjs2l/Valley_of_the_Dolls_Episode_13/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b00mjs2l_150_84.jpg&quot; alt=&quot;Valley of the Dolls: Episode 13&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        After the tragedy, Neely gets agitated and Anne gets a visit from an old flame.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mjs2l/Valley_of_the_Dolls_Episode_13/" type="text/html" title="Valley of the Dolls: Episode 13">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b00mjs2l_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mjs2l" type="application/atom+xml" title="Episode 13" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00mbwgb/microsite" type="text/html" title="Valley of the Dolls" />
+  </entry>
+  <entry>
+    <title type="text">A Pair of Blue Eyes: Episode 1</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jphk</id>
+    <updated>2009-09-10T13:23:46Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jphk/A_Pair_of_Blue_Eyes_Episode_1/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jphk_150_84.jpg&quot; alt=&quot;A Pair of Blue Eyes: Episode 1&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Parson's daughter Elfride becomes the object of affection for two very different men.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jphk/A_Pair_of_Blue_Eyes_Episode_1/" type="text/html" title="A Pair of Blue Eyes: Episode 1">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jphk_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jphk" type="application/atom+xml" title="Episode 1" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00bfyxv/microsite" type="text/html" title="A Pair of Blue Eyes" />
+  </entry>
+  <entry>
+    <title type="text">Wordsmiths at Gorsemere: Series 1: Episode 1</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007js4t</id>
+    <updated>2009-09-10T04:02:01Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007js4t/Wordsmiths_at_Gorsemere_Series_1_Episode_1/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007js4t_150_84.jpg&quot; alt=&quot;Wordsmiths at Gorsemere: Series 1: Episode 1&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        William and Dorothy settle in their sublime cottage. Sue Limb's Lakeland poets parody.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Spoof" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007js4t/Wordsmiths_at_Gorsemere_Series_1_Episode_1/" type="text/html" title="Wordsmiths at Gorsemere: Series 1: Episode 1">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007js4t_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007js4t" type="application/atom+xml" title="Episode 1" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00fvyn3/microsite" type="text/html" title="Wordsmiths at Gorsemere" />
+  </entry>
+  <entry>
+    <title type="text">No Commitments: Series 1: Old Embers</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jmrw</id>
+    <updated>2009-09-10T04:02:00Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jmrw/No_Commitments_Series_1_Old_Embers/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jmrw_150_84.jpg&quot; alt=&quot;No Commitments: Series 1: Old Embers&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Victoria reunites sister Anna with an old flame. Stars Rosemary Leach. From February 1992.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sitcoms" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jmrw/No_Commitments_Series_1_Old_Embers/" type="text/html" title="No Commitments: Series 1: Old Embers">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jmrw_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jmrw" type="application/atom+xml" title="5. Old Embers" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00f9sql/microsite" type="text/html" title="No Commitments" />
+  </entry>
+  <entry>
+    <title type="text">Double Income, No Kids Yet: Series 1: Episode 1</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00dkxjl</id>
+    <updated>2009-09-10T09:18:27Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00dkxjl/Double_Income_No_Kids_Yet_Series_1_Episode_1/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b00dkxjl_150_84.jpg&quot; alt=&quot;Double Income, No Kids Yet: Series 1: Episode 1&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Lucy sets up David's party, but their mates seem too busy with kids. From June 2001.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sitcoms" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00dkxjl/Double_Income_No_Kids_Yet_Series_1_Episode_1/" type="text/html" title="Double Income, No Kids Yet: Series 1: Episode 1">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b00dkxjl_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00dkxjl" type="application/atom+xml" title="Episode 1" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b0072v4g/microsite" type="text/html" title="Double Income, No Kids Yet" />
+  </entry>
+  <entry>
+    <title type="text">Hancock's Half Hour: The Election Candidate</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jsvk</id>
+    <updated>2009-09-10T06:09:07Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jsvk/Hancocks_Half_Hour_The_Election_Candidate/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jsvk_150_84.jpg&quot; alt=&quot;Hancock's Half Hour: The Election Candidate&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The Lad Himself stands for Parliament. Stars Tony Hancock and Sid James. From March 1958.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jsvk/Hancocks_Half_Hour_The_Election_Candidate/" type="text/html" title="Hancock's Half Hour: The Election Candidate">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jsvk_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jsvk" type="application/atom+xml" title="The Election Candidate" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b009t2ld/microsite" type="text/html" title="Hancock's Half Hour" />
+  </entry>
+  <entry>
+    <title type="text">Getting Nowhere Fast: Episode 1</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mjq8m</id>
+    <updated>2009-09-09T09:45:32Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mjq8m/Getting_Nowhere_Fast_Episode_1/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mjq8m_150_84.jpg&quot; alt=&quot;Getting Nowhere Fast: Episode 1&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        An uncle's gift leaves menopausal flower child Merv yearning to discover his inner cowboy.
+      &lt;/p&gt;
+    </content>
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mjq8m/Getting_Nowhere_Fast_Episode_1/" type="text/html" title="Getting Nowhere Fast: Episode 1">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mjq8m_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mjq8m" type="application/atom+xml" title="Episode 1" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00f8mrn/microsite" type="text/html" title="Getting Nowhere Fast" />
+  </entry>
+  <entry>
+    <title type="text">Trevor's World of Sport: Series 2: Episode 3</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mjq8k</id>
+    <updated>2009-09-09T09:17:07Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mjq8k/Trevors_World_of_Sport_Series_2_Episode_3/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mjq8k_150_84.jpg&quot; alt=&quot;Trevor's World of Sport: Series 2: Episode 3&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The sports agent's hellish client Ralph acquires every celeb's must have - a stalker.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sitcoms" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mjq8k/Trevors_World_of_Sport_Series_2_Episode_3/" type="text/html" title="Trevor's World of Sport: Series 2: Episode 3">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mjq8k_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mjq8k" type="application/atom+xml" title="Episode 3" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b006qxyj/microsite" type="text/html" title="Trevor's World of Sport" />
+  </entry>
+  <entry>
+    <title type="text">Ancient Sorceries: Episode 2</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jvxm</id>
+    <updated>2009-09-09T10:47:50Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jvxm/Ancient_Sorceries_Episode_2/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jvxm_150_84.jpg&quot; alt=&quot;Ancient Sorceries: Episode 2&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Vezin realises that the cat-like villagers are watching him closely. Read by Philip Madoc.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="SciFi &amp; Fantasy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jvxm/Ancient_Sorceries_Episode_2/" type="text/html" title="Ancient Sorceries: Episode 2">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jvxm_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jvxm" type="application/atom+xml" title="Episode 2" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00crdd3/microsite" type="text/html" title="Ancient Sorceries" />
+  </entry>
+  <entry>
+    <title type="text">The Laxian Key: Episode 1</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007k2c1</id>
+    <updated>2009-09-09T10:08:18Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007k2c1/The_Laxian_Key_Episode_1/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007k2c1_150_84.jpg&quot; alt=&quot;The Laxian Key: Episode 1&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Mystery space tourist deaths land two planet cleaners with a new contract.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="SciFi &amp; Fantasy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007k2c1/The_Laxian_Key_Episode_1/" type="text/html" title="The Laxian Key: Episode 1">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007k2c1_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007k2c1" type="application/atom+xml" title="Episode 1" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00c8r32/microsite" type="text/html" title="The Laxian Key" />
+  </entry>
+  <entry>
+    <title type="text">Big Toe Books: 08/09/2009</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mjq8h</id>
+    <updated>2009-09-09T03:43:01Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mjq8h/Big_Toe_Books_08_09_2009/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mjq8h_150_84.jpg&quot; alt=&quot;Big Toe Books: 08/09/2009&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Featuring The Five Lost Aunts of Harriet Bean, and Jerry and the Inventions.
+      &lt;/p&gt;
+    </content>
+    <category term="Children's" />
+    <category term="Entertainment &amp; Comedy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mjq8h/Big_Toe_Books_08_09_2009/" type="text/html" title="Big Toe Books: 08/09/2009">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mjq8h_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mjq8h" type="application/atom+xml" title="08/09/2009" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b0072tp2/microsite" type="text/html" title="Big Toe Books" />
+  </entry>
+  <entry>
+    <title type="text">Born Free: Episode 7</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b008hq34</id>
+    <updated>2009-09-09T14:16:10Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b008hq34/Born_Free_Episode_7/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b008hq34_150_84.jpg&quot; alt=&quot;Born Free: Episode 7&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        George and Joy try reintroducing Elsa the Lion to the wild. Read by Virginia McKenna.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b008hq34/Born_Free_Episode_7/" type="text/html" title="Born Free: Episode 7">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b008hq34_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b008hq34" type="application/atom+xml" title="Episode 7" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b0072vmb/microsite" type="text/html" title="Born Free" />
+  </entry>
+  <entry>
+    <title type="text">Even As We Speak: A Voice is Born</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b009x4jd</id>
+    <updated>2009-09-09T14:00:04Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b009x4jd/Even_As_We_Speak_A_Voice_is_Born/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b009x4jd_150_84.jpg&quot; alt=&quot;Even As We Speak: A Voice is Born&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Taking singing lessons - it's all about support and the booby trap in 'The Flower Song'.
+      &lt;/p&gt;
+    </content>
+    <category term="Factual" />
+    <category term="Life Stories" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b009x4jd/Even_As_We_Speak_A_Voice_is_Born/" type="text/html" title="Even As We Speak: A Voice is Born">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b009x4jd_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b009x4jd" type="application/atom+xml" title="2. A Voice is Born" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b009zbvk/microsite" type="text/html" title="Even As We Speak" />
+  </entry>
+  <entry>
+    <title type="text">This Sceptred Isle: The 20th Century: 1953 - The New Elizabeth Age</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mjpv3</id>
+    <updated>2009-09-09T14:27:18Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mjpv3/This_Sceptred_Isle_The_20th_Century_1953_The_New_Elizabeth_Age/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b00mjpv3_150_84.jpg&quot; alt=&quot;This Sceptred Isle: The 20th Century: 1953 - The New Elizabeth Age&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Across the decades, Christopher Lee's vivid account of Britain's fast-paced history.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Factual" />
+    <category term="Historical" />
+    <category term="History" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mjpv3/This_Sceptred_Isle_The_20th_Century_1953_The_New_Elizabeth_Age/" type="text/html" title="This Sceptred Isle: The 20th Century: 1953 - The New Elizabeth Age">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b00mjpv3_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mjpv3" type="application/atom+xml" title="46. 1953 - The New Elizabeth Age" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00lkmyl/microsite" type="text/html" title="This Sceptred Isle: The 20th Century" />
+  </entry>
+  <entry>
+    <title type="text">Fatherland: Episode 2</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jms0</id>
+    <updated>2009-09-09T11:27:31Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jms0/Fatherland_Episode_2/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b007jms0_150_84.jpg&quot; alt=&quot;Fatherland: Episode 2&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Detective Xavier March probes the death of a retired one-legged civil servant.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="SciFi &amp; Fantasy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jms0/Fatherland_Episode_2/" type="text/html" title="Fatherland: Episode 2">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b007jms0_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jms0" type="application/atom+xml" title="Episode 2" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00fsbnf/microsite" type="text/html" title="Fatherland" />
+  </entry>
+  <entry>
+    <title type="text">Lord Peter Wimsey: Lord Peter Wimsey: The Unpleasantness at the Bellona Club: Mr Oliver</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jvmr</id>
+    <updated>2009-09-09T11:05:07Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jvmr/Lord_Peter_Wimsey_Lord_Peter_Wimsey_The_Unpleasantness_at_the_Bellona_Club_Mr_Oliver/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b007jvmr_150_84.jpg&quot; alt=&quot;Lord Peter Wimsey: Lord Peter Wimsey: The Unpleasantness at the Bellona Club: Mr Oliver&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Probing the general's last movements, the posh sleuth seeks out his grandson.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Crime" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jvmr/Lord_Peter_Wimsey_Lord_Peter_Wimsey_The_Unpleasantness_at_the_Bellona_Club_Mr_Oliver/" type="text/html" title="Lord Peter Wimsey: Lord Peter Wimsey: The Unpleasantness at the Bellona Club: Mr Oliver">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b007jvmr_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jvmr" type="application/atom+xml" title="3. Mr Oliver" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00d515g/microsite" type="text/html" title="Lord Peter Wimsey" />
+  </entry>
+  <entry>
+    <title type="text">Counterpoint: 2005: Episode 2</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00dbdnr</id>
+    <updated>2009-09-09T05:38:28Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00dbdnr/Counterpoint_2005_Episode_2/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b00dbdnr_150_84.jpg&quot; alt=&quot;Counterpoint: 2005: Episode 2&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Amateur musical enthusiasts battle it out in the general knowledge music quiz.
+      &lt;/p&gt;
+    </content>
+    <category term="Music" />
+    <category term="Entertainment" />
+    <category term="Games &amp; Quizzes" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00dbdnr/Counterpoint_2005_Episode_2/" type="text/html" title="Counterpoint: 2005: Episode 2">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b00dbdnr_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00dbdnr" type="application/atom+xml" title="Episode 2" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00704s1/microsite" type="text/html" title="Counterpoint" />
+  </entry>
+  <entry>
+    <title type="text">The Devil's Music: The Great Pork Pie Mystery</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007qvgd</id>
+    <updated>2009-09-09T12:25:05Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007qvgd/The_Devils_Music_The_Great_Pork_Pie_Mystery/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007qvgd_150_84.jpg&quot; alt=&quot;The Devil's Music: The Great Pork Pie Mystery&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Musical detective Megan's mystery tune quest leads her to a 1920s Swansea Tearoom.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007qvgd/The_Devils_Music_The_Great_Pork_Pie_Mystery/" type="text/html" title="The Devil's Music: The Great Pork Pie Mystery">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007qvgd_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007qvgd" type="application/atom+xml" title="2. The Great Pork Pie Mystery" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00fl777/microsite" type="text/html" title="The Devil's Music" />
+  </entry>
+  <entry>
+    <title type="text">Valley of the Dolls: Episode 12</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mjnwj</id>
+    <updated>2009-09-09T11:38:48Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mjnwj/Valley_of_the_Dolls_Episode_12/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mjnwj_150_84.jpg&quot; alt=&quot;Valley of the Dolls: Episode 12&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Just as Jennifer finds love and happiness, tragedy strikes. Jacqueline Susann's drama.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mjnwj/Valley_of_the_Dolls_Episode_12/" type="text/html" title="Valley of the Dolls: Episode 12">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mjnwj_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mjnwj" type="application/atom+xml" title="Episode 12" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00mbwgb/microsite" type="text/html" title="Valley of the Dolls" />
+  </entry>
+  <entry>
+    <title type="text">Far from the Madding Crowd: Gathering In</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jlfl</id>
+    <updated>2009-09-09T13:32:47Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jlfl/Far_from_the_Madding_Crowd_Gathering_In/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b007jlfl_150_84.jpg&quot; alt=&quot;Far from the Madding Crowd: Gathering In&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Still courted by her would-be suitors, will Bathsheba ever find love?
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Classic &amp; Period" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jlfl/Far_from_the_Madding_Crowd_Gathering_In/" type="text/html" title="Far from the Madding Crowd: Gathering In">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b007jlfl_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jlfl" type="application/atom+xml" title="6. Gathering In" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00b98vn/microsite" type="text/html" title="Far from the Madding Crowd" />
+  </entry>
+  <entry>
+    <title type="text">The Small, Intricate Life of Gerald C Potter: Series 2: The Banquet</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jthd</id>
+    <updated>2009-09-09T04:54:37Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jthd/The_Small_Intricate_Life_of_Gerald_C_Potter_Series_2_The_Banquet/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jthd_150_84.jpg&quot; alt=&quot;The Small, Intricate Life of Gerald C Potter: Series 2: The Banquet&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The author writes off his car as a result of trying to help wife Diana find inspiration.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sitcoms" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jthd/The_Small_Intricate_Life_of_Gerald_C_Potter_Series_2_The_Banquet/" type="text/html" title="The Small, Intricate Life of Gerald C Potter: Series 2: The Banquet">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jthd_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jthd" type="application/atom+xml" title="1. The Banquet" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00cjvzl/microsite" type="text/html" title="The Small, Intricate Life of Gerald C Potter" />
+  </entry>
+  <entry>
+    <title type="text">To the Manor Born: The Spare Room</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007m9wg</id>
+    <updated>2009-09-09T04:01:48Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007m9wg/To_the_Manor_Born_The_Spare_Room/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007m9wg_150_84.jpg&quot; alt=&quot;To the Manor Born: The Spare Room&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Devere takes a shine to Mrs Forbes-Hamilton's guest. Is Audrey jealous? From March 1997.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sitcoms" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007m9wg/To_the_Manor_Born_The_Spare_Room/" type="text/html" title="To the Manor Born: The Spare Room">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007m9wg_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007m9wg" type="application/atom+xml" title="7. The Spare Room" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b007d9xl/microsite" type="text/html" title="To the Manor Born" />
+  </entry>
+  <entry>
+    <title type="text">The Long Hot Satsuma: Episode 3</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mjnwg</id>
+    <updated>2009-09-09T09:17:05Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mjnwg/The_Long_Hot_Satsuma_Episode_3/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mjnwg_150_84.jpg&quot; alt=&quot;The Long Hot Satsuma: Episode 3&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Comedy with Alison Steadman, Paul B Davies, Julia Hills, Graeme Garden and Barry Cryer.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sketch" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mjnwg/The_Long_Hot_Satsuma_Episode_3/" type="text/html" title="The Long Hot Satsuma: Episode 3">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mjnwg_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mjnwg" type="application/atom+xml" title="Episode 3" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b0079n9r/microsite" type="text/html" title="The Long Hot Satsuma" />
+  </entry>
+  <entry>
+    <title type="text">The Navy Lark: The Redundancy Drive</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jlts</id>
+    <updated>2009-09-09T05:27:21Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jlts/The_Navy_Lark_The_Redundancy_Drive/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jlts_150_84.jpg&quot; alt=&quot;The Navy Lark: The Redundancy Drive&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Captain Povey is keen to clear the decks of Troutbridge, but Number One fights back.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sitcoms" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jlts/The_Navy_Lark_The_Redundancy_Drive/" type="text/html" title="The Navy Lark: The Redundancy Drive">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jlts_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jlts" type="application/atom+xml" title="The Redundancy Drive" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00bfvkd/microsite" type="text/html" title="The Navy Lark" />
+  </entry>
+  <entry>
+    <title type="text">The Shuttleworths: Series 1: One Foot in the Gravy</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jmn5</id>
+    <updated>2009-09-08T09:22:44Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jmn5/The_Shuttleworths_Series_1_One_Foot_in_the_Gravy/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jmn5_150_84.jpg&quot; alt=&quot;The Shuttleworths: Series 1: One Foot in the Gravy&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Sheffield singer John Shuttleworth must cope while wife Mary is visiting Auntie Janet.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sitcoms" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jmn5/The_Shuttleworths_Series_1_One_Foot_in_the_Gravy/" type="text/html" title="The Shuttleworths: Series 1: One Foot in the Gravy">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jmn5_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jmn5" type="application/atom+xml" title="5. One Foot in the Gravy" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b007d51l/microsite" type="text/html" title="The Shuttleworths" />
+  </entry>
+  <entry>
+    <title type="text">The In Crowd: Series 1: Episode 4</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b0089jj8</id>
+    <updated>2009-09-08T08:56:04Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b0089jj8/The_In_Crowd_Series_1_Episode_4/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b0089jj8_150_84.jpg&quot; alt=&quot;The In Crowd: Series 1: Episode 4&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Sketch show with Robin Ince, Helen Moon, Smug Roberts and Kate Ward. From August 2001.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sketch" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b0089jj8/The_In_Crowd_Series_1_Episode_4/" type="text/html" title="The In Crowd: Series 1: Episode 4">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b0089jj8_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b0089jj8" type="application/atom+xml" title="Episode 4" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00fc2mq/microsite" type="text/html" title="The In Crowd" />
+  </entry>
+  <entry>
+    <title type="text">The Hudson and Pepperdine Show: Episode 3</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b0075t8y</id>
+    <updated>2009-09-08T08:56:09Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b0075t8y/The_Hudson_and_Pepperdine_Show_Episode_3/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b0075t8y_150_84.jpg&quot; alt=&quot;The Hudson and Pepperdine Show: Episode 3&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Becoming a 'breatharian' has disastrous consequences. From April 2000.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sketch" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b0075t8y/The_Hudson_and_Pepperdine_Show_Episode_3/" type="text/html" title="The Hudson and Pepperdine Show: Episode 3">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b0075t8y_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b0075t8y" type="application/atom+xml" title="Episode 3" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00ffyp0/microsite" type="text/html" title="The Hudson and Pepperdine Show" />
+  </entry>
+  <entry>
+    <title type="text">Revolting People: Series 1: A Helluva Lot of Storm Clouds</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jzgq</id>
+    <updated>2009-09-08T08:12:10Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jzgq/Revolting_People_Series_1_A_Helluva_Lot_of_Storm_Clouds/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jzgq_150_84.jpg&quot; alt=&quot;Revolting People: Series 1: A Helluva Lot of Storm Clouds&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Even though her marriage isn't yet consummated, Cora discovers she's pregnant.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sitcoms" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jzgq/Revolting_People_Series_1_A_Helluva_Lot_of_Storm_Clouds/" type="text/html" title="Revolting People: Series 1: A Helluva Lot of Storm Clouds">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jzgq_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jzgq" type="application/atom+xml" title="5. A Helluva Lot of Storm Clouds" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b007v7v0/microsite" type="text/html" title="Revolting People" />
+  </entry>
+  <entry>
+    <title type="text">Ancient Sorceries: Episode 1</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jvxh</id>
+    <updated>2009-09-08T10:14:56Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jvxh/Ancient_Sorceries_Episode_1/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jvxh_150_84.jpg&quot; alt=&quot;Ancient Sorceries: Episode 1&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        A timid commuter meets the cat-like residents of a French village. Read by Philip Madoc.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="SciFi &amp; Fantasy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jvxh/Ancient_Sorceries_Episode_1/" type="text/html" title="Ancient Sorceries: Episode 1">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jvxh_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jvxh" type="application/atom+xml" title="Episode 1" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00crdd3/microsite" type="text/html" title="Ancient Sorceries" />
+  </entry>
+  <entry>
+    <title type="text">Heart of Hark'un: Episode 6</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jqbs</id>
+    <updated>2009-09-10T11:50:21Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jqbs/Heart_of_Harkun_Episode_6/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jqbs_150_84.jpg&quot; alt=&quot;Heart of Hark'un: Episode 6&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Is Shazir the real enemy? Can Arcos and his hero friends escape the Palace of Memory?
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="SciFi &amp; Fantasy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jqbs/Heart_of_Harkun_Episode_6/" type="text/html" title="Heart of Hark'un: Episode 6">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jqbs_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jqbs" type="application/atom+xml" title="Episode 6" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00bfl0j/microsite" type="text/html" title="Heart of Hark'un" />
+  </entry>
+  <entry>
+    <title type="text">Big Toe Books: 07/09/2009</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mjm2c</id>
+    <updated>2009-09-08T02:07:49Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mjm2c/Big_Toe_Books_07_09_2009/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b00mjm2c_150_84.jpg&quot; alt=&quot;Big Toe Books: 07/09/2009&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Featuring The Five Lost Aunts of Harriet Bean, and Jerry and the Inventions.
+      &lt;/p&gt;
+    </content>
+    <category term="Children's" />
+    <category term="Entertainment &amp; Comedy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mjm2c/Big_Toe_Books_07_09_2009/" type="text/html" title="Big Toe Books: 07/09/2009">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b00mjm2c_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mjm2c" type="application/atom+xml" title="07/09/2009" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b0072tp2/microsite" type="text/html" title="Big Toe Books" />
+  </entry>
+  <entry>
+    <title type="text">Born Free: Episode 6</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007k3lf</id>
+    <updated>2009-09-08T14:26:19Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007k3lf/Born_Free_Episode_6/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b007k3lf_150_84.jpg&quot; alt=&quot;Born Free: Episode 6&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The call of the wild starts to lure Elsa the Lion towards her own kind.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007k3lf/Born_Free_Episode_6/" type="text/html" title="Born Free: Episode 6">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b007k3lf_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007k3lf" type="application/atom+xml" title="Episode 6" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b0072vmb/microsite" type="text/html" title="Born Free" />
+  </entry>
+  <entry>
+    <title type="text">The Woodlanders: Episode 1</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jx6r</id>
+    <updated>2009-09-08T13:41:53Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jx6r/The_Woodlanders_Episode_1/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b007jx6r_150_84.jpg&quot; alt=&quot;The Woodlanders: Episode 1&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        A tale of thwarted love and ambition, set amongst the woodsmen and women of Little Hintock
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Classic &amp; Period" />
+    <category term="Relationships &amp; Romance" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jx6r/The_Woodlanders_Episode_1/" type="text/html" title="The Woodlanders: Episode 1">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b007jx6r_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jx6r" type="application/atom+xml" title="Episode 1" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00cft0s/microsite" type="text/html" title="The Woodlanders" />
+  </entry>
+  <entry>
+    <title type="text">Even As We Speak: George Russell</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b009x1jx</id>
+    <updated>2009-09-08T13:48:13Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b009x1jx/Even_As_We_Speak_George_Russell/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b009x1jx_150_84.jpg&quot; alt=&quot;Even As We Speak: George Russell&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Clive James muses on the influence of one of his lecturers, and the contents of his cellar
+      &lt;/p&gt;
+    </content>
+    <category term="Factual" />
+    <category term="Life Stories" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b009x1jx/Even_As_We_Speak_George_Russell/" type="text/html" title="Even As We Speak: George Russell">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b009x1jx_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b009x1jx" type="application/atom+xml" title="1. George Russell" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b009zbvk/microsite" type="text/html" title="Even As We Speak" />
+  </entry>
+  <entry>
+    <title type="text">This Sceptred Isle: The 20th Century: 1952 - The Death of George VI</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mjm29</id>
+    <updated>2009-09-08T13:31:11Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mjm29/This_Sceptred_Isle_The_20th_Century_1952_The_Death_of_George_VI/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b00mjm29_150_84.jpg&quot; alt=&quot;This Sceptred Isle: The 20th Century: 1952 - The Death of George VI&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Across the decades, Christopher Lee's vivid account of Britain's fast-paced history.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Factual" />
+    <category term="Historical" />
+    <category term="History" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mjm29/This_Sceptred_Isle_The_20th_Century_1952_The_Death_of_George_VI/" type="text/html" title="This Sceptred Isle: The 20th Century: 1952 - The Death of George VI">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b00mjm29_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mjm29" type="application/atom+xml" title="45. 1952 - The Death of George VI" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00lkmyl/microsite" type="text/html" title="This Sceptred Isle: The 20th Century" />
+  </entry>
+  <entry>
+    <title type="text">Fatherland: Episode 1</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jmrk</id>
+    <updated>2009-09-08T11:21:24Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jmrk/Fatherland_Episode_1/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jmrk_150_84.jpg&quot; alt=&quot;Fatherland: Episode 1&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        A chilling drama set in an imaginary Hitler-led post-war Germany.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="SciFi &amp; Fantasy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jmrk/Fatherland_Episode_1/" type="text/html" title="Fatherland: Episode 1">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jmrk_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jmrk" type="application/atom+xml" title="Episode 1" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00fsbnf/microsite" type="text/html" title="Fatherland" />
+  </entry>
+  <entry>
+    <title type="text">Lord Peter Wimsey: Lord Peter Wimsey: The Unpleasantness at the Bellona Club: The General's Last Evening</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jvmm</id>
+    <updated>2009-09-08T11:15:26Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jvmm/Lord_Peter_Wimsey_Lord_Peter_Wimsey_The_Unpleasantness_at_the_Bellona_Club_The_Generals_Last_Evening/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jvmm_150_84.jpg&quot; alt=&quot;Lord Peter Wimsey: Lord Peter Wimsey: The Unpleasantness at the Bellona Club: The General's Last Evening&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The posh sleuth probes the mysterious Mr Oliver - and a pair of tricky wills.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Crime" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jvmm/Lord_Peter_Wimsey_Lord_Peter_Wimsey_The_Unpleasantness_at_the_Bellona_Club_The_Generals_Last_Evening/" type="text/html" title="Lord Peter Wimsey: Lord Peter Wimsey: The Unpleasantness at the Bellona Club: The General's Last Evening">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jvmm_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jvmm" type="application/atom+xml" title="2. The General's Last Evening" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00d515g/microsite" type="text/html" title="Lord Peter Wimsey" />
+  </entry>
+  <entry>
+    <title type="text">All the Way from Memphis: Series 2: Episode 5</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mjktm</id>
+    <updated>2009-09-08T05:25:54Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mjktm/All_the_Way_from_Memphis_Series_2_Episode_5/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mjktm_150_84.jpg&quot; alt=&quot;All the Way from Memphis: Series 2: Episode 5&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        James Walton is joined by Andrew Collins, Tracey MacLeod, Stewart Lee and David Quantick.
+      &lt;/p&gt;
+    </content>
+    <category term="Music" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mjktm/All_the_Way_from_Memphis_Series_2_Episode_5/" type="text/html" title="All the Way from Memphis: Series 2: Episode 5">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mjktm_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mjktm" type="application/atom+xml" title="Episode 5" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00m38jp/microsite" type="text/html" title="All the Way from Memphis" />
+  </entry>
+  <entry>
+    <title type="text">The Devil's Music: Roll Jordan Roll</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007qx2y</id>
+    <updated>2009-09-08T12:25:34Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007qx2y/The_Devils_Music_Roll_Jordan_Roll/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007qx2y_150_84.jpg&quot; alt=&quot;The Devil's Music: Roll Jordan Roll&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        When Megan keeps playing a mystery melody, she plays musical detective.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007qx2y/The_Devils_Music_Roll_Jordan_Roll/" type="text/html" title="The Devil's Music: Roll Jordan Roll">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007qx2y_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007qx2y" type="application/atom+xml" title="1. Roll Jordan Roll" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00fl777/microsite" type="text/html" title="The Devil's Music" />
+  </entry>
+  <entry>
+    <title type="text">Valley of the Dolls: Episode 11</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mjktk</id>
+    <updated>2009-09-08T11:50:30Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mjktk/Valley_of_the_Dolls_Episode_11/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mjktk_150_84.jpg&quot; alt=&quot;Valley of the Dolls: Episode 11&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        With Anne's help, Neely agrees to perform on TV - but this creates big problems.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mjktk/Valley_of_the_Dolls_Episode_11/" type="text/html" title="Valley of the Dolls: Episode 11">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mjktk_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mjktk" type="application/atom+xml" title="Episode 11" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00mbwgb/microsite" type="text/html" title="Valley of the Dolls" />
+  </entry>
+  <entry>
+    <title type="text">Far from the Madding Crowd: Autumn</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jldx</id>
+    <updated>2009-09-08T13:24:58Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jldx/Far_from_the_Madding_Crowd_Autumn/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b007jldx_150_84.jpg&quot; alt=&quot;Far from the Madding Crowd: Autumn&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Sergeant Troy's cruel treatment of Fanny comes back to haunt him. With Janet Maw.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Classic &amp; Period" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jldx/Far_from_the_Madding_Crowd_Autumn/" type="text/html" title="Far from the Madding Crowd: Autumn">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b007jldx_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jldx" type="application/atom+xml" title="5. Autumn" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00b98vn/microsite" type="text/html" title="Far from the Madding Crowd" />
+  </entry>
+  <entry>
+    <title type="text">Legal, Decent, Honest and Truthful: Series 2: Episode 1</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jvtb</id>
+    <updated>2009-09-08T03:28:41Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jvtb/Legal_Decent_Honest_and_Truthful_Series_2_Episode_1/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jvtb_150_84.jpg&quot; alt=&quot;Legal, Decent, Honest and Truthful: Series 2: Episode 1&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        All set for divorce and a new home, ad man Ken Handley gets a surprise at the agency.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Satire" />
+    <category term="Sitcoms" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jvtb/Legal_Decent_Honest_and_Truthful_Series_2_Episode_1/" type="text/html" title="Legal, Decent, Honest and Truthful: Series 2: Episode 1">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jvtb_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jvtb" type="application/atom+xml" title="Episode 1" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00ckryr/microsite" type="text/html" title="Legal, Decent, Honest and Truthful" />
+  </entry>
+  <entry>
+    <title type="text">What ho! Jeeves: Joy in the Morning: Tribulations of an Uncle by Marriage</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00bbmfj</id>
+    <updated>2009-09-08T03:22:03Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00bbmfj/What_ho!_Jeeves_Joy_in_the_Morning_Tribulations_of_an_Uncle_by_Marriage/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00bbmfj_150_84.jpg&quot; alt=&quot;What ho! Jeeves: Joy in the Morning: Tribulations of an Uncle by Marriage&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        After the cottage inferno, Bertie Wooster plots a fake burglary. PG Wodehouse's romp.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00bbmfj/What_ho!_Jeeves_Joy_in_the_Morning_Tribulations_of_an_Uncle_by_Marriage/" type="text/html" title="What ho! Jeeves: Joy in the Morning: Tribulations of an Uncle by Marriage">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00bbmfj_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00bbmfj" type="application/atom+xml" title="3. Tribulations of an Uncle by Marriage" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00b5t3v/microsite" type="text/html" title="What ho! Jeeves: Joy in the Morning" />
+  </entry>
+  <entry>
+    <title type="text">Dead Ringers: Series 6: Episode 4</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007k1xv</id>
+    <updated>2009-09-08T08:12:37Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007k1xv/Dead_Ringers_Series_6_Episode_4/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007k1xv_150_84.jpg&quot; alt=&quot;Dead Ringers: Series 6: Episode 4&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        More celeb sound-alikes with Del Boy's 'Changing Rooms' makeover and Alan Bennett's party.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Impressionists" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007k1xv/Dead_Ringers_Series_6_Episode_4/" type="text/html" title="Dead Ringers: Series 6: Episode 4">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007k1xv_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007k1xv" type="application/atom+xml" title="Episode 4" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b007gd85/microsite" type="text/html" title="Dead Ringers" />
+  </entry>
+  <entry>
+    <title type="text">Dad's Army: Series 1: A Stripe for Frazer</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007js9w</id>
+    <updated>2009-09-08T04:53:16Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007js9w/Dads_Army_Series_1_A_Stripe_for_Frazer/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007js9w_150_84.jpg&quot; alt=&quot;Dad's Army: Series 1: A Stripe for Frazer&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The promoted Scottish private ends up power-crazed. From March 1974.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sitcoms" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007js9w/Dads_Army_Series_1_A_Stripe_for_Frazer/" type="text/html" title="Dad's Army: Series 1: A Stripe for Frazer">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007js9w_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007js9w" type="application/atom+xml" title="8. A Stripe for Frazer" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b009v6h3/microsite" type="text/html" title="Dad's Army" />
+  </entry>
+  <entry>
+    <title type="text">Play and Record: Series 1: Episode 4</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b0089b0r</id>
+    <updated>2009-09-07T09:18:31Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b0089b0r/Play_and_Record_Series_1_Episode_4/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b0089b0r_150_84.jpg&quot; alt=&quot;Play and Record: Series 1: Episode 4&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        BBC Radio 7's showcase for upcoming comedy writer/performers. From November 2007.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sketch" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b0089b0r/Play_and_Record_Series_1_Episode_4/" type="text/html" title="Play and Record: Series 1: Episode 4">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b0089b0r_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b0089b0r" type="application/atom+xml" title="Episode 4" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00g48qc/microsite" type="text/html" title="Play and Record" />
+  </entry>
+  <entry>
+    <title type="text">The Penny Dreadfuls Present: The Brothers Faversham: Theseus Faversham</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00gpbcl</id>
+    <updated>2009-09-07T09:05:47Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00gpbcl/The_Penny_Dreadfuls_Present_The_Brothers_Faversham_Theseus_Faversham/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b00gpbcl_150_84.jpg&quot; alt=&quot;The Penny Dreadfuls Present: The Brothers Faversham: Theseus Faversham&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The story of Victorian Britain's most respected detective. With guest Miles Jupp.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00gpbcl/The_Penny_Dreadfuls_Present_The_Brothers_Faversham_Theseus_Faversham/" type="text/html" title="The Penny Dreadfuls Present: The Brothers Faversham: Theseus Faversham">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b00gpbcl_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00gpbcl" type="application/atom+xml" title="2. Theseus Faversham" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00dc9xb/microsite" type="text/html" title="The Penny Dreadfuls Present" />
+  </entry>
+  <entry>
+    <title type="text">Chain Reaction: Series 3: Phill Jupitus Interviews John Hegley</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mj5rt</id>
+    <updated>2009-09-07T08:14:18Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mj5rt/Chain_Reaction_Series_3_Phill_Jupitus_Interviews_John_Hegley/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mj5rt_150_84.jpg&quot; alt=&quot;Chain Reaction: Series 3: Phill Jupitus Interviews John Hegley&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The comedian and comic poet get chatting in the tag talk show.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mj5rt/Chain_Reaction_Series_3_Phill_Jupitus_Interviews_John_Hegley/" type="text/html" title="Chain Reaction: Series 3: Phill Jupitus Interviews John Hegley">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mj5rt_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mj5rt" type="application/atom+xml" title="4. Phill Jupitus Interviews John Hegley" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b006sf81/microsite" type="text/html" title="Chain Reaction" />
+  </entry>
+  <entry>
+    <title type="text">I Guess That's Why They Call It The News: Episode 2</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mj5rr</id>
+    <updated>2009-09-07T07:58:47Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mj5rr/I_Guess_Thats_Why_They_Call_It_The_News_Episode_2/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b00mj5rr_150_84.jpg&quot; alt=&quot;I Guess That's Why They Call It The News: Episode 2&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Fresh from 4, Fred MacAulay's new topical panel show inspired by the latest headlines.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mj5rr/I_Guess_Thats_Why_They_Call_It_The_News_Episode_2/" type="text/html" title="I Guess That's Why They Call It The News: Episode 2">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b00mj5rr_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mj5rr" type="application/atom+xml" title="Episode 2" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00m44w4/microsite" type="text/html" title="I Guess That's Why They Call It The News" />
+  </entry>
+  <entry>
+    <title type="text">Hothouse: Episode 3</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mj3gd</id>
+    <updated>2009-09-12T23:32:49Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mj3gd/Hothouse_Episode_3/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mj3gd_150_84.jpg&quot; alt=&quot;Hothouse: Episode 3&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The Morel fungus is helping Gren and Poyly survive without their tribe.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="SciFi &amp; Fantasy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mj3gd/Hothouse_Episode_3/" type="text/html" title="Hothouse: Episode 3">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mj3gd_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mj3gd" type="application/atom+xml" title="Episode 3" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00mbvzc/microsite" type="text/html" title="Hothouse" />
+  </entry>
+  <entry>
+    <title type="text">Fear on Four: Mind Well the Tree</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jmgn</id>
+    <updated>2009-09-07T10:08:12Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jmgn/Fear_on_Four_Mind_Well_the_Tree/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jmgn_150_84.jpg&quot; alt=&quot;Fear on Four: Mind Well the Tree&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        When a couple inherit a mansion, the wife is strangely captivated. Stars Nicola Pagett.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Horror &amp; Supernatural" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jmgn/Fear_on_Four_Mind_Well_the_Tree/" type="text/html" title="Fear on Four: Mind Well the Tree">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jmgn_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jmgn" type="application/atom+xml" title="Mind Well the Tree" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b009smwk/microsite" type="text/html" title="Fear on Four" />
+  </entry>
+  <entry>
+    <title type="text">Comedy Catch Up: Dad's Army: Sergeant Wilson's Little Secret</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mj3gb</id>
+    <updated>2009-09-07T14:13:22Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mj3gb/Comedy_Catch_Up_Dads_Army_Sergeant_Wilsons_Little_Secret/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mj3gb_150_84.jpg&quot; alt=&quot;Comedy Catch Up: Dad's Army: Sergeant Wilson's Little Secret&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Confusion reigns when Mrs Pike reveals her news of a 'new arrival'. From March 1974.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mj3gb/Comedy_Catch_Up_Dads_Army_Sergeant_Wilsons_Little_Secret/" type="text/html" title="Comedy Catch Up: Dad's Army: Sergeant Wilson's Little Secret">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mj3gb_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mj3gb" type="application/atom+xml" title="Dad's Army: Sergeant Wilson's Little Secret" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00jqjly/microsite" type="text/html" title="Comedy Catch Up" />
+  </entry>
+  <entry>
+    <title type="text">Comedy Catch Up: Miranda Hart's Joke Shop: What a Flirt</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mj3g8</id>
+    <updated>2009-09-07T13:51:41Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mj3g8/Comedy_Catch_Up_Miranda_Harts_Joke_Shop_What_a_Flirt/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mj3g8_150_84.jpg&quot; alt=&quot;Comedy Catch Up: Miranda Hart's Joke Shop: What a Flirt&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Joke-shop owner Miranda has much to learn about retail and men. From August 2008.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mj3g8/Comedy_Catch_Up_Miranda_Harts_Joke_Shop_What_a_Flirt/" type="text/html" title="Comedy Catch Up: Miranda Hart's Joke Shop: What a Flirt">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mj3g8_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mj3g8" type="application/atom+xml" title="Miranda Hart's Joke Shop: What a Flirt" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00jqjly/microsite" type="text/html" title="Comedy Catch Up" />
+  </entry>
+  <entry>
+    <title type="text">Comedy Catch Up: The Penny Dreadfuls Present - The Brothers Faversham: Horatius Faversham</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mj3g6</id>
+    <updated>2009-09-07T13:18:59Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mj3g6/Comedy_Catch_Up_The_Penny_Dreadfuls_Present_The_Brothers_Faversham_Horatius_Faversham/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b00mj3g6_150_84.jpg&quot; alt=&quot;Comedy Catch Up: The Penny Dreadfuls Present - The Brothers Faversham: Horatius Faversham&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The story of Victorian Britain's most decorated soldier. With guest Miles Jupp.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mj3g6/Comedy_Catch_Up_The_Penny_Dreadfuls_Present_The_Brothers_Faversham_Horatius_Faversham/" type="text/html" title="Comedy Catch Up: The Penny Dreadfuls Present - The Brothers Faversham: Horatius Faversham">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b00mj3g6_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mj3g6" type="application/atom+xml" title="The Penny Dreadfuls Present - The Brothers Faversham: Horatius Faversham" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00jqjly/microsite" type="text/html" title="Comedy Catch Up" />
+  </entry>
+  <entry>
+    <title type="text">Comedy Catch Up: Dead Ringers: Golden Jubilee Special</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mj3g4</id>
+    <updated>2009-09-07T13:12:52Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mj3g4/Comedy_Catch_Up_Dead_Ringers_Golden_Jubilee_Special/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mj3g4_150_84.jpg&quot; alt=&quot;Comedy Catch Up: Dead Ringers: Golden Jubilee Special&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The impressionists take a right royal look back over 50 years of British cultural life.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mj3g4/Comedy_Catch_Up_Dead_Ringers_Golden_Jubilee_Special/" type="text/html" title="Comedy Catch Up: Dead Ringers: Golden Jubilee Special">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mj3g4_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mj3g4" type="application/atom+xml" title="Dead Ringers: Golden Jubilee Special" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00jqjly/microsite" type="text/html" title="Comedy Catch Up" />
+  </entry>
+  <entry>
+    <title type="text">Comedy Catch Up: The Long Hot Satsuma</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mq4xz</id>
+    <updated>2009-09-07T12:32:44Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mq4xz/Comedy_Catch_Up_The_Long_Hot_Satsuma/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mq4xz_150_84.jpg&quot; alt=&quot;Comedy Catch Up: The Long Hot Satsuma&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Comedy with Alison Steadman, Paul B Davies, Julia Hills, Graeme Garden and Barry Cryer.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mq4xz/Comedy_Catch_Up_The_Long_Hot_Satsuma/" type="text/html" title="Comedy Catch Up: The Long Hot Satsuma">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mq4xz_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mq4xz" type="application/atom+xml" title="The Long Hot Satsuma" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00jqjly/microsite" type="text/html" title="Comedy Catch Up" />
+  </entry>
+  <entry>
+    <title type="text">The Turn of the Screw</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jvdv</id>
+    <updated>2009-09-07T11:42:09Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jvdv/The_Turn_of_the_Screw/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jvdv_150_84.jpg&quot; alt=&quot;The Turn of the Screw&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Are two children under an evil influence or is it their governess' imagination?
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Classic &amp; Period" />
+    <category term="Horror &amp; Supernatural" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jvdv/The_Turn_of_the_Screw/" type="text/html" title="The Turn of the Screw">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jvdv_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jvdv" type="application/atom+xml" title="The Turn of the Screw" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b007jvdv" type="text/html" title="The Turn of the Screw" />
+  </entry>
+  <entry>
+    <title type="text">Albert and Me: Mind That Baby</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jsgr</id>
+    <updated>2009-09-07T05:10:35Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jsgr/Albert_and_Me_Mind_That_Baby/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b007jsgr_150_84.jpg&quot; alt=&quot;Albert and Me: Mind That Baby&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Single dad Bryan is wrapped in red tape at the benefits office. From December 1977.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sitcoms" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jsgr/Albert_and_Me_Mind_That_Baby/" type="text/html" title="Albert and Me: Mind That Baby">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b007jsgr_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jsgr" type="application/atom+xml" title="6. Mind That Baby" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00b1qgm/microsite" type="text/html" title="Albert and Me" />
+  </entry>
+  <entry>
+    <title type="text">The Men from the Ministry: Bill Stickers is Innocent</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jnrc</id>
+    <updated>2009-09-07T05:05:13Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jnrc/The_Men_from_the_Ministry_Bill_Stickers_is_Innocent/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b007jnrc_150_84.jpg&quot; alt=&quot;The Men from the Ministry: Bill Stickers is Innocent&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The bumbling civil servants scale new heights for Sir Gregory's poster campaign. From 1970
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sitcoms" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jnrc/The_Men_from_the_Ministry_Bill_Stickers_is_Innocent/" type="text/html" title="The Men from the Ministry: Bill Stickers is Innocent">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b007jnrc_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jnrc" type="application/atom+xml" title="Bill Stickers is Innocent" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b009smq5/microsite" type="text/html" title="The Men from the Ministry" />
+  </entry>
+  <entry>
+    <title type="text">Palace of Laughter: Series 2: Swansea Grand Theatre</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b0082b02</id>
+    <updated>2009-09-07T03:11:43Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b0082b02/Palace_of_Laughter_Series_2_Swansea_Grand_Theatre/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b0082b02_150_84.jpg&quot; alt=&quot;Palace of Laughter: Series 2: Swansea Grand Theatre&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Associated with Catherine Zeta Jones - Geoffrey Wheeler reports on a Welsh success story.
+      &lt;/p&gt;
+    </content>
+    <category term="Entertainment" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b0082b02/Palace_of_Laughter_Series_2_Swansea_Grand_Theatre/" type="text/html" title="Palace of Laughter: Series 2: Swansea Grand Theatre">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b0082b02_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b0082b02" type="application/atom+xml" title="5. Swansea Grand Theatre" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00czm2s/microsite" type="text/html" title="Palace of Laughter" />
+  </entry>
+  <entry>
+    <title type="text">Radio Fun: The Story of Radio Comedy: Episode 9</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007jtkd</id>
+    <updated>2009-09-07T02:48:20Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007jtkd/Radio_Fun_The_Story_of_Radio_Comedy_Episode_9/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007jtkd_150_84.jpg&quot; alt=&quot;Radio Fun: The Story of Radio Comedy: Episode 9&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        The end of The Goon Show hailed a fresh decade of change.
+      &lt;/p&gt;
+    </content>
+    <category term="Entertainment" />
+    <category term="Discussion &amp; Talk Shows" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007jtkd/Radio_Fun_The_Story_of_Radio_Comedy_Episode_9/" type="text/html" title="Radio Fun: The Story of Radio Comedy: Episode 9">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007jtkd_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007jtkd" type="application/atom+xml" title="Episode 9" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b009sqbx/microsite" type="text/html" title="Radio Fun: The Story of Radio Comedy" />
+  </entry>
+  <entry>
+    <title type="text">Bristow: Series 3: Chapter and Verse</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b007vgv7</id>
+    <updated>2009-09-07T07:15:59Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b007vgv7/Bristow_Series_3_Chapter_and_Verse/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b007vgv7_150_84.jpg&quot; alt=&quot;Bristow: Series 3: Chapter and Verse&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        While writing for the house journal, the clerk learns the meaning of poetic justice.
+      &lt;/p&gt;
+    </content>
+    <category term="Comedy" />
+    <category term="Sitcoms" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b007vgv7/Bristow_Series_3_Chapter_and_Verse/" type="text/html" title="Bristow: Series 3: Chapter and Verse">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b007vgv7_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b007vgv7" type="application/atom+xml" title="3. Chapter and Verse" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00cft88/microsite" type="text/html" title="Bristow" />
+  </entry>
+  <entry>
+    <title type="text">Evelyn Waugh Short Stories: On Guard</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b008d1xh</id>
+    <updated>2009-09-07T06:58:12Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b008d1xh/Evelyn_Waugh_Short_Stories_On_Guard/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b008d1xh_150_84.jpg&quot; alt=&quot;Evelyn Waugh Short Stories: On Guard&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Before going abroad, a young man buys his fiancee a snappy puppy called Hector.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b008d1xh/Evelyn_Waugh_Short_Stories_On_Guard/" type="text/html" title="Evelyn Waugh Short Stories: On Guard">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b008d1xh_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b008d1xh" type="application/atom+xml" title="On Guard" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00cnk57/microsite" type="text/html" title="Evelyn Waugh Short Stories" />
+  </entry>
+  <entry>
+    <title type="text">Valley of the Dolls Omnibus: Episode 2</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mj3g2</id>
+    <updated>2009-09-07T06:25:36Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mj3g2/Valley_of_the_Dolls_Omnibus_Episode_2/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00mj3g2_150_84.jpg&quot; alt=&quot;Valley of the Dolls Omnibus: Episode 2&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Set on showbiz careers in New York, Anne, Jennifer and Neely move in together.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mj3g2/Valley_of_the_Dolls_Omnibus_Episode_2/" type="text/html" title="Valley of the Dolls Omnibus: Episode 2">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00mj3g2_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mj3g2" type="application/atom+xml" title="Episode 2" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00mgxzm/microsite" type="text/html" title="Valley of the Dolls Omnibus" />
+  </entry>
+  <entry>
+    <title type="text">Big Toe Books: 06/09/2009</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00mj3g0</id>
+    <updated>2009-09-06T18:06:56Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00mj3g0/Big_Toe_Books_06_09_2009/&quot;&gt;
+          &lt;img src=&quot;http://node1.bbcimg.co.uk/iplayer/images/episode/b00mj3g0_150_84.jpg&quot; alt=&quot;Big Toe Books: 06/09/2009&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Kirsten O'Brien presents an hour of children's stories, featuring The Same Stuff as Stars.
+      &lt;/p&gt;
+    </content>
+    <category term="Children's" />
+    <category term="Entertainment &amp; Comedy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00mj3g0/Big_Toe_Books_06_09_2009/" type="text/html" title="Big Toe Books: 06/09/2009">
+      <media:content>
+        <media:thumbnail url="http://node1.bbcimg.co.uk/iplayer/images/episode/b00mj3g0_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00mj3g0" type="application/atom+xml" title="06/09/2009" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b0072tp2/microsite" type="text/html" title="Big Toe Books" />
+  </entry>
+  <entry>
+    <title type="text">Hothouse: Episode 1</title>
+    <id>tag:feeds.bbc.co.uk,2008:PIPS:b00m9p2w</id>
+    <updated>2009-09-12T23:33:08Z</updated>
+    <content type="html">
+      &lt;p&gt;
+        &lt;a href=&quot;http://www.bbc.co.uk/iplayer/episode/b00m9p2w/Hothouse_Episode_1/&quot;&gt;
+          &lt;img src=&quot;http://node2.bbcimg.co.uk/iplayer/images/episode/b00m9p2w_150_84.jpg&quot; alt=&quot;Hothouse: Episode 1&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+        Millions of years from now, a small tribe battles to stay alive in the jungle.
+      &lt;/p&gt;
+    </content>
+    <category term="Drama" />
+    <category term="SciFi &amp; Fantasy" />
+    <category term="Radio" />
+    <link rel="alternate" href="http://www.bbc.co.uk/iplayer/episode/b00m9p2w/Hothouse_Episode_1/" type="text/html" title="Hothouse: Episode 1">
+      <media:content>
+        <media:thumbnail url="http://node2.bbcimg.co.uk/iplayer/images/episode/b00m9p2w_150_84.jpg" width="150" height="84" />
+      </media:content>
+    </link>
+    <link rel="self" href="http://feeds.bbc.co.uk/iplayer/episode/b00m9p2w" type="application/atom+xml" title="Episode 1" />
+    <link rel="related" href="http://www.bbc.co.uk/programmes/b00mbvzc/microsite" type="text/html" title="Hothouse" />
+  </entry>
+</feed>

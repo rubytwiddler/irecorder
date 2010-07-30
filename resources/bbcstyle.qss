@@ -1,0 +1,407 @@
+* {
+    color: white;
+    background: rgb(10,10,10);
+    alternate-background-color: rgb(80,80,80);
+    border-color: rgb(82,0,45);
+}
+*:selected {
+    color: white;
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0,
+        stop:0 rgb(148, 0, 84), stop:0.48 rgb(148, 0, 84),
+        stop:0.5 rgb(167, 46, 114), stop:1 rgb(195, 113, 155));
+}
+
+*:hover {
+    color: rgb(255, 84, 174);
+}
+
+*:selected {
+    border: 1px solid rgb(255,84,174);
+}
+
+
+/*
+    Popup & Menu
+*/
+
+QMenu {
+    border: 1px solid rgb(124,124,124);
+    background: rgb(60,60,60);
+}
+
+QMenu::item {
+/*     border: 1px solid red; */
+/*     background: rgb(60,60,60); */
+}
+
+QMenu::item:selected {
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0,
+        stop:0 rgb(148, 0, 84), stop:0.48 rgb(148, 0, 84),
+        stop:0.5 rgb(167, 46, 114), stop:1 rgb(195, 113, 155));
+}
+
+QMenu::separator {
+    height: 1px;
+    background: rgb(124,124,124);
+    margin: 1px 15px;
+}
+
+QMenu::icon {
+    border: 4px solid red;
+    selection-background-color: yellow;
+    selection-color: yellow;
+    background: green;
+}
+/*
+QMenu::icon:pressed
+QMenu::icon:selected
+QMenu::icon:focus
+*/
+QMenu::icon:checked {
+    border: 4px solid red;
+    selection-background-color: yellow;
+    selection-color: yellow;
+    background: green;
+}
+
+/*
+    TextEdit
+*/
+QTextEdit {
+    border: 1px solid rgb(124,124,124);
+    background: rgb(30,30,30);
+}
+
+/*
+    PushButton
+*/
+QPushButton {
+    color: white;
+    font: bold normal "Nimbus Sans L";
+    border: 2px solid rgb(0,0,0);
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin: 1px;
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0,
+        stop:0 rgb(0, 0, 0), stop:0.48 rgb(0, 0, 0),
+        stop:0.5 rgb(59, 59, 59), stop:1 rgb(125, 125, 125));
+    min-width: 3em;
+}
+
+QPushButton:checked {
+    color: white;
+    border-color: rgb(139,0,76);
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0,
+        stop:0 rgb(148, 0, 84), stop:0.48 rgb(148, 0, 84),
+        stop:0.5 rgb(167, 46, 114), stop:1 rgb(195, 113, 155));
+}
+
+QPushButton:hover {
+    color: rgb(255, 84, 174);
+}
+
+/*
+    table
+*/
+QTableView {
+    border: 1px solid rgb(124,124,124);
+    background: rgb(30,30,30);
+    margin: 0px;
+}
+
+QTableView QTableCornerButton::section {
+    border: 1px solid rgb(40,40,40);
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0,
+            stop:0 rgb(40, 40, 40), stop:0.68 rgb(40, 40, 40),
+            stop:0.7 rgb(59, 59, 59), stop:1 rgb(140, 140, 140));
+}
+
+QTableView QHeaderView {
+    border: 1px solid rgb(40,40,40);
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0,
+            stop:0 rgb(40, 40, 40), stop:0.68 rgb(40, 40, 40),
+            stop:0.7 rgb(59, 59, 59), stop:1 rgb(140, 140, 140));
+}
+
+QTableView QHeaderView::section {
+    border: 1px solid rgb(120,120,120);
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0,
+            stop:0 rgb(40, 40, 40), stop:0.68 rgb(40, 40, 40),
+            stop:0.7 rgb(59, 59, 59), stop:1 rgb(140, 140, 140));
+}
+
+QTableView QHeaderView::section:checked  {
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0,
+            stop:0 rgb(40, 40, 40), stop:0.68 rgb(40, 40, 40),
+            stop:0.7 rgb(59, 59, 59), stop:1 rgb(140, 140, 140));
+}
+
+
+QTableView {
+    selection-background-color: rgb(148,0,86);
+/*
+    selection-background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0,
+        stop:0 rgb(148, 0, 84), stop:0.48 rgb(148, 0, 84),
+        stop:0.5 rgb(167, 46, 114), stop:1 rgb(195, 113, 155));
+*/
+}
+
+
+/*
+    LineEdit
+*/
+QLineEdit, QLineEdit:hover {
+    color: white;
+    margin: 1px;
+    border: 1px solid rgb(180,180,180);
+    background: rgb(30,30,30);
+}
+QLineEdit:hover{
+    margin: 1px;
+    border: 1px solid rgb(220,220,220);
+}
+
+QLineEdit:focus {
+    margin: 0px;
+    border: 2px solid rgb(220,220,220);
+}
+
+
+/*
+    ScrollBar
+        vertical
+*/
+QScrollBar:vertical {
+    border: 1px solid rgb(60,60,60);
+    background: rgb(40,40,40);
+    width: 18px;
+    margin: 17px 0 17px 0;
+}
+QScrollBar::handle:vertical {
+/*    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0.00520833 rgba(14, 14, 14, 255), stop:0.25 rgba(47, 47, 47, 255), stop:0.75 rgba(64, 64, 64, 255), stop:1 rgba(156, 156, 156, 255));
+*/
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,
+        stop:0 rgba(71, 71, 71, 255), stop:0.25 rgba(84, 84, 84, 255),
+        stop:0.75 rgba(109, 109, 109, 255), stop:1 rgba(156, 156, 156, 255));
+    min-height: 16px;
+}
+
+QScrollBar::sub-line:vertical, QScrollBar::add-line:vertical {
+    border: 1px solid rgb(40,40,40);
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,
+        stop:0 rgba(71, 71, 71, 255), stop:0.25 rgba(84, 84, 84, 255),
+        stop:0.75 rgba(109, 109, 109, 255), stop:1 rgba(156, 156, 156, 255));
+    height: 16px;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:vertical {
+    subcontrol-position: top;
+}
+
+QScrollBar::add-line:vertical {
+    subcontrol-position: bottom;
+}
+
+QScrollBar::up-arrow:vertical {
+    image: url(resources/up-arrow.png);
+}
+QScrollBar::down-arrow:vertical {
+    image: url(resources/down-arrow.png);
+}
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+
+/*
+    ScrollBar
+        Horizontal
+*/
+QScrollBar:horizontal {
+    border: 1px solid rgb(60,60,60);
+    background: rgb(40,40,40);
+    height: 18px;
+    margin: 0 17px 0 17px;
+}
+QScrollBar::handle:horizontal {
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0,
+        stop:0 rgba(71, 71, 71, 255), stop:0.25 rgba(84, 84, 84, 255),
+        stop:0.75 rgba(109, 109, 109, 255), stop:1 rgba(156, 156, 156, 255));
+    min-width: 16px;
+}
+
+QScrollBar::sub-line:horizontal, QScrollBar::add-line:horizontal {
+    border: 1px solid rgb(40,40,40);
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0,
+        stop:0 rgba(71, 71, 71, 255), stop:0.25 rgba(84, 84, 84, 255),
+        stop:0.75 rgba(109, 109, 109, 255), stop:1 rgba(156, 156, 156, 255));
+    width: 16px;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:horizontal {
+    subcontrol-position: left;
+}
+
+QScrollBar::add-line:horizontal {
+    subcontrol-position: right;
+}
+
+QScrollBar::left-arrow:horizontal {
+    image: url(resources/left-arrow.png);
+}
+QScrollBar::right-arrow:horizontal {
+    image: url(resources/right-arrow.png);
+}
+
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    background: none;
+}
+
+
+
+
+
+/*
+   TabWidget.  borrowed from qt4 manual example.
+*/
+QTabWidget::pane { /* The tab widget frame */
+    border-top: 2px solid rgb(70,70,70);
+}
+
+QTabWidget::tab-bar {
+    left: 5px; /* move to the right by 5px */
+}
+
+/* Style the tab using the tab sub-control. Note that
+    it reads QTabBar _not_ QTabWidget */
+QTabBar::tab {
+    color: white;
+    font: bold normal "Nimbus Sans L";
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0,
+            stop:0 rgb(0, 0, 0), stop:0.48 rgb(0, 0, 0),
+            stop:0.5 rgb(59, 59, 59), stop:1 rgb(140, 140, 140));
+    border: 2px solid rgb(0,0,0);
+    border-bottom-color: rgb(50,50,50); /* same as the pane color */
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    min-width: 4.5em;
+    padding: 2px;
+}
+
+QTabBar::tab:selected {
+    color: rgb(255, 84, 174);
+    background: rgb(50,50,50); 
+    border-color: rgb(140,140,140) rgb(100,100,100) rgb(50,50,50);
+}
+
+QTabBar::tab:hover {
+    color: rgb(255, 84, 174);
+}
+
+QTabBar::tab:!selected {
+    margin-top: 2px; /* make non-selected tabs look smaller */
+}
+
+/* make use of negative margins for overlapping tabs */
+QTabBar::tab:selected {
+    /* expand/overlap to the left and right by 4px */
+    margin-left: -4px;
+    margin-right: -4px;
+}
+
+QTabBar::tab:first:selected {
+    margin-left: 0; /* the first selected tab has nothing to overlap with on the left */
+}
+
+QTabBar::tab:last:selected {
+    margin-right: 0; /* the last selected tab has nothing to overlap with on the right */
+}
+
+QTabBar::tab:only-one {
+    margin: 0; /* if there is only one tab, we don't want overlapping margins */
+}
+
+/*
+    Channel ToolBox
+*/
+QToolBox#channelToolBox {
+    border: 0px solid  rgb(42,40,41); /* rgb(171,164,169); */
+}
+
+/*
+    channel list
+*/
+QListWidget {
+    show-decoration-selected: 1;
+    border: 1px solid rgb(124,124,124);
+    background: rgb(30,30,30);
+}
+
+QListWidget::item:selected {
+    color: white;
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0,
+        stop:0 rgb(148, 0, 84), stop:0.48 rgb(148, 0, 84),
+        stop:0.5 rgb(167, 46, 114), stop:1 rgb(195, 113, 155));
+}
+
+QListWidget::item:hover {
+    color: rgb(255, 84, 174);
+}
+
+
+
+/*
+    [All/Hightlights/Most Popular] Switch Button
+*/
+QPushButton#switchButton,  QToolBox#channelToolBox::tab {
+    color: white;
+    font: bold normal "Nimbus Sans L";
+    border: 2px solid rgb(0,0,0);
+    border-radius: 4px;
+    padding: 4px 4px;
+    margin: 1px;
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0,
+        stop:0 rgb(0, 0, 0), stop:0.48 rgb(0, 0, 0),
+        stop:0.5 rgb(59, 59, 59), stop:1 rgb(125, 125, 125));
+    min-width: 2em;
+}
+
+QPushButton#switchButton:checked, QToolBox#channelToolBox::tab:selected {
+    color: white;
+    border-color: rgb(139,0,76);
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0,
+        stop:0 rgb(148, 0, 84), stop:0.48 rgb(148, 0, 84),
+        stop:0.5 rgb(167, 46, 114), stop:1 rgb(195, 113, 155));
+}
+
+QPushButton#switchButton:hover, QToolBox#channelToolBox::tab:hover {
+    color: rgb(255, 84, 174);
+}
+
+
+/*
+    download button
+*/
+QPushButton#downloadButton {
+    color: white;
+    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0,
+        stop:0 rgb(0, 0, 0), stop:0.48 rgb(0, 0, 0),
+        stop:0.5 rgb(59, 59, 59), stop:1 rgb(125, 125, 125));
+    border-radius: 14px;
+    border: 2px solid rgb(0, 229, 65);
+    font: bold 10pt "Nimbus Sans L";
+    padding: 5px 20px;
+}
+
+QPushButton#downloadButton:hover {
+    color: rgb(170, 255, 0);
+}
+
+QPushButton#pushButtonDownLoad:pressed {
+    color: rgb(255, 84, 174);
+    border-color: rgb(230, 0, 246);
+}
+
