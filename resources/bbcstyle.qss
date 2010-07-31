@@ -268,6 +268,7 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
    TabWidget.  borrowed from qt4 manual example.
 */
 QTabWidget::pane { /* The tab widget frame */
+    background: rgb(50,50,50);
     border-top: 2px solid rgb(70,70,70);
 }
 
@@ -406,6 +407,5 @@ QPushButton#pushButtonDownLoad:pressed {
 }
 
 QWebView {
-/*    background: rgb(125,130,130);
-*/
+    color: white;
 }

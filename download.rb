@@ -72,6 +72,7 @@ class DownloadProcess < Qt::Process
     protected
     def beginDownload
         @stage = DOWNLOAD
+        @downOk = false
         self.status = RUNNING
         @currentCommand = makeMPlayerDownloadCmd
         start(@currentCommand.app, @currentCommand.args)
@@ -119,14 +120,22 @@ class DownloadProcess < Qt::Process
 
     # slot :
     def taskFinished(exitCode, exitStatus)
-        lastMsg = readAllStandardOutput.data .reject do |l| l.empty? end
-        $log.info { lastMsg }
-        if (exitCode || exitStatus) && !(lastMsg =~ /Everything done/i) then
+        $log.info { checkReadOutput }
+        if (exitCode || exitStatus) && !@downOk then
             self.status = ERROR
             $log.error { makeErrorMsg }
         else
             nextTask
         end
+    end
+
+    # check and read output
+    def checkReadOutput
+        msg = readAllStandardOutput.data .reject do |l| l.empty? end
+        msgSum = msg.join(' ')
+        @downOk ||= true if msgSum =~ /Everything done/i
+        $log.debug { "detect finish." } if msgSum =~ /Everything done/i
+        msg
     end
 
     def updateView
@@ -135,7 +144,7 @@ class DownloadProcess < Qt::Process
             updateLapse
 
             # dump IO message buffer
-            $log.info{ readAllStandardOutput.data .reject do |l| l.empty? end }
+            $log.info { checkReadOutput }
         end
     end
 

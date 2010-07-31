@@ -191,9 +191,9 @@ class ProgrammeTableWidget < Qt::TableWidget
         action = menu.exec(pos)
         if action then
             action.data
-            $log.code { "execute : '#{action.vData}'" }
+#             $log.code { "execute : '#{action.vData}'" }
                 cmd, exe = action.vData.split(/@/, 2)
-                $log.code { "cmd(#{cmd}), exe(#{exe})" }
+#                 $log.code { "cmd(#{cmd}), exe(#{exe})" }
                 case cmd
                 when 'play'
                     playMedia(exe, item)
@@ -364,7 +364,6 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         end
 
         # Main Tab page. programme table area
-#         mainTabPage.addWidget(createProgrammeAreaWidget)
         progTableFrame = Qt::Splitter.new(Qt::Vertical)
         progTableFrame.addWidget(createProgrammeAreaWidget)
         progTableFrame.addWidget(createProgrammeContentWidget)
@@ -581,9 +580,9 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
 
 
     # slot :
-    def programmeCellClicked(row, col)
+    def programmeCellClicked(row, column)
         prog = @programmeTable[row]
-        color = self.palette.color(Qt::Palette::Text).value >= 128 ? 'white' : 'black'
+        color = "#%06x" % (@webView.palette.color(Qt::Palette::Text).rgb & 0xffffff)
 
         html = <<-EOF
         <font color="#{color}">

@@ -1,21 +1,21 @@
 TODO - irecorder
+ *convert files
  *error handling
    -download error
    -overwrite
    -error retry.
- *download multipl files
- *configure Path
  *save configuration
- *log limit line number
- *download from proxy (mplayer)
- *convert file
- *pop up detail
+ *configure Path
  *right click open file/url
- *Episode description window
- *stylesheet -menu colour
- *status bar for processing.
- *mencoder for dump
  *clear downloaded files in task win.
+ *auto download subscription tags
+
+ *mencoder for dump
+ *download from proxy (mplayer)
+ *status bar for processing.
+ *stylesheet -menu colour
+ *log limit line number
+ *resume task
 
 success but message is error.
 INFO :realrtsp: Stream EOF detected
