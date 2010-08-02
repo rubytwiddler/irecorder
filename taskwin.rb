@@ -267,6 +267,16 @@ class TaskWindow < Qt::Widget
         #
     end
 
+    GroupName = "TaskWindow"
+    def writeSettings
+        config = $config.group(GroupName)
+        config.writeEntry('Header', @table.horizontalHeader.saveState)
+    end
+
+    def readSettings
+        config = $config.group(GroupName)
+        @table.horizontalHeader.restoreState(config.readEntry('Header', @table.horizontalHeader.saveState))
+    end
 
     # retun : ID    # practicaly
     public

@@ -174,6 +174,17 @@ class ProgrammeTableWidget < Qt::TableWidget
         end
     end
 
+    GroupName = "ProgrammeTable"
+    def writeSettings
+        config = $config.group(GroupName)
+        config.writeEntry('Header', horizontalHeader.saveState)
+    end
+
+    def readSettings
+        config = $config.group(GroupName)
+        horizontalHeader.restoreState(config.readEntry('Header', horizontalHeader.saveState))
+    end
+
     protected
     def contextMenuEvent(e)
         item = itemAt(e.pos)
@@ -254,6 +265,7 @@ class MainWindow < KDE::MainWindow
     slots   :mediaFilterChanged
     slots   'programmeCellClicked(int,int)'
 
+    GroupName = "MainWindow"
 
     #
     #
@@ -265,10 +277,6 @@ class MainWindow < KDE::MainWindow
 
         $app.styleSheet = IO.read('resources/bbcstyle.qss')
 
-        # read config
-        @config = KDE::Config.new(APP_NAME+'rc')
-
-
         createWidgets
         createMenu
 
@@ -279,8 +287,8 @@ class MainWindow < KDE::MainWindow
         $log.info { 'Log Start.' }
 
         # assign from config file.
-        applyMainWindowSettings(KDE::Global.config.group("MainWindow"))
-        setAutoSaveSettings()
+        readSettings
+        setAutoSaveSettings(GroupName)
 
         initializeTaskTimer
     end
@@ -299,7 +307,6 @@ class MainWindow < KDE::MainWindow
     #
     # make menus for MainWindow
     #
-    protected
     def createMenu
 
         # File menu
@@ -320,7 +327,7 @@ class MainWindow < KDE::MainWindow
         connect(recordAction, SIGNAL(:triggered), self, SLOT(:startDownload))
         connect(reloadStyleAction, SIGNAL(:triggered), self, SLOT(:reloadStyleSheet))
         connect(clearStyleAction, SIGNAL(:triggered), self, SLOT(:clearStyleSheet))
-        connect(quitAction, SIGNAL(:triggered), $app, SLOT(:quit))
+        connect(quitAction, SIGNAL(:triggered), self, SLOT(:close))
 
 
         # Help menu
@@ -351,27 +358,27 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
     def createWidgets
         @topTab = KDE::TabWidget.new
 
-        mainTabPage = Qt::Splitter.new
-        @topTab.addTab(mainTabPage, 'Channels')
+        @mainTabPage = Qt::Splitter.new
+        @topTab.addTab(@mainTabPage, 'Channels')
 
 
         # Left Side Channel ToolBox & ListType Buttons
         VBoxLayoutWidget.new do |vbxw|
-            mainTabPage.addWidget(vbxw)
+            @mainTabPage.addWidget(vbxw)
             @channelTypeToolBox = createChannelListToolBox
             vbxw.addWidget(@channelTypeToolBox)
             vbxw.addLayout(createListTypeButtons)
         end
 
         # Main Tab page. programme table area
-        progTableFrame = Qt::Splitter.new(Qt::Vertical)
-        progTableFrame.addWidget(createProgrammeAreaWidget)
-        progTableFrame.addWidget(createProgrammeContentWidget)
-        mainTabPage.addWidget(progTableFrame)
+        @progTableFrame = Qt::Splitter.new(Qt::Vertical)
+        @progTableFrame.addWidget(createProgrammeAreaWidget)
+        @progTableFrame.addWidget(createProgrammeContentWidget)
+        @mainTabPage.addWidget(@progTableFrame)
 
         # parameter : Qt::Splitter.setStretchFactor( int index, int stretch )
-        mainTabPage.setStretchFactor( 0, 0 )
-        mainTabPage.setStretchFactor( 1, 1 )
+        @mainTabPage.setStretchFactor( 0, 0 )
+        @mainTabPage.setStretchFactor( 1, 1 )
 
 
 
@@ -563,6 +570,32 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         @webView = Qt::WebView.new do |w|
             w.page.linkDelegationPolicy = Qt::WebPage::DelegateAllLinks
         end
+    end
+
+
+    #-------------------------------------------------------------
+    #
+    # virtual function slot
+    def closeEvent(event)
+        writeSettings
+        saveAutoSaveSettings
+    end
+
+    def readSettings
+        config = $config.group(GroupName)
+        @mainTabPage.restoreState(config.readEntry('MainTabPageState', @mainTabPage.saveState))
+        @progTableFrame.restoreState(config.readEntry('ProgTableFrame',
+                                                      @progTableFrame.saveState))
+        @programmeTable.readSettings
+        @taskWin.readSettings
+    end
+
+    def writeSettings
+        config = $config.group(GroupName)
+        config.writeEntry('MainTabPageState', @mainTabPage.saveState)
+        config.writeEntry('ProgTableFrame', @progTableFrame.saveState)
+        @programmeTable.writeSettings
+        @taskWin.writeSettings
     end
 
     # ------------------------------------------------------------------------
@@ -839,6 +872,7 @@ KDE::CmdLineArgs.init(ARGV, about)
 
 $app = KDE::Application.new
 args = KDE::CmdLineArgs.parsedArgs()
+$config = KDE::Global::config
 win = MainWindow.new
 $app.setTopWidget(win)
 
