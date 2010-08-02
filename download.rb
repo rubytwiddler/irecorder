@@ -16,6 +16,11 @@ class DownloadProcess < Qt::Process
     RUNNING = 0
     ERROR = 1
     STOP = 2
+    def status
+        return %w{ Downloading Converting Finished }[@stage] if @status == RUNNING
+        %w( Running Error Finished )[@status]
+    end
+
     class Command
         attr_accessor   :app, :args, :msg
         def initialize(app, args, msg)
@@ -42,11 +47,26 @@ class DownloadProcess < Qt::Process
     public
     def beginTask
         # 1st stage : download
+#         if File.exist?(@fileName) then
+#             $log.debug { "begin convert" }
+#             beginConvert
+#             return
+#         end
         beginDownload
     end
 
+    # increment stage
     def nextTask
-        allTaskFinished
+        @stage += 1
+        case @stage
+        when DOWNLOAD
+            @startTime = Time.new
+            beginDownload
+        when CONVERT
+            beginConvert
+        else
+            allTaskFinished
+        end
     end
 
     def retryTask
@@ -72,21 +92,27 @@ class DownloadProcess < Qt::Process
     protected
     def beginDownload
         @stage = DOWNLOAD
-        @downOk = false
+        @downNG = true
         self.status = RUNNING
         @currentCommand = makeMPlayerDownloadCmd
+
         start(@currentCommand.app, @currentCommand.args)
-#             start("./testjob.rb")
-#             start("./testarg.rb", @currentCommand.args)
         $log.info { @currentCommand.msg }
     end
 
     def beginConvert
-        fName = @fileName
-        newf = fName.gsub(/\.\w+$/i, '.mp3')
+        @stage = CONVERT
+        self.status = RUNNING
+        @outFileName = @fileName.gsub(/\.\w+$/i, '.mp3')
 
-        cmd = "nice -n 19 ffmpeg -i '#{f}' -f mp3 '#{newf}'"
+        cmdMsg = "nice -n 19 ffmpeg -i %s -f mp3 %s" %
+                    [ @fileName.shellescape, @outFileName.shellescape]
+        cmdApp = "nice"
+        cmdArgs = [ '-n', '19', 'ffmpeg', '-i', @fileName, '-f', 'mp3', @outFileName ]
 
+        @currentCommand = Command.new( cmdApp, cmdArgs, cmdMsg )
+        start(@currentCommand.app, @currentCommand.args)
+        $log.info { @currentCommand.msg }
     end
 
     def makeMPlayerDownloadCmd
@@ -95,9 +121,34 @@ class DownloadProcess < Qt::Process
                     [@fileName.shellescape, @sourceUrl.shellescape]
         cmdApp = "mplayer"
         cmdArgs = ['-noframedrop', '-dumpfile', @fileName, '-dumpstream', @sourceUrl]
-        $log.info{ ["Execute following command.", cmdMsg] }
         Command.new( cmdApp, cmdArgs, cmdMsg )
     end
+
+
+    def checkOutput(msg)
+        msgSum = msg.join(' ')
+        @downNG &&= false if msgSum =~ /Everything done/i
+    end
+
+    # check and read output
+    def checkReadOutput
+        msg = readAllStandardOutput.data .reject do |l| l.empty? end
+        checkOutput(msg)
+        $log.info { msg }
+    end
+
+    # return error or not
+    def checkErroredStatus
+        case @stage
+        when DOWNLOAD
+            @downNG
+        when CONVERT
+            getDuration(@outFileName) < getDuration(@fileName) -4
+        else
+            true
+        end
+    end
+
 
     public
     def status=(st)
@@ -106,9 +157,6 @@ class DownloadProcess < Qt::Process
         $log.misc { "status:#{status}" }
     end
 
-    def status
-        %w( Running Error Finished )[@status]
-    end
 
     def updateLapse
         taskItem.updateTime(lapse)
@@ -120,23 +168,16 @@ class DownloadProcess < Qt::Process
 
     # slot :
     def taskFinished(exitCode, exitStatus)
-        $log.info { checkReadOutput }
-        if (exitCode || exitStatus) && !@downOk then
+        checkReadOutput
+        if (exitCode || exitStatus) && checkErroredStatus then
             self.status = ERROR
-            $log.error { makeErrorMsg }
+            msgs = [ makeErrorMsg, "exitCode=#{exitCode}, exitStatus=#{exitStatus}" ]
+            $log.error { msgs }
         else
             nextTask
         end
     end
 
-    # check and read output
-    def checkReadOutput
-        msg = readAllStandardOutput.data .reject do |l| l.empty? end
-        msgSum = msg.join(' ')
-        @downOk ||= true if msgSum =~ /Everything done/i
-        $log.debug { "detect finish." } if msgSum =~ /Everything done/i
-        msg
-    end
 
     def updateView
         if running? then
@@ -144,7 +185,7 @@ class DownloadProcess < Qt::Process
             updateLapse
 
             # dump IO message buffer
-            $log.info { checkReadOutput }
+            checkReadOutput
         end
     end
 

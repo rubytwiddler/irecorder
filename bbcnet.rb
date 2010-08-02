@@ -164,3 +164,24 @@ class BBCNet
     end
 
 end
+
+module AudioFile
+    # return seconds of audio file duration.
+    def getDuration(file)
+        case file[/\.\w+$/].downcase
+        when ".mp3"
+            cmd = "| exiftool -S -Duration %s" % file.shellescape
+        when ".wma"
+            cmd = "| exiftool -S -PlayDuration %s" % file.shellescape
+        end
+        msg = open(cmd) do |f| f.read end
+        a = msg.scan(/(?:(\d+):){0,2}(\d+)/)[0]
+        i = -1
+        a.reverse.inject(0) do |s, d|
+            i += 1
+            s + d.to_i * [ 1, 60, 3600 ][i]
+        end
+    end
+end
+
+include AudioFile
