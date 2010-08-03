@@ -1,14 +1,18 @@
 TODO - irecorder
  *error handling
-   -download error
    -overwrite
    -error retry.
+   -get real broadcast length to check ok.
  *save configuration
  *configure Path
+ *installer
  *right click open file/url
+ *error dialog for misc errors.
  *clear downloaded files in task win.
  *auto download subscription tags
 
+ *play with webkit
+ *icon image
  *mencoder for dump
  *download from proxy (mplayer)
  *status bar for processing.

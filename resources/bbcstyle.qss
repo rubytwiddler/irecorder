@@ -15,6 +15,10 @@
     color: rgb(255, 84, 174);
 }
 
+*:disabled {
+    color: rgb(40, 20, 255);
+}
+
 *:selected {
     border: 1px solid rgb(255,84,174);
 }
@@ -97,7 +101,17 @@ QPushButton:checked {
 }
 
 QPushButton:hover {
-    color: rgb(255, 84, 174);
+/*    color: rgb(255, 84, 174);
+*/
+    color: rgb(60, 255, 174);
+}
+
+QPushButton:disabled {
+    color: rgb(40, 20, 255);
+}
+
+QPushButton:off {
+    color: rgb(80, 40, 255);
 }
 
 /*

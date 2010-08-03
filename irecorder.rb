@@ -34,8 +34,7 @@ require "mylibs"
 require "logwin"
 require "taskwin"
 require "download"
-
-# require "settings"
+require "settings"
 
 
 #---------------------------------------------------------------------------------------------
@@ -279,6 +278,7 @@ class MainWindow < KDE::MainWindow
 
         createWidgets
         createMenu
+        createDlg
 
         # default values
 #         BBCNet.setProxy('http://194.36.10.154:3127')
@@ -329,6 +329,14 @@ class MainWindow < KDE::MainWindow
         connect(clearStyleAction, SIGNAL(:triggered), self, SLOT(:clearStyleSheet))
         connect(quitAction, SIGNAL(:triggered), self, SLOT(:close))
 
+        # settings menu
+        configureAppAction = KDE::Action.new(KDE::Icon.new('configure'),
+                                              i18n("Configure #{APP_NAME}"), self)
+        settingsMenu = KDE::Menu.new(i18n('&Settings'), self)
+        settingsMenu.addAction(configureAppAction)
+        # connect actions
+        connect(configureAppAction, SIGNAL(:triggered), self, SLOT(:configureApp))
+
 
         # Help menu
         about = i18n(<<-ABOUT
@@ -342,6 +350,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         # insert menus in MenuBar
         menu = KDE::MenuBar.new
         menu.addMenu( fileMenu )
+        menu.addMenu( settingsMenu )
         menu.addSeparator
         menu.addMenu( helpMenu.menu )
         setMenuBar(menu)
@@ -354,7 +363,6 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
     #
     # create Widgets for MainWindow
     #
-    protected
     def createWidgets
         @topTab = KDE::TabWidget.new
 
@@ -570,6 +578,20 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         @webView = Qt::WebView.new do |w|
             w.page.linkDelegationPolicy = Qt::WebPage::DelegateAllLinks
         end
+    end
+
+    #-------------------------------------------------------------
+    #
+    #
+    def createDlg
+        @settingsDlg = SettingsDlg.new(self)
+    end
+
+
+    slots  :configureApp
+    # slot
+    def configureApp
+        @settingsDlg.exec
     end
 
 
