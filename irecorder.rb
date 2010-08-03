@@ -578,7 +578,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
     # virtual function slot
     def closeEvent(event)
         writeSettings
-        saveAutoSaveSettings
+        super(event)
     end
 
     def readSettings
@@ -586,6 +586,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         @mainTabPage.restoreState(config.readEntry('MainTabPageState', @mainTabPage.saveState))
         @progTableFrame.restoreState(config.readEntry('ProgTableFrame',
                                                       @progTableFrame.saveState))
+
         @programmeTable.readSettings
         @taskWin.readSettings
     end
@@ -594,6 +595,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         config = $config.group(GroupName)
         config.writeEntry('MainTabPageState', @mainTabPage.saveState)
         config.writeEntry('ProgTableFrame', @progTableFrame.saveState)
+
         @programmeTable.writeSettings
         @taskWin.writeSettings
     end
