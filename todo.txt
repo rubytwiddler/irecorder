@@ -1,6 +1,6 @@
 TODO - irecorder
  *error handling
-   -overwrite
+   -overwrite check.
    -error retry.
    -get real broadcast length to check ok.
  *save configuration
@@ -17,6 +17,7 @@ TODO - irecorder
  *download from proxy (mplayer)
  *status bar for processing.
  *stylesheet -menu colour
+ *log message level.
  *log limit line number
  *resume task
 

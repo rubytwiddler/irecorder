@@ -398,9 +398,9 @@ QPushButton#switchButton:hover, QToolBox#channelToolBox::tab:hover {
 
 
 /*
-    download button
+    play & download button
 */
-QPushButton#downloadButton {
+QPushButton#downloadButton, #playButton {
     color: white;
     background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0,
         stop:0 rgb(0, 0, 0), stop:0.48 rgb(0, 0, 0),
@@ -411,11 +411,11 @@ QPushButton#downloadButton {
     padding: 5px 20px;
 }
 
-QPushButton#downloadButton:hover {
+QPushButton#downloadButton:hover, #playButton:hover {
     color: rgb(170, 255, 0);
 }
 
-QPushButton#pushButtonDownLoad:pressed {
+QPushButton#pushButtonDownLoad:pressed, #playButton:pressed {
     color: rgb(255, 84, 174);
     border-color: rgb(230, 0, 246);
 }

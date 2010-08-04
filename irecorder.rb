@@ -261,7 +261,7 @@ end
 #
 class MainWindow < KDE::MainWindow
     slots   :startDownload, :updateTask, :getList, :reloadStyleSheet, :clearStyleSheet
-    slots   :mediaFilterChanged
+    slots   :mediaFilterChanged, :playProgramme
     slots   'programmeCellClicked(int,int)'
 
     GroupName = "MainWindow"
@@ -369,25 +369,20 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         @mainTabPage = Qt::Splitter.new
         @topTab.addTab(@mainTabPage, 'Channels')
 
-
-        # Left Side Channel ToolBox & ListType Buttons
-        VBoxLayoutWidget.new do |vbxw|
-            @mainTabPage.addWidget(vbxw)
-            @channelTypeToolBox = createChannelListToolBox
-            vbxw.addWidget(@channelTypeToolBox)
-            vbxw.addLayout(createListTypeButtons)
-        end
+        @mainTabPage.addWidget(createChannelAreaWidget)
 
         # Main Tab page. programme table area
         @progTableFrame = Qt::Splitter.new(Qt::Vertical)
         @progTableFrame.addWidget(createProgrammeAreaWidget)
-        @progTableFrame.addWidget(createProgrammeContentWidget)
+        @progTableFrame.addWidget(createProgrammeSummaryWidget)
         @mainTabPage.addWidget(@progTableFrame)
 
         # parameter : Qt::Splitter.setStretchFactor( int index, int stretch )
         @mainTabPage.setStretchFactor( 0, 0 )
         @mainTabPage.setStretchFactor( 1, 1 )
 
+        # dock
+        createPlayerDock
 
 
         #  Top Tab - Task Page
@@ -526,6 +521,17 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
 
     #-------------------------------------------------------------
     #
+    # Left Side Channel ToolBox & ListType Buttons
+    def createChannelAreaWidget
+        VBoxLayoutWidget.new do |vbxw|
+            @channelTypeToolBox = createChannelListToolBox
+            vbxw.addWidget(@channelTypeToolBox)
+            vbxw.addLayout(createListTypeButtons)
+        end
+    end
+
+    #-------------------------------------------------------------
+    #
     #
     def createProgrammeAreaWidget
         VBoxLayoutWidget.new do |vbxw|
@@ -562,22 +568,51 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
                 connect( w, SIGNAL(:clicked), self, SLOT(:mediaFilterChanged) )
             end
 
-            downloadBtn = KDE::PushButton.new( KDE::Icon.new('arrow-down'), i18n("Start Download")) do |w|
+            playBtn = KDE::PushButton.new( KDE::Icon.new('arrow-right'), i18n("Play")) do |w|
+                w.objectName = 'playButton'
+                connect( w, SIGNAL(:clicked), self, SLOT(:playProgramme) )
+            end
+
+            downloadBtn = KDE::PushButton.new( KDE::Icon.new('arrow-down'), i18n("Download")) do |w|
                 w.objectName = 'downloadButton'
                 connect( w, SIGNAL(:clicked), self, SLOT(:startDownload) )
             end
 
-            vbxw.addWidgets( @tvFilterBtn, @radioFilterBtn, nil, downloadBtn, nil )
+            vbxw.addWidgets( @tvFilterBtn, @radioFilterBtn, nil, playBtn, nil, downloadBtn, nil )
         end
     end
 
     #-------------------------------------------------------------
     #
     #
-    def createProgrammeContentWidget
-        @webView = Qt::WebView.new do |w|
+    def createProgrammeSummaryWidget
+        @programmeSummaryWebView = Qt::WebView.new do |w|
             w.page.linkDelegationPolicy = Qt::WebPage::DelegateAllLinks
         end
+    end
+
+    #-------------------------------------------------------------
+    #
+    #
+    def createPlayerDock
+        @playerDock = Qt::DockWidget.new(self) do |w|
+            w.objectName = 'playerDock'
+            w.allowedAreas = Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::BottomDockWidgetArea
+            w.floating = true
+#             w.setTitleBarWidget(Qt::Label.new(i18n('Player')))
+        end
+        @playerWevView = Qt::WebView.new do |w|
+            w.page.linkDelegationPolicy = Qt::WebPage::DelegateAllLinks
+        end
+
+        webSettings = Qt::WebSettings::globalSettings
+        webSettings.setAttribute(Qt::WebSettings::PluginsEnabled, true)
+
+
+        @playerDock.setWidget(@playerWevView)
+        self.addDockWidget(Qt::RightDockWidgetArea, @playerDock)
+
+        @playerDock
     end
 
     #-------------------------------------------------------------
@@ -639,7 +674,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
     # slot :
     def programmeCellClicked(row, column)
         prog = @programmeTable[row]
-        color = "#%06x" % (@webView.palette.color(Qt::Palette::Text).rgb & 0xffffff)
+        color = "#%06x" % (@programmeSummaryWebView.palette.color(Qt::Palette::Text).rgb & 0xffffff)
 
         html = <<-EOF
         <font color="#{color}">
@@ -647,7 +682,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         </font>
         EOF
 
-        @webView.setHtml(html)
+        @programmeSummaryWebView.setHtml(html)
     end
 
     # slot :
@@ -656,6 +691,21 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         @programmeTable.filterChanged(@filterLineEdit.text)
     end
 
+
+    # slot
+    def playProgramme
+        items = @programmeTable.selectedItems
+        return unless items.size > 0
+
+        prog = @programmeTable[items[0].row]
+        url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
+
+        $log.info { "episode Url : #{url}" }
+        url = BBCNet.getPlayerConsoleUrl(url)
+        $log.info { "console Url : #{url}" }
+        @playerDock.enabled = true
+        @playerWevView.setUrl(Qt::Url.new(url))
+    end
 
     # ------------------------------------------------------------------------
     #
