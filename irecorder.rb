@@ -553,7 +553,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
                 connect( w, SIGNAL(:clicked), self, SLOT(:mediaFilterChanged) )
             end
 
-            playBtn = KDE::PushButton.new( KDE::Icon.new('arrow-right'), i18n("Play")) do |w|
+            playBtn = KDE::PushButton.new( KDE::Icon.new('media-playback-start'), i18n("Play")) do |w|
                 w.objectName = 'playButton'
                 connect( w, SIGNAL(:clicked), self, SLOT(:playProgramme) )
             end
@@ -694,8 +694,11 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         $log.info { "episode Url : #{url}" }
         url = BBCNet.getPlayerConsoleUrl(url)
         $log.info { "old console Url : #{url}" }
-        url.sub!(%r{www}, 'beta')
-        $log.info { "new console Url : #{url}" }
+
+        if IRecSettings.playerTypeBeta then
+            url.sub!(%r{www}, 'beta')
+            $log.info { "new console Url : #{url}" }
+        end
 
         @playerDock.enabled = true
         @playerWevView.setUrl(Qt::Url.new(url))

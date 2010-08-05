@@ -25,6 +25,9 @@ class IRecSettings < SettingsBase
         addBoolItem(:fileAddChannelName, false)
         addBoolItem(:fileAddGenreName, true)
         addBoolItem(:leaveRawFile, false)
+
+        addBoolItem(:playerTypeSmall, false)
+        addBoolItem(:playerTypeBeta, true)
     end
 
 end
@@ -37,6 +40,7 @@ class SettingsDlg < KDE::ConfigDialog
     def initialize(parent)
         super(parent, "Settings", IRecSettings.instance)
         addPage(FolderSettingsPage.new, i18n("Folder"), 'folder', i18n('Folder and File Name'))
+        addPage(PlayerSettingsPage.new, i18n("Player"), 'internet-web-browser', i18n('Player and web Browser'))
     end
 end
 
@@ -80,7 +84,7 @@ class FolderSettingsPage < Qt::Widget
         end
         @leaveRawFile = Qt::CheckBox.new(i18n('Leave raw file.(don\'t delete it)'))
 
-        # objectNames
+        # set objectNames
         #  'kcfg_' + class Settings's instance name.
         @rawFileDirLine.objectName = 'kcfg_rawDownloadDir'
         @downloadDirLine.objectName = 'kcfg_downloadDir'
@@ -98,41 +102,41 @@ class FolderSettingsPage < Qt::Widget
         lo = Qt::VBoxLayout.new do |l|
             l.addWidget(Qt::Label.new(i18n('Download Directory')))
             l.addLayout(Qt::HBoxLayout.new do |hl|
-                        hl.addWidget(Qt::Label.new('  '))
-                        hl.addWidget(@downloadDirLine)
-                       end
-                       )
+                            hl.addWidget(Qt::Label.new('  '))
+                            hl.addWidget(@downloadDirLine)
+                        end
+                        )
             l.addWidget(Qt::Label.new(i18n('Temporary Raw File Download Directory')))
             l.addLayout(Qt::HBoxLayout.new do |hl|
-                        hl.addWidget(Qt::Label.new('  '))
-                        hl.addWidget(@rawFileDirLine)
-                       end
-                       )
+                            hl.addWidget(Qt::Label.new('  '))
+                            hl.addWidget(@rawFileDirLine)
+                        end
+                        )
             l.addWidget(Qt::GroupBox.new(i18n('Generating directory name')) do |g|
-                         vb = Qt::VBoxLayout.new do |vb|
-                            vb.addWidget(@dirSampleLabel)
-                            vb.addWidget(@dirAddMediaName)
-                            vb.addWidget(@dirAddChannelName)
-                            vb.addWidget(@dirAddGenreName)
-                         end
-                         g.setLayout(vb)
-                       end
-                       )
+                            vbx = Qt::VBoxLayout.new do |vb|
+                                vb.addWidget(@dirSampleLabel)
+                                vb.addWidget(@dirAddMediaName)
+                                vb.addWidget(@dirAddChannelName)
+                                vb.addWidget(@dirAddGenreName)
+                            end
+                            g.setLayout(vbx)
+                        end
+                        )
             l.addWidget(Qt::GroupBox.new(i18n('Generating file name')) do |g|
-                         vb = Qt::VBoxLayout.new do |vb|
-                            vb.addWidget(@fileSampleLabel)
-                            vh = Qt::HBoxLayout.new do |hb|
-                                hb.addWidget(Qt::Label.new(i18n('Head Text')))
-                                hb.addWidget(@fileAddHeadStr)
-                              end
-                            vb.addLayout(vh)
-                            vb.addWidget(@fileAddMediaName)
-                            vb.addWidget(@fileAddChannelName)
-                            vb.addWidget(@fileAddGenreName)
-                         end
-                         g.setLayout(vb)
-                       end
-                       )
+                            vbx = Qt::VBoxLayout.new do |vb|
+                                vb.addWidget(@fileSampleLabel)
+                                hbx = Qt::HBoxLayout.new do |hb|
+                                    hb.addWidget(Qt::Label.new(i18n('Head Text')))
+                                    hb.addWidget(@fileAddHeadStr)
+                                end
+                                vb.addLayout(hbx)
+                                vb.addWidget(@fileAddMediaName)
+                                vb.addWidget(@fileAddChannelName)
+                                vb.addWidget(@fileAddGenreName)
+                            end
+                            g.setLayout(vbx)
+                        end
+                        )
             l.addWidget(@leaveRawFile)
             l.addStretch
         end
@@ -173,3 +177,40 @@ class FolderSettingsPage < Qt::Widget
 
 end
 
+#--------------------------------------------------------------------------
+#
+#
+class PlayerSettingsPage < Qt::Widget
+    def initialize(parent=nil)
+        super(parent)
+        createWidget
+    end
+
+    protected
+
+    def createWidget
+        @playerTypeSmall = Qt::RadioButton.new(i18n('small iplayer'))
+        @playerTypeBeta = Qt::RadioButton.new(i18n('beta iplayer'))
+
+        # set objectNames
+        #  'kcfg_' + class Settings's instance name.
+        @playerTypeSmall.objectName = 'kcfg_playerTypeSmall'
+        @playerTypeBeta.objectName = 'kcfg_playerTypeBeta'
+
+
+        # layout
+        lo = Qt::VBoxLayout.new do |l|
+            l.addWidget(Qt::GroupBox.new(i18n('iPlayer Type')) do |g|
+                            vbx = Qt::VBoxLayout.new do |vb|
+                                vb.addWidget(@playerTypeSmall)
+                                vb.addWidget(@playerTypeBeta)
+                            end
+                            g.setLayout(vbx)
+                        end
+                        )
+            l.addStretch
+        end
+
+        setLayout(lo)
+    end
+end

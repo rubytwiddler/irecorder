@@ -8,7 +8,7 @@ TODO - irecorder
  *error dialog for misc errors.
  *clear downloaded files in task win.
  *auto download subscription tags
- *feed backup
+ *feed cache
 
  *icon image
  *mencoder for dump
@@ -20,6 +20,7 @@ TODO - irecorder
  *resume task
  *fileName + sub category
  *fileName + date
+ *multilanguage?
 
 success but message is error.
 INFO :realrtsp: Stream EOF detected
