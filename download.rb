@@ -70,6 +70,7 @@ class DownloadProcess < Qt::Process
         when CONVERT
             beginConvert
         else
+            removeRawFile
             allTaskFinished
         end
     end
@@ -112,9 +113,9 @@ class DownloadProcess < Qt::Process
         cmdApp = "mplayer"
         cmdArgs = ['-noframedrop', '-dumpfile', @rawFilePath, '-dumpstream', @sourceUrl]
 
-        # debug code.
-        cmdApp = "touch"
-        cmdArgs = [ @rawFilePath ]
+#         # debug code.
+#         cmdApp = "touch"
+#         cmdArgs = [ @rawFilePath ]
 
         Command.new( cmdApp, cmdArgs, cmdMsg )
     end
@@ -131,9 +132,9 @@ class DownloadProcess < Qt::Process
         cmdApp = "nice"
         cmdArgs = [ '-n', '19', 'ffmpeg', '-i', @rawFilePath, '-f', 'mp3', @outFilePath ]
 
-        # debug code.
-        cmdApp = "cp"
-        cmdArgs = [ '-f', @rawFilePath, @outFilePath ]
+#         # debug code.
+#         cmdApp = "cp"
+#         cmdArgs = [ '-f', @rawFilePath, @outFilePath ]
 
         @currentCommand = Command.new( cmdApp, cmdArgs, cmdMsg )
         start(@currentCommand.app, @currentCommand.args)
@@ -141,6 +142,11 @@ class DownloadProcess < Qt::Process
     end
 
 
+    def removeRawFile
+        unless IRecSettings.leaveRawFile then
+            File.delete(@rawFilePath)
+        end
+    end
 
     def checkOutput(msg)
         msgSum = msg.join(' ')
