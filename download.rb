@@ -35,7 +35,12 @@ class DownloadProcess < Qt::Process
         @parent = parent
         @startTime = Time.new
         @sourceUrl = src
-        @fileName = fName
+        @rawFileName = fName
+        $log.info { "@rawFileName : #{@rawFileName}" }
+        $log.info { "rawDownloadDir : #{IRecSettings.rawDownloadDir.path}" }
+        @rawFilePath = File.join(IRecSettings.rawDownloadDir.path, fName)
+        mkdirSavePath(@rawFilePath)
+        $log.info { "@rawFilePath : #{@rawFilePath }" }
 
         @stage = DOWNLOAD
         @status = STOP
@@ -47,7 +52,7 @@ class DownloadProcess < Qt::Process
     public
     def beginTask
         # 1st stage : download
-#         if File.exist?(@fileName) then
+#         if File.exist?(@rawFilePath) then
 #             $log.debug { "begin convert" }
 #             beginConvert
 #             return
@@ -100,29 +105,41 @@ class DownloadProcess < Qt::Process
         $log.info { @currentCommand.msg }
     end
 
+    def makeMPlayerDownloadCmd
+        # make MPlayer Downlaod comand
+        cmdMsg = "mplayer -noframedrop -dumpfile %s -dumpstream %s" %
+                    [@rawFilePath.shellescape, @sourceUrl.shellescape]
+        cmdApp = "mplayer"
+        cmdArgs = ['-noframedrop', '-dumpfile', @rawFilePath, '-dumpstream', @sourceUrl]
+
+        # debug code.
+        cmdApp = "touch"
+        cmdArgs = [ @rawFilePath ]
+
+        Command.new( cmdApp, cmdArgs, cmdMsg )
+    end
+
     def beginConvert
         @stage = CONVERT
         self.status = RUNNING
-        @outFileName = @fileName.gsub(/\.\w+$/i, '.mp3')
+        @outFileName = @rawFileName.gsub(/\.\w+$/i, '.mp3')
+        @outFilePath = File.join(IRecSettings.downloadDir.path, @outFileName)
+        mkdirSavePath(@outFilePath)
 
         cmdMsg = "nice -n 19 ffmpeg -i %s -f mp3 %s" %
-                    [ @fileName.shellescape, @outFileName.shellescape]
+                    [ @rawFilePath.shellescape, @outFilePath.shellescape]
         cmdApp = "nice"
-        cmdArgs = [ '-n', '19', 'ffmpeg', '-i', @fileName, '-f', 'mp3', @outFileName ]
+        cmdArgs = [ '-n', '19', 'ffmpeg', '-i', @rawFilePath, '-f', 'mp3', @outFilePath ]
+
+        # debug code.
+        cmdApp = "cp"
+        cmdArgs = [ '-f', @rawFilePath, @outFilePath ]
 
         @currentCommand = Command.new( cmdApp, cmdArgs, cmdMsg )
         start(@currentCommand.app, @currentCommand.args)
         $log.info { @currentCommand.msg }
     end
 
-    def makeMPlayerDownloadCmd
-        # make MPlayer Downlaod comand
-        cmdMsg = "mplayer -noframedrop -dumpfile %s -dumpstream %s" %
-                    [@fileName.shellescape, @sourceUrl.shellescape]
-        cmdApp = "mplayer"
-        cmdArgs = ['-noframedrop', '-dumpfile', @fileName, '-dumpstream', @sourceUrl]
-        Command.new( cmdApp, cmdArgs, cmdMsg )
-    end
 
 
     def checkOutput(msg)
@@ -143,7 +160,11 @@ class DownloadProcess < Qt::Process
         when DOWNLOAD
             @downNG
         when CONVERT
-            getDuration(@outFileName) < getDuration(@fileName) -4
+            begin
+                getDuration(@outFilePath) < getDuration(@rawFilePath) -4
+            rescue => e
+                true
+            end
         else
             true
         end
@@ -169,7 +190,7 @@ class DownloadProcess < Qt::Process
     # slot :
     def taskFinished(exitCode, exitStatus)
         checkReadOutput
-        if (exitCode || exitStatus) && checkErroredStatus then
+        if (exitCode.to_i.nonzero? || exitStatus.to_i.nonzero?) && checkErroredStatus then
             self.status = ERROR
             msgs = [ makeErrorMsg, "exitCode=#{exitCode}, exitStatus=#{exitStatus}" ]
             $log.error { msgs }
@@ -192,7 +213,7 @@ class DownloadProcess < Qt::Process
 
     protected
     def allTaskFinished
-        $log.info { "'#{@fileName}' Downloading finished." }
+        $log.info { "'#{@rawFilePath}' Downloading finished." }
         @stage = FINISHED
         self.status = STOP
     end
@@ -200,6 +221,15 @@ class DownloadProcess < Qt::Process
     def makeErrorMsg
         [ "Failed to download a File '%#2$s'",
             "Failed to convert a File '%#2$s'", ][@stage] %
-            [ @sourceUrl, @fileName ]
+            [ @sourceUrl, @rawFilePath ]
+    end
+
+
+    def mkdirSavePath(fName)
+        dir = File.dirname(fName)
+        unless File.exist? dir
+            $log.info{ "mkdir : " +  dir }
+            FileUtils.mkdir_p(dir)
+        end
     end
 end

@@ -3,7 +3,12 @@
 #
 require 'kio'
 
-class Settings < SettingsBase
+
+#--------------------------------------------------------------------------
+#
+# IRecorder Settings
+#
+class IRecSettings < SettingsBase
     def initialize
         super()
 
@@ -19,6 +24,7 @@ class Settings < SettingsBase
         addBoolItem(:fileAddMediaName, true)
         addBoolItem(:fileAddChannelName, false)
         addBoolItem(:fileAddGenreName, true)
+        addBoolItem(:leaveRawFile, false)
     end
 
 end
@@ -29,7 +35,7 @@ end
 #
 class SettingsDlg < KDE::ConfigDialog
     def initialize(parent)
-        super(parent, "Settings", Settings.instance)
+        super(parent, "Settings", IRecSettings.instance)
         addPage(FolderSettingsPage.new, i18n("Folder"), 'folder', i18n('Folder and File Name'))
     end
 end
@@ -44,36 +50,8 @@ class FolderSettingsPage < Qt::Widget
         createWidget
     end
 
-    public
-    def fileAddHeadStr
-        @fileAddHeadStr.text
-    end
-
-    def fileAddMediaName?
-        @fileAddMediaName.checkState == Qt::Checked
-    end
-
-    def fileAddChannelName?
-        @fileAddChannelName.checkState == Qt::Checked
-    end
-
-    def fileAddGenreName?
-        @fileAddGenreName.checkState == Qt::Checked
-    end
-
-    def dirAddMediaName?
-        @dirAddMediaName.checkState == Qt::Checked
-    end
-
-    def dirAddChannelName?
-        @dirAddChannelName.checkState == Qt::Checked
-    end
-
-    def dirAddGenreName?
-        @dirAddGenreName.checkState == Qt::Checked
-    end
-
     protected
+
     def createWidget
         @rawFileDirLine = KDE::UrlRequester.new(KDE::Url.new(KDE::GlobalSettings.downloadPath))
         @rawFileDirLine.mode = KDE::File::Directory | KDE::File::LocalOnly
@@ -100,6 +78,7 @@ class FolderSettingsPage < Qt::Widget
         [ @fileAddMediaName, @fileAddChannelName, @fileAddGenreName ].each do |w|
             w.connect(SIGNAL('stateChanged(int)')) do |s| updateSampleFileName end
         end
+        @leaveRawFile = Qt::CheckBox.new(i18n('Leave raw file.(don\'t delete it)'))
 
         # objectNames
         #  'kcfg_' + class Settings's instance name.
@@ -112,6 +91,8 @@ class FolderSettingsPage < Qt::Widget
         @fileAddMediaName.objectName = 'kcfg_fileAddMediaName'
         @fileAddChannelName.objectName = 'kcfg_fileAddChannelName'
         @fileAddGenreName.objectName = 'kcfg_fileAddGenreName'
+        @leaveRawFile.objectName = 'kcfg_leaveRawFile'
+
 
         # layout
         lo = Qt::VBoxLayout.new do |l|
@@ -152,6 +133,7 @@ class FolderSettingsPage < Qt::Widget
                          g.setLayout(vb)
                        end
                        )
+            l.addWidget(@leaveRawFile)
             l.addStretch
         end
 
@@ -162,11 +144,15 @@ class FolderSettingsPage < Qt::Widget
         @fileSampleLabel.text = 'Example) ' + getSampleFileName
     end
 
+    def checkState(checkBox)
+        checkBox.checkState== Qt::Checked
+    end
+
     def getSampleFileName
-        head = fileAddHeadStr
-        head += 'Radio ' if fileAddMediaName?
-        head += 'Radio 7 ' if fileAddChannelName?
-        head += 'Drama '  if fileAddGenreName?
+        head = @fileAddHeadStr.text
+        head += 'Radio ' if checkState(@fileAddMediaName)
+        head += 'Radio 7 ' if checkState(@fileAddChannelName)
+        head += 'Drama '  if checkState(@fileAddGenreName)
         head += "- " unless head.empty?
         baseName = head  + 'Space Hacks Lost in Space Ship.mp3'
         baseName.gsub(%r{[\/]}, '-')
@@ -179,9 +165,9 @@ class FolderSettingsPage < Qt::Widget
 
     def getSampleDirName
         dir = []
-        dir << 'Radio' if dirAddMediaName?
-        dir << 'Radio 7' if dirAddChannelName?
-        dir << 'Drama' if dirAddGenreName?
+        dir << 'Radio' if checkState(@dirAddMediaName)
+        dir << 'Radio 7' if checkState(@dirAddChannelName)
+        dir << 'Drama' if checkState(@dirAddGenreName)
         File.join(dir.compact)
     end
 

@@ -193,6 +193,31 @@ end
 #--------------------------------------------------------------------------
 #
 #
+class KDE::ConfigGroup
+    def readObj(name, defaultObj)
+        obj = defaultObj
+        str = readEntry(name, obj)
+        rObj = Marshal.load(str)
+
+        rObj.instance_variables.each do |v|
+            sym = v.to_sym
+            if obj.instance_variable_defined? then
+                obj.instance_variable_set(sym, instance_variable_get(sym))
+            end
+        end
+
+        rObj
+    end
+
+    def writeObj(name, obj)
+        writeEntry(name, Marshal.dump(obj))
+    end
+end
+
+
+#--------------------------------------------------------------------------
+#
+#
 
 
 class String

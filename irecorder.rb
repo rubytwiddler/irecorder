@@ -38,62 +38,7 @@ require "download"
 require "settings"
 
 
-#---------------------------------------------------------------------------------------------
-#
-# singleton object Option
-#
-class KDE::ConfigGroup
-    def readObj(name, defaultObj)
-        obj = defaultObj
-        str = readEntry(name, obj)
-        rObj = Marshal.load(str)
 
-        rObj.instance_variables.each do |v|
-            sym = v.to_sym
-            if obj.instance_variable_defined? then
-                obj.instance_variable_set(sym, instance_variable_get(sym))
-            end
-        end
-
-        rObj
-    end
-
-    def writeObj(name, obj)
-        writeEntry(name, Marshal.dump(obj))
-    end
-end
-
-class Option
-    include Singleton
-    attr_accessor   :dir_add_media_name, :dir_add_channel_name, :dir_add_genre_name
-    attr_accessor   :filename_add_media_name, :filename_add_channel_name, :filename_add_genre_name
-    attr_accessor   :save_dir, :tmp_dir, :filename_head
-    def initialize
-        @dir_add_media_name = true
-        @dir_add_channel_name = false
-        @dir_add_genre_name = true
-#         @@save_dir = File.expand_path( '~/Music')
-        @save_dir = File.expand_path( APP_DIR + '/download')
-        @tmp_dir = File.expand_path( APP_DIR + '/tmp')
-        @filename_head = 'BBC '
-        @filename_add_media_name = true
-        @filename_add_channel_name = false
-        @filename_add_genre_name = true
-    end
-
-    GroupName = 'Option'
-    def self.readSettings
-        config = $config.group(GroupName)
-        config.readObj('option', Option.instance)
-    end
-
-    def self.writeSettings
-        config = $config.group(GroupName)
-        config.writeObj('option', Option.instance)
-    end
-end
-
-$Option = Option.instance
 
 
 
@@ -557,10 +502,10 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
     #
     # Left Side Channel ToolBox & ListType Buttons
     def createChannelAreaWidget
-        VBoxLayoutWidget.new do |vbxw|
+        VBoxLayoutWidget.new do |vb|
             @channelTypeToolBox = createChannelListToolBox
-            vbxw.addWidget(@channelTypeToolBox)
-            vbxw.addLayout(createListTypeButtons)
+            vb.addWidget(@channelTypeToolBox)
+            vb.addLayout(createListTypeButtons)
         end
     end
 
@@ -695,7 +640,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
     # slot :
     def reloadStyleSheet
         $app.styleSheet = IO.read('resources/bbcstyle.qss')
-        @filterLineEdit.styleSheet = $app.styleSheet
+        @filterLineEdit.styleSheet = nil
         $log.info { 'Reloaded StyleSheet.' }
     end
 
@@ -849,8 +794,8 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
                 $log.info { "episode Url : #{url}" }
                 url = BBCNet.getWmaFromUrl(url)
 
-                fName = getSavePath(prog, 'wma')
-                $log.info { "save path : #{fName}" }
+                fName = getSaveName(prog, 'wma')
+                $log.info { "save name : #{fName}" }
 
                 startDownOneFile(url, fName)
             rescue => e
@@ -862,31 +807,33 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
 
     private
     #
-    def getSavePath(prog, ext='wma')
+    def getSaveName(prog, ext='wma')
         tags = prog.categories.split(/,/)
-        dir = getSaveDirName(tags)
+        dir = getSaveSubDirName(tags)
         $log.debug { "save dir : #{dir}" }
 
         dir + '/' + getSaveBaseName(prog.title, tags, ext)
     end
 
-    def getSaveBaseName(title, tags, ext='wma')
-        head = $Option.filename_head
-        head += getMediaName(tags) + ' ' if $Option.filename_add_media_name
-        head += getChannelName + ' ' if $Option.filename_add_channel_name and getChannelName
-        head += getGenreName(tags) + ' ' if $Option.filename_add_genre_name and getGenreName(tags)
+    def getSaveBaseName(title, tags, ext)
+        s = IRecSettings
+        head = s.fileAddHeadStr
+        head += getMediaName(tags) + ' ' if s.fileAddMediaName
+        head += getChannelName + ' ' if s.fileAddChannelName and getChannelName
+        head += getGenreName(tags) + ' ' if s.fileAddGenreName and getGenreName(tags)
         head += "- " unless head.empty?
         baseName = head  + title + '.' + ext
         baseName.gsub(%r{[\/]}, '-')
     end
 
     #
-    def getSaveDirName(tags)
+    def getSaveSubDirName(tags)
+        s = IRecSettings
         dir = []
-        dir << getMediaName(tags) if $Option.dir_add_media_name
-        dir << getChannelName if $Option.dir_add_channel_name and getChannelName
-        dir << getGenreName(tags) if $Option.dir_add_genre_name and getGenreName(tags)
-        File.expand_path( $Option.save_dir) + '/' + File.join(dir.compact)
+        dir << getMediaName(tags) if s.dirAddMediaName
+        dir << getChannelName if s.dirAddChannelName and getChannelName
+        dir << getGenreName(tags) if s.dirAddGenreName and getGenreName(tags)
+        File.join(dir.compact)
     end
 
     # media [TV,Radio,iPod]
@@ -940,19 +887,9 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
     # start Dwnload One file.
     protected
     def startDownOneFile(source, fName)
-        mkdirSavePath(fName)
-
         process = DownloadProcess.new(self, source, fName)
         process.taskItem = @taskWin.addTask(process, source, fName)
         process.beginTask
-    end
-
-    def mkdirSavePath(fName)
-        dir = File.dirname(fName)
-        unless File.exist? dir
-            $log.info{ "mkdir : " +  dir }
-            FileUtils.mkdir_p(dir)
-        end
     end
 
 
