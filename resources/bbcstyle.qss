@@ -101,18 +101,16 @@ QPushButton:checked {
 }
 
 QPushButton:hover {
-/*    color: rgb(255, 84, 174);
-*/
-    color: rgb(60, 255, 174);
+    color: rgb(255, 84, 174);
 }
+
 
 QPushButton:disabled {
-    color: rgb(40, 20, 255);
+    color: rgb(40, 200, 255);
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(44, 18, 33, 255), stop:0.497409 rgba(74, 25, 53, 255), stop:0.520833 rgba(95, 65, 82, 255), stop:1 rgba(138, 93, 116, 255));
 }
 
-QPushButton:off {
-    color: rgb(80, 40, 255);
-}
+
 
 /*
     table

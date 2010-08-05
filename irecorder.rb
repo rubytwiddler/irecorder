@@ -10,6 +10,7 @@ $KCODE = 'UTF8'
 require 'ftools'
 
 APP_NAME = File.basename(__FILE__).sub(/\.rb/, '')
+APP_DIR = File.expand_path(File.dirname(__FILE__))
 APP_VERSION = "0.0.1.5"
 
 # standard libs
@@ -41,21 +42,54 @@ require "settings"
 #
 # singleton object Option
 #
+class KDE::ConfigGroup
+    def readObj(name, defaultObj)
+        obj = defaultObj
+        str = readEntry(name, obj)
+        rObj = Marshal.load(str)
+
+        rObj.instance_variables.each do |v|
+            sym = v.to_sym
+            if obj.instance_variable_defined? then
+                obj.instance_variable_set(sym, instance_variable_get(sym))
+            end
+        end
+
+        rObj
+    end
+
+    def writeObj(name, obj)
+        writeEntry(name, Marshal.dump(obj))
+    end
+end
+
 class Option
     include Singleton
     attr_accessor   :dir_add_media_name, :dir_add_channel_name, :dir_add_genre_name
     attr_accessor   :filename_add_media_name, :filename_add_channel_name, :filename_add_genre_name
-    attr_accessor   :save_dir, :filename_head
+    attr_accessor   :save_dir, :tmp_dir, :filename_head
     def initialize
         @dir_add_media_name = true
         @dir_add_channel_name = false
         @dir_add_genre_name = true
 #         @@save_dir = File.expand_path( '~/Music')
-        @save_dir = File.expand_path( Dir.pwd + '/download')
+        @save_dir = File.expand_path( APP_DIR + '/download')
+        @tmp_dir = File.expand_path( APP_DIR + '/tmp')
         @filename_head = 'BBC '
         @filename_add_media_name = true
         @filename_add_channel_name = false
         @filename_add_genre_name = true
+    end
+
+    GroupName = 'Option'
+    def self.readSettings
+        config = $config.group(GroupName)
+        config.readObj('option', Option.instance)
+    end
+
+    def self.writeSettings
+        config = $config.group(GroupName)
+        config.writeObj('option', Option.instance)
     end
 end
 
@@ -661,6 +695,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
     # slot :
     def reloadStyleSheet
         $app.styleSheet = IO.read('resources/bbcstyle.qss')
+        @filterLineEdit.styleSheet = $app.styleSheet
         $log.info { 'Reloaded StyleSheet.' }
     end
 
