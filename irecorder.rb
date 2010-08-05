@@ -3,7 +3,7 @@
 #    2009 by ruby.twiddler@gmail.com
 #
 #     IPlayer interface
-#      record real audio/video (rtsp) stream
+#      record real/wma (rtsp/mms) audio/video stream
 #
 
 $KCODE = 'UTF8'
@@ -59,13 +59,14 @@ class ProgrammeTableWidget < Qt::TableWidget
     #
     class Programme
         attr_reader :titleItem, :categoriesItem, :updatedItem
-        attr_reader :content
+        attr_reader :content, :link
 
-        def initialize(title, categories, updated, content)
+        def initialize(title, categories, updated, content, link)
             @titleItem = Item.new(title)
             @categoriesItem = Item.new(categories)
             @updatedItem = Item.new(updated)
             @content = content
+            @link = link
         end
 
         def title
@@ -112,8 +113,8 @@ class ProgrammeTableWidget < Qt::TableWidget
         @table = Hash.new
     end
 
-    def addEntry( row, title, categories, updated, content )
-        entry = Programme.new(title, categories, updated, content)
+    def addEntry( row, title, categories, updated, content, link )
+        entry = Programme.new(title, categories, updated, content, link)
         setItem( row, 0, entry.titleItem )
         setItem( row, 1, entry.categoriesItem )
         setItem( row, 2, entry.updatedItem )
@@ -263,6 +264,7 @@ class MainWindow < KDE::MainWindow
 #         BBCNet.setProxy('http://194.36.10.154:3127')
         # initialize values
         $log = MyLogger.new(@logWin)
+        $log.level = MyLogger::INFO
         $log.info { 'Log Start.' }
 
         # assign from config file.
@@ -289,12 +291,12 @@ class MainWindow < KDE::MainWindow
     def createMenu
 
         # File menu
-        recordAction = KDE::Action.new(KDE::Icon.new('arrow-down'), 'Start &Download', self)
-        reloadStyleAction = KDE::Action.new(KDE::Icon.new('view-refresh'), '&Reload StyleSheet', self)
+        recordAction = KDE::Action.new(KDE::Icon.new('arrow-down'), i18n('Start &Download'), self)
+        reloadStyleAction = KDE::Action.new(KDE::Icon.new('view-refresh'), i18n('&Reload StyleSheet'), self)
         reloadStyleAction.setShortcut(KDE::Shortcut.new('Ctrl+R'))
-        clearStyleAction = KDE::Action.new(KDE::Icon.new('list-remove'), '&Clear StyleSheet', self)
+        clearStyleAction = KDE::Action.new(KDE::Icon.new('list-remove'), i18n('&Clear StyleSheet'), self)
         clearStyleAction.setShortcut(KDE::Shortcut.new('Ctrl+L'))
-        quitAction = KDE::Action.new(KDE::Icon.new('exit'), '&Quit', self)
+        quitAction = KDE::Action.new(KDE::Icon.new('exit'), i18n('&Quit'), self)
         quitAction.setShortcut(KDE::Shortcut.new('Ctrl+Q'))
         fileMenu = KDE::Menu.new('&File', self)
         fileMenu.addAction(recordAction)
@@ -309,9 +311,13 @@ class MainWindow < KDE::MainWindow
         connect(quitAction, SIGNAL(:triggered), self, SLOT(:close))
 
         # settings menu
+        playerDockAction = @playerDock.toggleViewAction
+        playerDockAction.text = i18n('Show Player')
         configureAppAction = KDE::Action.new(KDE::Icon.new('configure'),
                                               i18n("Configure #{APP_NAME}"), self)
         settingsMenu = KDE::Menu.new(i18n('&Settings'), self)
+        settingsMenu.addAction(playerDockAction)
+        settingsMenu.addSeparator
         settingsMenu.addAction(configureAppAction)
         # connect actions
         connect(configureAppAction, SIGNAL(:triggered), self, SLOT(:configureApp))
@@ -576,9 +582,9 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
     def createPlayerDock
         @playerDock = Qt::DockWidget.new(self) do |w|
             w.objectName = 'playerDock'
+            w.windowTitle = i18n('Player')
             w.allowedAreas = Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::BottomDockWidgetArea
             w.floating = true
-#             w.setTitleBarWidget(Qt::Label.new(i18n('Player')))
         end
         @playerWevView = Qt::WebView.new do |w|
             w.page.linkDelegationPolicy = Qt::WebPage::DelegateAllLinks
@@ -678,11 +684,19 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         return unless items.size > 0
 
         prog = @programmeTable[items[0].row]
-        url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
 
+        # big type console
+        url = prog.link
+        $log.info { "big console Url : #{url}" }
+
+        # old type console
+        url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
         $log.info { "episode Url : #{url}" }
         url = BBCNet.getPlayerConsoleUrl(url)
-        $log.info { "console Url : #{url}" }
+        $log.info { "old console Url : #{url}" }
+        url.sub!(%r{www}, 'beta')
+        $log.info { "new console Url : #{url}" }
+
         @playerDock.enabled = true
         @playerWevView.setUrl(Qt::Url.new(url))
     end
@@ -752,9 +766,10 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
             title = i.title.content.to_s
             updated = i.updated.content.to_s
             contents = i.content.content
+            link = i.links.find do |l| l.rel == 'self' end.href
             categories = i.categories.map do |c| c.term end.join(',')
             $log.misc { title }
-            @programmeTable.addEntry( r, title, categories, updated, contents )
+            @programmeTable.addEntry( r, title, categories, updated, contents, link )
         end
 
         @programmeTable.sortingEnabled = sortFlag

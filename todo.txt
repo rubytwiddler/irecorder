@@ -3,15 +3,13 @@ TODO - irecorder
    -overwrite check.
    -error retry.
    -get real broadcast length to check ok.
- *save configuration
- *configure Path
  *installer
  *right click open file/url
  *error dialog for misc errors.
  *clear downloaded files in task win.
  *auto download subscription tags
+ *feed backup
 
- *play with webkit
  *icon image
  *mencoder for dump
  *download from proxy (mplayer)
@@ -20,6 +18,8 @@ TODO - irecorder
  *log message level.
  *log limit line number
  *resume task
+ *fileName + sub category
+ *fileName + date
 
 success but message is error.
 INFO :realrtsp: Stream EOF detected
