@@ -10,6 +10,7 @@ TODO - irecorder
  *auto download subscription tags
  *feed cache
 
+ *cell pop up.
  *icon image
  *mencoder for dump
  *download from proxy (mplayer)
