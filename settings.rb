@@ -30,6 +30,15 @@ class SelectServiceDlg < KDE::Dialog
         @selectedName = @serviceList.selectedItems.first.text
         super
     end
+
+    def commandFromName(name)
+        name.gsub!(/&/, '')
+        puts "commandFromName : name : #{name}"
+        item = @services.find do |i| i.name == name end
+        puts "commandFromName : item : #{item.inspect}"
+        item ? item.exec : nil
+    end
+
     protected
     def createWidget
         mainWidget = VBoxLayoutWidget.new
@@ -44,16 +53,6 @@ class SelectServiceDlg < KDE::Dialog
     end
 
     class MimeServices
-        class Item
-            attr_reader :name, :entryName, :command, :service
-            def initialize(service)
-                @name = service.name
-                @entryName = service.desktopEntryName
-                @command= service.exec
-                @service = service
-            end
-        end
-
         AllOk = Proc.new do |s| true end
 
         def self.getServices(url, filterProc = AllOk)
@@ -63,7 +62,7 @@ class SelectServiceDlg < KDE::Dialog
 
             services.inject([]) do |l, s|
                 if s.exec and filterProc[s] then
-                    l << Item.new(s)
+                    l << s
                 end
                 l
             end
@@ -119,12 +118,32 @@ class IRecSettings < SettingsBase
         addBoolItem(:playerTypeBeta, true)
 
         addBoolItem(:useInnerPlayer, true)
-        addBoolItem(:useWebPlayer, true)
-        addStringItem(:webPlayerCommand, 'konqueror')
-        addBoolItem(:useInnerPlayer, true)
-        addStringItem(:directPlayerCommand, 'kmplayer')
+        addBoolItem(:useWebPlayer, false)
+        addStringItem(:webPlayerName, 'Konqueror')
+        addBoolItem(:useDirectPlayer, false)
+        addStringItem(:directPlayerName, 'KMPlayer')
     end
 
+    def webPlayerCommand
+        @webPlayerCnv.commandFromName(self.webPlayerName)
+    end
+
+    def self.webPlayerCommand
+        self.instance.webPlayerCommand
+    end
+
+    def directPlayerCommand
+        @directPlayerCnv.commandFromName(self.directPlayerName)
+    end
+
+    def self.directPlayerCommand
+        self.instance.directPlayerCommand
+    end
+
+    def regConverter(webPlayerCnv, directPlayerCnv)
+        @webPlayerCnv = webPlayerCnv
+        @directPlayerCnv = directPlayerCnv
+    end
 end
 
 
@@ -274,7 +293,9 @@ class PlayerSettingsPage < Qt::Widget
     def createWidget
         @SelectWebPlayerDlg = SelectWebPlayerDlg.new(self)
         @SelectDirectPlayerDlg = SelectDirectPlayerDlg.new(self)
-
+        IRecSettings.instance.regConverter(@SelectWebPlayerDlg, @SelectDirectPlayerDlg)
+        puts "web player:" + IRecSettings.webPlayerCommand.to_s
+        puts "direct player:" +  IRecSettings.directPlayerCommand.to_s
 
         @playerTypeSmall = Qt::RadioButton.new(i18n('small iplayer'))
         @playerTypeBeta = Qt::RadioButton.new(i18n('beta iplayer'))
@@ -283,20 +304,23 @@ class PlayerSettingsPage < Qt::Widget
         @webPlayer = Qt::RadioButton.new(i18n('Web Player'))
         @directPlayer = Qt::RadioButton.new(i18n('Direnct Stream Player'))
 
-        @webPlayerCommand = Qt::CommandLinkButton.new('Web Player')
-        @webPlayerCommand.connect(SIGNAL(:pressed)) do
+        @webPlayerName = KDE::PushButton.new('Web Player')
+        @webPlayerName.connect(SIGNAL(:pressed)) do
             if @SelectWebPlayerDlg.exec == Qt::Dialog::Accepted then
-                @webPlayerCommand.text = @SelectWebPlayerDlg.name
+                @webPlayerName.text = @SelectWebPlayerDlg.name
                 @webPlayer.checked = true
             end
         end
-        @directPlayerCommand = Qt::CommandLinkButton.new('Direct Player')
-        @directPlayerCommand.connect(SIGNAL(:pressed)) do
+        @webPlayerName.setProperty("kcfg_property", Qt::Variant.new("text"))
+
+        @directPlayerName = KDE::PushButton.new('Direct Player')
+        @directPlayerName.connect(SIGNAL(:pressed)) do
             if @SelectDirectPlayerDlg.exec == Qt::Dialog::Accepted then
-                @directPlayerCommand.text = @SelectDirectPlayerDlg.name
+                @directPlayerName.text = @SelectDirectPlayerDlg.name
                 @directPlayer.checked = true
             end
         end
+        @directPlayerName.setProperty("kcfg_property", Qt::Variant.new("text"))
 
         # set objectNames
         #  'kcfg_' + class Settings's instance name.
@@ -305,8 +329,8 @@ class PlayerSettingsPage < Qt::Widget
         @innerPlayer.objectName = 'kcfg_useInnerPlayer'
         @webPlayer.objectName = 'kcfg_useWebPlayer'
         @directPlayer.objectName = 'kcfg_useDirectPlayer'
-        @webPlayerCommand.objectName = 'kcfg_webPlayerCommand'
-        @directPlayerCommand.objectName = 'kcfg_directPlayerCommand'
+        @webPlayerName.objectName = 'kcfg_webPlayerName'
+        @directPlayerName.objectName = 'kcfg_directPlayerName'
 
 
         # layout
@@ -323,9 +347,9 @@ class PlayerSettingsPage < Qt::Widget
                             vbx = Qt::VBoxLayout.new do |vb|
                                 vb.addWidget(@innerPlayer)
                                 vb.addWidget(@webPlayer)
-                                vb.addWidgets('  ', @webPlayerCommand, nil)
+                                vb.addWidgets('  ', @webPlayerName, nil)
                                 vb.addWidget(@directPlayer)
-                                vb.addWidgets('  ', @directPlayerCommand, nil)
+                                vb.addWidgets('  ', @directPlayerName, nil)
                             end
                             g.setLayout(vbx)
                        end

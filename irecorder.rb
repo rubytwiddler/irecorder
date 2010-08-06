@@ -685,26 +685,68 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         items = @programmeTable.selectedItems
         return unless items.size > 0
 
-        prog = @programmeTable[items[0].row]
-
-        # big type console
-        url = prog.link
-        $log.info { "big console Url : #{url}" }
-
-        # old type console
-        url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
-        $log.info { "episode Url : #{url}" }
-        url = BBCNet.getPlayerConsoleUrl(url)
-        $log.info { "old console Url : #{url}" }
-
-        if IRecSettings.playerTypeBeta then
-            url.sub!(%r{www}, 'beta')
-            $log.info { "new console Url : #{url}" }
+        def makeProcCommand(command, url)
+            cmd, args = command.split(/\s+/, 2)
+            args = args.split(/\s+/).map do |a|
+                a.gsub(/%\w/, url)
+            end
+            [ cmd, args ]
         end
 
-        @playerDock.enabled = true
-        @playerWevView.setUrl(Qt::Url.new(url))
+        def getIplayerUrl(prog)
+            # big type console
+            url = prog.link
+            $log.info { "big console Url : #{url}" }
+
+            # old type console
+            url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
+            $log.info { "episode Url : #{url}" }
+            url = BBCNet.getPlayerConsoleUrl(url)
+            $log.info { "old console Url : #{url}" }
+
+            if IRecSettings.playerTypeBeta then
+                url.sub!(%r{www}, 'beta')
+                $log.info { "new console Url : #{url}" }
+            end
+            url
+        end
+
+        prog = @programmeTable[items[0].row]
+        webPlayerCommand = IRecSettings.webPlayerCommand
+        directPlayerCommand = IRecSettings.directPlayerCommand
+
+        begin
+            if IRecSettings.useInnerPlayer then
+                url = getIplayerUrl(prog)
+
+                @playerDock.show
+                @playerWevView.setUrl(Qt::Url.new(url))
+            elsif IRecSettings.useWebPlayer and webPlayerCommand then
+                $log.info { "Play on web browser" }
+                url = getIplayerUrl(prog)
+                cmd, args = makeProcCommand(webPlayerCommand, url)
+                $log.debug { "execute cmd '#{cmd}', args '#{args.inspect}'" }
+                proc = Qt::Process.new(self)
+                proc.start(cmd, args)
+
+            elsif IRecSettings.useDirectPlayer and directPlayerCommand then
+                $log.info { "Play direct" }
+                url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
+
+                $log.info { "episode Url : #{url}" }
+                url = BBCNet.getWmaFromUrl(url)
+
+                cmd, args = makeProcCommand(directPlayerCommand, url)
+
+                $log.debug { "execute cmd '#{cmd}', args '#{args.inspect}'" }
+                proc = Qt::Process.new(self)
+                proc.start(cmd, args)
+            end
+        rescue => e
+            $log.error { e }
+        end
     end
+
 
     # ------------------------------------------------------------------------
     #
