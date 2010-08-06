@@ -646,9 +646,9 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
     # ------------------------------------------------------------------------
     # slot :
     def reloadStyleSheet
-        $app.styleSheet = IO.read('resources/bbcstyle.qss')
-        @filterLineEdit.styleSheet = " "
-        @filterLineEdit.styleSheet = "/* */"
+        styleStr = IO.read('resources/bbcstyle.qss')
+        $app.styleSheet = styleStr
+        $app.styleSheet = styleStr
         $log.info { 'Reloaded StyleSheet.' }
     end
 

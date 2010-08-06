@@ -9,7 +9,14 @@ require 'korundum4'
 #
 class Qt::HBoxLayout
     def addWidgets(*w)
-        w.each do |e| self.addWidget(e) end
+        w.each do |i|
+            if i then
+                e = i.kind_of?(String) ? Qt::Label.new(i) : i
+                addWidget(e)
+            else
+                addStretch
+            end
+        end
     end
 end
 
@@ -17,13 +24,7 @@ class Qt::VBoxLayout
     def addWidgetWithNilStretch(*w)
         addLayout(
             Qt::HBoxLayout.new do |l|
-                w.each do |i|
-                    if i
-                        l.addWidget(i)
-                    else
-                        l.addStretch
-                    end
-                end
+                l.addWidgets(*w)
             end
         )
     end
@@ -95,6 +96,10 @@ class HBoxLayoutWidget < Qt::Widget
         @layout.addWidget(w)
     end
 
+    def addWidgets(*w)
+        @layout.addWidgets(*w)
+    end
+
     def layout
         @layout
     end
@@ -152,7 +157,7 @@ class SettingsBase < KDE::ConfigSkeleton
 
     def defineItem(name, valueMethod, itemClass, default)
         defineItemProperty(name, valueMethod)
-        item = itemClass.__send__(:new, currentGroup, name.to_s, default, default)
+        item = itemClass.new(currentGroup, name.to_s, default, default)
         addItem(item)
     end
 

@@ -6,24 +6,91 @@ require 'kio'
 
 #--------------------------------------------------------------------------
 #
-#
 # select from traders, system menu, arbitarary file.
-class SelectServiceDlg < KDE::ConfigDialog
-    def insertPlayerActions(menu, url)
-        mimeType = KDE::MimeType.findByUrl(KDE::Url.new(url))
-        mime = mimeType.name
-        services = KDE::MimeTypeTrader.self.query(mime)
+#
+class SelectServiceDlg < KDE::Dialog
+    def initialize(parent)
+        super(parent)
+        @message = i18n('Select Application')
+        userInitialize
+        @selectedName = @services[0].name
+        createWidget
+    end
 
-        services.each do |s|
-            if s.exec then
-                exeName = s.exec[/\w+/]
-#                 name = s.desktopEntryName
-                insertPlayer(menu, exeName, s.exec)
+    def userInitialize
+        @message = i18n('Select Application for .html file.')
+        @services = MimeServices::getServices('.html')
+    end
+
+    def name
+        @selectedName
+    end
+
+    def accept
+        @selectedName = @serviceList.selectedItems.first.text
+        super
+    end
+    protected
+    def createWidget
+        mainWidget = VBoxLayoutWidget.new
+        mainWidget.addWidget(Qt::Label.new(@message))
+        @serviceList = KDE::ListWidget.new
+        @serviceList.addItems( @services.map do |s| s.name end )
+        @selectFromMenu = KDE::PushButton.new(i18n('Select Other from Menu'))
+        mainWidget.addWidget(@serviceList)
+#         mainWidget.addWidget(@selectFromMenu)
+
+        setMainWidget(mainWidget)
+    end
+
+    class MimeServices
+        class Item
+            attr_reader :name, :entryName, :command, :service
+            def initialize(service)
+                @name = service.name
+                @entryName = service.desktopEntryName
+                @command= service.exec
+                @service = service
+            end
+        end
+
+        AllOk = Proc.new do |s| true end
+
+        def self.getServices(url, filterProc = AllOk)
+            mimeType = KDE::MimeType.findByUrl(KDE::Url.new(url))
+            mime = mimeType.name
+            services = KDE::MimeTypeTrader.self.query(mime)
+
+            services.inject([]) do |l, s|
+                if s.exec and filterProc[s] then
+                    l << Item.new(s)
+                end
+                l
             end
         end
     end
 
+end
 
+
+class SelectWebPlayerDlg < SelectServiceDlg
+    def userInitialize
+        @message = i18n('Select Web Player for iPlayer page.')
+        htmlAppFilter = Proc.new do |s|
+            s.name !~ /office/i and
+            s.serviceTypes.find do |st|
+                st =~ /application\//
+            end
+        end
+        @services = MimeServices::getServices('.html', htmlAppFilter)
+    end
+end
+
+class SelectDirectPlayerDlg < SelectServiceDlg
+    def userInitialize
+        @message = i18n('Select Direct Stream Player.')
+        @services = MimeServices::getServices('.wma')
+    end
 end
 
 #--------------------------------------------------------------------------
@@ -50,6 +117,12 @@ class IRecSettings < SettingsBase
 
         addBoolItem(:playerTypeSmall, false)
         addBoolItem(:playerTypeBeta, true)
+
+        addBoolItem(:useInnerPlayer, true)
+        addBoolItem(:useWebPlayer, true)
+        addStringItem(:webPlayerCommand, 'konqueror')
+        addBoolItem(:useInnerPlayer, true)
+        addStringItem(:directPlayerCommand, 'kmplayer')
     end
 
 end
@@ -86,9 +159,9 @@ class FolderSettingsPage < Qt::Widget
         @downloadDirLine.mode = KDE::File::Directory | KDE::File::LocalOnly
 
         @dirSampleLabel = Qt::Label.new('Example) ')
-        @dirAddMediaName = Qt::CheckBox.new(i18n('Add media name'))
-        @dirAddChannelName = Qt::CheckBox.new(i18n('Add channel name'))
-        @dirAddGenreName = Qt::CheckBox.new(i18n('Add genre name'))
+        @dirAddMediaName = Qt::CheckBox.new(i18n('Add media directory'))
+        @dirAddChannelName = Qt::CheckBox.new(i18n('Add channel directory'))
+        @dirAddGenreName = Qt::CheckBox.new(i18n('Add genre directory'))
         [ @dirAddMediaName, @dirAddChannelName, @dirAddGenreName ].each do |w|
             w.connect(SIGNAL('stateChanged(int)')) do |s| updateSampleDirName end
         end
@@ -123,22 +196,14 @@ class FolderSettingsPage < Qt::Widget
         # layout
         lo = Qt::VBoxLayout.new do |l|
             l.addWidget(Qt::Label.new(i18n('Download Directory')))
-            l.addLayout(Qt::HBoxLayout.new do |hl|
-                            hl.addWidget(Qt::Label.new('  '))
-                            hl.addWidget(@downloadDirLine)
-                        end
-                        )
+            l.addWidgets('  ', @downloadDirLine)
             l.addWidget(Qt::Label.new(i18n('Temporary Raw File Download Directory')))
-            l.addLayout(Qt::HBoxLayout.new do |hl|
-                            hl.addWidget(Qt::Label.new('  '))
-                            hl.addWidget(@rawFileDirLine)
-                        end
-                        )
-            l.addWidget(Qt::GroupBox.new(i18n('Generating directory name')) do |g|
+            l.addWidgets('  ', @rawFileDirLine)
+            l.addWidget(Qt::GroupBox.new(i18n('Generating directory')) do |g|
                             vbx = Qt::VBoxLayout.new do |vb|
                                 vb.addWidget(@dirSampleLabel)
                                 vb.addWidget(@dirAddMediaName)
-                                vb.addWidget(@dirAddChannelName)
+#                                 vb.addWidget(@dirAddChannelName)
                                 vb.addWidget(@dirAddGenreName)
                             end
                             g.setLayout(vbx)
@@ -147,13 +212,9 @@ class FolderSettingsPage < Qt::Widget
             l.addWidget(Qt::GroupBox.new(i18n('Generating file name')) do |g|
                             vbx = Qt::VBoxLayout.new do |vb|
                                 vb.addWidget(@fileSampleLabel)
-                                hbx = Qt::HBoxLayout.new do |hb|
-                                    hb.addWidget(Qt::Label.new(i18n('Head Text')))
-                                    hb.addWidget(@fileAddHeadStr)
-                                end
-                                vb.addLayout(hbx)
+                                vb.addWidgets(i18n('Head Text'), @fileAddHeadStr)
                                 vb.addWidget(@fileAddMediaName)
-                                vb.addWidget(@fileAddChannelName)
+#                                 vb.addWidget(@fileAddChannelName)
                                 vb.addWidget(@fileAddGenreName)
                             end
                             g.setLayout(vbx)
@@ -211,13 +272,41 @@ class PlayerSettingsPage < Qt::Widget
     protected
 
     def createWidget
+        @SelectWebPlayerDlg = SelectWebPlayerDlg.new(self)
+        @SelectDirectPlayerDlg = SelectDirectPlayerDlg.new(self)
+
+
         @playerTypeSmall = Qt::RadioButton.new(i18n('small iplayer'))
         @playerTypeBeta = Qt::RadioButton.new(i18n('beta iplayer'))
+
+        @innerPlayer = Qt::RadioButton.new(i18n('inner Player'))
+        @webPlayer = Qt::RadioButton.new(i18n('Web Player'))
+        @directPlayer = Qt::RadioButton.new(i18n('Direnct Stream Player'))
+
+        @webPlayerCommand = Qt::CommandLinkButton.new('Web Player')
+        @webPlayerCommand.connect(SIGNAL(:pressed)) do
+            if @SelectWebPlayerDlg.exec == Qt::Dialog::Accepted then
+                @webPlayerCommand.text = @SelectWebPlayerDlg.name
+                @webPlayer.checked = true
+            end
+        end
+        @directPlayerCommand = Qt::CommandLinkButton.new('Direct Player')
+        @directPlayerCommand.connect(SIGNAL(:pressed)) do
+            if @SelectDirectPlayerDlg.exec == Qt::Dialog::Accepted then
+                @directPlayerCommand.text = @SelectDirectPlayerDlg.name
+                @directPlayer.checked = true
+            end
+        end
 
         # set objectNames
         #  'kcfg_' + class Settings's instance name.
         @playerTypeSmall.objectName = 'kcfg_playerTypeSmall'
         @playerTypeBeta.objectName = 'kcfg_playerTypeBeta'
+        @innerPlayer.objectName = 'kcfg_useInnerPlayer'
+        @webPlayer.objectName = 'kcfg_useWebPlayer'
+        @directPlayer.objectName = 'kcfg_useDirectPlayer'
+        @webPlayerCommand.objectName = 'kcfg_webPlayerCommand'
+        @directPlayerCommand.objectName = 'kcfg_directPlayerCommand'
 
 
         # layout
@@ -230,6 +319,17 @@ class PlayerSettingsPage < Qt::Widget
                             g.setLayout(vbx)
                         end
                         )
+            l.addWidget(Qt::GroupBox.new(i18n('Player')) do |g|
+                            vbx = Qt::VBoxLayout.new do |vb|
+                                vb.addWidget(@innerPlayer)
+                                vb.addWidget(@webPlayer)
+                                vb.addWidgets('  ', @webPlayerCommand, nil)
+                                vb.addWidget(@directPlayer)
+                                vb.addWidgets('  ', @directPlayerCommand, nil)
+                            end
+                            g.setLayout(vbx)
+                       end
+                       )
             l.addStretch
         end
 
