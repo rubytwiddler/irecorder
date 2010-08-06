@@ -8,18 +8,38 @@ require 'kio'
 #
 # select from traders, system menu, arbitarary file.
 #
+module MimeServices
+    AllOk = Proc.new do |s| true end
+
+    def getServices(url, filterProc = AllOk)
+        mimeType = KDE::MimeType.findByUrl(KDE::Url.new(url))
+        mime = mimeType.name
+        services = KDE::MimeTypeTrader.self.query(mime)
+
+        services.inject([]) do |l, s|
+            if s.exec and filterProc[s] then
+                l << s
+            end
+            l
+        end
+    end
+end
+
 class SelectServiceDlg < KDE::Dialog
-    def initialize(parent)
+    include MimeServices
+    def initialize(parent, defaultName=nil)
         super(parent)
         @message = i18n('Select Application')
         userInitialize
+        self.windowTitle = @message
         @selectedName = @services[0].name
         createWidget
+        setSelected(defaultName)
     end
 
     def userInitialize
         @message = i18n('Select Application for .html file.')
-        @services = MimeServices::getServices('.html')
+        @services = getServices('.html')
     end
 
     def name
@@ -32,12 +52,30 @@ class SelectServiceDlg < KDE::Dialog
     end
 
     def commandFromName(name)
-        name.gsub!(/&/, '')
-        puts "commandFromName : name : #{name}"
-        item = @services.find do |i| i.name == name end
-        puts "commandFromName : item : #{item.inspect}"
-        item ? item.exec : nil
+        i = serviceFromName(name)
+        i ? i.exec : nil
     end
+
+    def serviceFromName(name)
+        name.gsub!(/&/, '')
+        return nil if @services.size == 0
+        service = @services.find(@services[0]) do |s| s.name == name end
+    end
+
+    def setSelected(name)
+        return unless name
+        name.gsub!(/&/, '')
+        return if @services.size == 0
+        unless name then
+            @serviceList.takeItem(0).setSelected(true)
+        else
+            items = @serviceList.findItems(name, Qt::MatchExactly)
+            if items.size > 0 then
+                items[0].setSelected(true)
+            end
+        end
+    end
+
 
     protected
     def createWidget
@@ -51,24 +89,6 @@ class SelectServiceDlg < KDE::Dialog
 
         setMainWidget(mainWidget)
     end
-
-    class MimeServices
-        AllOk = Proc.new do |s| true end
-
-        def self.getServices(url, filterProc = AllOk)
-            mimeType = KDE::MimeType.findByUrl(KDE::Url.new(url))
-            mime = mimeType.name
-            services = KDE::MimeTypeTrader.self.query(mime)
-
-            services.inject([]) do |l, s|
-                if s.exec and filterProc[s] then
-                    l << s
-                end
-                l
-            end
-        end
-    end
-
 end
 
 
@@ -81,16 +101,19 @@ class SelectWebPlayerDlg < SelectServiceDlg
                 st =~ /application\//
             end
         end
-        @services = MimeServices::getServices('.html', htmlAppFilter)
+        @services = getServices('.html', htmlAppFilter)
     end
 end
 
 class SelectDirectPlayerDlg < SelectServiceDlg
     def userInitialize
         @message = i18n('Select Direct Stream Player.')
-        @services = MimeServices::getServices('.wma')
+        @services = getServices('.wma')
     end
 end
+
+
+
 
 #--------------------------------------------------------------------------
 #
@@ -291,11 +314,12 @@ class PlayerSettingsPage < Qt::Widget
     protected
 
     def createWidget
-        @SelectWebPlayerDlg = SelectWebPlayerDlg.new(self)
-        @SelectDirectPlayerDlg = SelectDirectPlayerDlg.new(self)
+        @SelectWebPlayerDlg = SelectWebPlayerDlg.new(self, IRecSettings.webPlayerName)
+        @SelectDirectPlayerDlg = SelectDirectPlayerDlg.new(self, IRecSettings.directPlayerName)
         IRecSettings.instance.regConverter(@SelectWebPlayerDlg, @SelectDirectPlayerDlg)
         puts "web player:" + IRecSettings.webPlayerCommand.to_s
         puts "direct player:" +  IRecSettings.directPlayerCommand.to_s
+
 
         @playerTypeSmall = Qt::RadioButton.new(i18n('small iplayer'))
         @playerTypeBeta = Qt::RadioButton.new(i18n('beta iplayer'))
@@ -306,6 +330,7 @@ class PlayerSettingsPage < Qt::Widget
 
         @webPlayerName = KDE::PushButton.new('Web Player')
         @webPlayerName.connect(SIGNAL(:pressed)) do
+            @SelectWebPlayerDlg.setSelected(@webPlayerName.text)
             if @SelectWebPlayerDlg.exec == Qt::Dialog::Accepted then
                 @webPlayerName.text = @SelectWebPlayerDlg.name
                 @webPlayer.checked = true
@@ -315,6 +340,7 @@ class PlayerSettingsPage < Qt::Widget
 
         @directPlayerName = KDE::PushButton.new('Direct Player')
         @directPlayerName.connect(SIGNAL(:pressed)) do
+            @SelectDirectPlayerDlg.setSelected(@directPlayerName.text)
             if @SelectDirectPlayerDlg.exec == Qt::Dialog::Accepted then
                 @directPlayerName.text = @SelectDirectPlayerDlg.name
                 @directPlayer.checked = true
