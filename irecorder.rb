@@ -87,7 +87,8 @@ class ProgrammeTableWidget < Qt::TableWidget
     class Item < Qt::TableWidgetItem
         def initialize(text)
             super(text)
-            self.flags = 1 | 32    # Qt::ItemIsSelectable | Qt::ItemIsEnabled
+            self.flags = Qt::ItemIsSelectable | Qt::ItemIsEnabled
+            self.toolTip = text
         end
     end
 
@@ -121,7 +122,7 @@ class ProgrammeTableWidget < Qt::TableWidget
         @table[entry.titleItem] = entry
     end
 
-    # return Programme enttry.
+    # return Programme object.
     def [](row)
         @table[item(row,0)]
     end
@@ -646,7 +647,8 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
     # slot :
     def reloadStyleSheet
         $app.styleSheet = IO.read('resources/bbcstyle.qss')
-        @filterLineEdit.styleSheet = nil
+        @filterLineEdit.styleSheet = " "
+        @filterLineEdit.styleSheet = "/* */"
         $log.info { 'Reloaded StyleSheet.' }
     end
 

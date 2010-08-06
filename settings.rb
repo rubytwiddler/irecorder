@@ -6,6 +6,28 @@ require 'kio'
 
 #--------------------------------------------------------------------------
 #
+#
+# select from traders, system menu, arbitarary file.
+class SelectServiceDlg < KDE::ConfigDialog
+    def insertPlayerActions(menu, url)
+        mimeType = KDE::MimeType.findByUrl(KDE::Url.new(url))
+        mime = mimeType.name
+        services = KDE::MimeTypeTrader.self.query(mime)
+
+        services.each do |s|
+            if s.exec then
+                exeName = s.exec[/\w+/]
+#                 name = s.desktopEntryName
+                insertPlayer(menu, exeName, s.exec)
+            end
+        end
+    end
+
+
+end
+
+#--------------------------------------------------------------------------
+#
 # IRecorder Settings
 #
 class IRecSettings < SettingsBase
