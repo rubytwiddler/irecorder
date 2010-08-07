@@ -77,7 +77,7 @@ class TaskWindow < Qt::Widget
 
         def insertTaskItem(taskItem)
             sortFlag = sortingEnabled
-            sortingEnabled = false
+            self.sortingEnabled = false
 
             insertRow(0)
             setItem(0,SOURCE, taskItem.sourceUrlItem)
@@ -88,6 +88,21 @@ class TaskWindow < Qt::Widget
 
             self.sortingEnabled = sortFlag
         end
+
+        def each(&block)
+            a = []
+            rowCount.times do |r|
+                i = taskItemAtRow(r)
+                a << i if i
+            end
+            a.each do |i| block.call( i ) end
+        end
+
+        def deleteItem(i)
+            removeRow(i.id.row)
+            @taskItemTbl.delete(i.id)
+        end
+
 
         # context menu : right click popup menu.
         protected
@@ -181,11 +196,13 @@ class TaskWindow < Qt::Widget
         def getContextUrl(wItem)
             ti = taskItemAtRow(wItem.row)
             return nil unless ti
+            rawFilePath = File.join(IRecSettings.rawDownloadDir.path, ti.savePath)
+            filePath = File.join(IRecSettings.downloadDir.path, ti.savePath)
             url =   case wItem.column
                     when SOURCE
                         ti.sourceUrl
                     when FILE
-                        File.exist?(ti.savePath) ? ti.savePath : nil
+                        File.exist?(filePath) ? filePath : rawFilePath
                     else
                         nil
                     end
@@ -200,7 +217,7 @@ class TaskWindow < Qt::Widget
             args = args.split(/\s+/).map do |a|
                 a.gsub(/%\w/, url)
             end
-#             cmd = './testwarg.rb'     # debug test
+#             cmd = 'test/testarg.rb'     # debug test
             $log.debug { "execute cmd '#{cmd}', args '#{args.inspect}'" }
             proc = Qt::Process.new(self)
             proc.start(cmd, args)
@@ -222,9 +239,8 @@ class TaskWindow < Qt::Widget
 
         # contextMenu Event
         def openFolder(wItem)
-            ti = taskItemAtRow(wItem.row)
             proc = Qt::Process.new(self)
-            proc.start('dolphin', [File.dirname(ti.savePath)])
+            proc.start('dolphin', [File.dirname(getContextUrl(wItem))])
         end
 
         # contextMenu Event
@@ -233,7 +249,11 @@ class TaskWindow < Qt::Widget
 
         # contextMenu Event
         def clearAllErrors(wItem)
+            self.each do |i|
+                deleteItem(i) if i.status =~ /error/i
+            end
         end
+
     end
 
     #--------------------------------------------
@@ -242,7 +262,7 @@ class TaskWindow < Qt::Widget
     class Item < Qt::TableWidgetItem
         def initialize(text)
             super(text)
-            self.flags = 1 | 16 | 32    # Qt::ItemIsSelectable | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled
+            self.flags = Qt::ItemIsSelectable | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled
         end
     end
 
@@ -289,11 +309,12 @@ class TaskWindow < Qt::Widget
         taskItem
     end
 
-    def each
-        @table.rowCount.times do |r|
-            i = @table.taskItemAtRow(r)
-            yield( i ) if i
-        end
+    def each(&block)
+        @table.each(&block)
+#         @table.rowCount.times do |r|
+#             i = @table.taskItemAtRow(r)
+#             yield( i ) if i
+#         end
     end
 end
 

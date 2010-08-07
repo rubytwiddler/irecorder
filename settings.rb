@@ -53,7 +53,7 @@ class SelectServiceDlg < KDE::Dialog
 
     def commandFromName(name)
         i = serviceFromName(name)
-        i ? i.exec : nil
+        i && i.exec
     end
 
     def serviceFromName(name)

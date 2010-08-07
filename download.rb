@@ -13,12 +13,13 @@ class DownloadProcess < Qt::Process
     FINISHED = 2
 
     # status
-    RUNNING = 0
-    ERROR = 1
-    STOP = 2
+    INITIAL = 0
+    RUNNING = 1
+    ERROR = 2
+    DONE = 3
     def status
         return %w{ Downloading Converting Finished }[@stage] if @status == RUNNING
-        %w( Running Error Finished )[@status]
+        %w( Initial Running Error Finished )[@status]
     end
 
     class Command
@@ -26,7 +27,7 @@ class DownloadProcess < Qt::Process
         def initialize(app, args, msg)
             @app = app
             @args = args
-            @message = msg
+            @msg = msg
         end
     end
 
@@ -36,14 +37,12 @@ class DownloadProcess < Qt::Process
         @startTime = Time.new
         @sourceUrl = src
         @rawFileName = fName
-        $log.info { "@rawFileName : #{@rawFileName}" }
-        $log.info { "rawDownloadDir : #{IRecSettings.rawDownloadDir.path}" }
         @rawFilePath = File.join(IRecSettings.rawDownloadDir.path, fName)
         mkdirSavePath(@rawFilePath)
         $log.info { "@rawFilePath : #{@rawFilePath }" }
 
         @stage = DOWNLOAD
-        @status = STOP
+        @status = INITIAL
 
         connect(self, SIGNAL('finished(int,QProcess::ExitStatus)'), self, SLOT('taskFinished(int,QProcess::ExitStatus)') )
     end
@@ -65,7 +64,6 @@ class DownloadProcess < Qt::Process
         @stage += 1
         case @stage
         when DOWNLOAD
-            @startTime = Time.new
             beginDownload
         when CONVERT
             beginConvert
@@ -81,7 +79,6 @@ class DownloadProcess < Qt::Process
             # retry
             case @stage
             when DOWNLOAD
-                @startTime = Time.new
                 beginDownload
             when CONVERT
                 beginConvert
@@ -97,13 +94,14 @@ class DownloadProcess < Qt::Process
 
     protected
     def beginDownload
+        $log.info { " DownloadProcess : beginDownload." }
         @stage = DOWNLOAD
         @downNG = true
         self.status = RUNNING
         @currentCommand = makeMPlayerDownloadCmd
 
-        start(@currentCommand.app, @currentCommand.args)
         $log.info { @currentCommand.msg }
+        start(@currentCommand.app, @currentCommand.args)
     end
 
     def makeMPlayerDownloadCmd
@@ -113,9 +111,11 @@ class DownloadProcess < Qt::Process
         cmdApp = "mplayer"
         cmdArgs = ['-noframedrop', '-dumpfile', @rawFilePath, '-dumpstream', @sourceUrl]
 
-#         # debug code.
-#         cmdApp = "touch"
-#         cmdArgs = [ @rawFilePath ]
+        # debug code.
+        if rand > 0.4 then
+            cmdApp = "touch"
+            cmdArgs = [ 'a/b', @rawFilePath ]
+        end
 
         Command.new( cmdApp, cmdArgs, cmdMsg )
     end
@@ -137,8 +137,8 @@ class DownloadProcess < Qt::Process
 #         cmdArgs = [ '-f', @rawFilePath, @outFilePath ]
 
         @currentCommand = Command.new( cmdApp, cmdArgs, cmdMsg )
-        start(@currentCommand.app, @currentCommand.args)
         $log.info { @currentCommand.msg }
+        start(@currentCommand.app, @currentCommand.args)
     end
 
 
@@ -198,9 +198,13 @@ class DownloadProcess < Qt::Process
         checkReadOutput
         if (exitCode.to_i.nonzero? || exitStatus.to_i.nonzero?) && checkErroredStatus then
             self.status = ERROR
-            msgs = [ makeErrorMsg, "exitCode=#{exitCode}, exitStatus=#{exitStatus}" ]
-            $log.error { msgs }
+            $log.error { [ makeErrorMsg, "exitCode=#{exitCode}, exitStatus=#{exitStatus}" ] }
         else
+            $log.info {
+                [ "Successed to download a File '%#2$s'",
+                    "Successed to convert a File '%#2$s'", ][@stage] %
+                [ @sourceUrl, @rawFilePath ]
+            }
             nextTask
         end
     end
@@ -219,9 +223,8 @@ class DownloadProcess < Qt::Process
 
     protected
     def allTaskFinished
-        $log.info { "'#{@rawFilePath}' Downloading finished." }
         @stage = FINISHED
-        self.status = STOP
+        self.status = DONE
     end
 
     def makeErrorMsg

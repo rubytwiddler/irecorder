@@ -228,6 +228,7 @@ class ProgrammeTableWidget < Qt::TableWidget
 
         rescue => e
             $log.error { e }
+            KDE::MessageBox::information(self, i18n("There is not direct stream for this programme."))
         end
     end
 end
@@ -586,6 +587,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
             w.windowTitle = i18n('Player')
             w.allowedAreas = Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea | Qt::BottomDockWidgetArea
             w.floating = true
+            w.hide
         end
         @playerWevView = Qt::WebView.new do |w|
             w.page.linkDelegationPolicy = Qt::WebPage::DelegateAllLinks
@@ -744,6 +746,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
             end
         rescue => e
             $log.error { e }
+            KDE::MessageBox::information(self, i18n("There is not direct stream for this programme."))
         end
     end
 
@@ -803,6 +806,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         rss = RSS::Parser.parse(rssRaw)
         sortFlag = @programmeTable.sortingEnabled
         @programmeTable.sortingEnabled = false
+        @programmeTable.hide
         @programmeTable.clearContents
         @filterLineEdit.clear
         @programmeTable.rowCount = rss.entries.size
@@ -820,6 +824,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         end
 
         @programmeTable.sortingEnabled = sortFlag
+        @programmeTable.show
     end
 
     def setMediaFilter
@@ -862,6 +867,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
                 startDownOneFile(url, fName)
             rescue => e
                 $log.error { e }
+                KDE::MessageBox::information(self, i18n("There is not direct stream for programme '%s'.") % [prog.title])
             end
         end
     end

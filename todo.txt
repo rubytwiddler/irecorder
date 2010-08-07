@@ -3,14 +3,14 @@ TODO - irecorder
    -overwrite check.
    -error retry.
    -get real broadcast length to check ok.
+   - http 404 and no rawfile.
  *installer
  *right click open file/url
- *error dialog for misc errors.
+ *error dialog for misc errors. download/convert error. and retry.
  *clear downloaded files in task win.
- *auto download subscription tags
  *feed cache
+ *auto download subscription tags
 
- *cell pop up.
  *icon image
  *mencoder for dump
  *download from proxy (mplayer)
