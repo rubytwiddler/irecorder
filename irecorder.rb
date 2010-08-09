@@ -216,7 +216,9 @@ class ProgrammeTableWidget < Qt::TableWidget
             url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
 
             $log.info { "episode Url : #{url}" }
-            url = BBCNet.getWmaFromUrl(url)
+#             url = BBCNet.getWmaFromUrl(url)
+            minfo = BBCNet::MetaInfo.get(url).update
+            url = minfo.wma
 
             cmd, args = exe.split(/\s+/, 2)
             args = args.split(/\s+/).map do |a|
@@ -736,7 +738,10 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
                 url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
 
                 $log.info { "episode Url : #{url}" }
-                url = BBCNet.getWmaFromUrl(url)
+#                 url = BBCNet.getWmaFromUrl(url)
+                minfo = BBCNet::MetaInfo.get(url).update
+                $log.info { "#{minfo.inspect}" }
+                url = minfo.wma.url
 
                 cmd, args = makeProcCommand(directPlayerCommand, url)
 
@@ -859,7 +864,9 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
                 url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
 
                 $log.info { "episode Url : #{url}" }
-                url = BBCNet.getWmaFromUrl(url)
+#                 url = BBCNet.getWmaFromUrl(url)
+                minfo = BBCNet::MetaInfo.get(url).update
+                url = minfo.wma
 
                 fName = getSaveName(prog, 'wma')
                 $log.info { "save name : #{fName}" }

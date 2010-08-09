@@ -6,6 +6,7 @@ TODO - irecorder
    - http 404 and no rawfile.
  *installer
  *right click open file/url
+ *solve confliction of generated file names.
  *error dialog for misc errors. download/convert error. and retry.
  *clear downloaded files in task win.
  *feed cache

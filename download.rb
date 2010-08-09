@@ -7,6 +7,9 @@ class DownloadProcess < Qt::Process
     attr_reader     :sourceUrl, :fileName
     attr_accessor   :taskItem
 
+    #
+    DEBUG_DOWNLOAD = true
+
     # stage
     DOWNLOAD = 0
     CONVERT = 1
@@ -17,9 +20,37 @@ class DownloadProcess < Qt::Process
     RUNNING = 1
     ERROR = 2
     DONE = 3
-    def status
-        return %w{ Downloading Converting Finished }[@stage] if @status == RUNNING
-        %w( Initial Running Error Finished )[@status]
+    def statusMessage
+        case @status
+        when INITIAL, RUNNING, DONE
+            %w{ Downloading Converting Finished }[@stage]
+        when ERROR
+            "Error : " + %w{ Download Convert Finish }[@stage]
+        else
+            "???"
+        end
+    end
+
+    def status=(st)
+        @status = st
+        @taskItem.status = statusMessage if @taskItem
+        $log.misc { "status:#{status}" }
+    end
+
+    def running?
+        @status == RUNNING
+    end
+
+    def error?
+        @status == ERROR
+    end
+
+    def finished?
+        @status == FINISHED
+    end
+
+    def rawDownloaded?
+        @stage >= CONVERT
     end
 
     class Command
@@ -34,6 +65,7 @@ class DownloadProcess < Qt::Process
     def initialize(parent, src, fName)
         super(parent)
         @parent = parent
+        @taskItem = nil
         @startTime = Time.new
         @sourceUrl = src
         @rawFileName = fName
@@ -48,7 +80,6 @@ class DownloadProcess < Qt::Process
     end
 
 
-    public
     def beginTask
         # 1st stage : download
 #         if File.exist?(@rawFilePath) then
@@ -59,6 +90,66 @@ class DownloadProcess < Qt::Process
         beginDownload
     end
 
+
+    def retryTask
+        $log.debug { "retry! in main." }
+        if error? then
+            # retry
+            case @stage
+            when DOWNLOAD
+                @startTime = Time.new
+                beginDownload
+            when CONVERT
+                @startTime = Time.new
+                beginConvert
+            end
+        else
+            $log.warn { "cannot retry the successfully finished or running process." }
+        end
+    end
+
+    def cancelTask
+        if running? then
+            self.terminate
+        end
+    end
+
+    def updateLapse
+        taskItem.updateTime(lapse)
+    end
+
+    def lapse
+        Time.now - @startTime
+    end
+
+    # slot :
+    def taskFinished(exitCode, exitStatus)
+        checkReadOutput
+        if (exitCode.to_i.nonzero? || exitStatus.to_i.nonzero?) && checkErroredStatus then
+            self.status = ERROR
+            $log.error { [ makeErrorMsg, "exitCode=#{exitCode}, exitStatus=#{exitStatus}" ] }
+        else
+            $log.info {
+                [ "Successed to download a File '%#2$s'",
+                    "Successed to convert a File '%#2$s'", ][@stage] %
+                [ @sourceUrl, @rawFilePath ]
+            }
+            nextTask
+        end
+    end
+
+    def updateView
+        if running? then
+            # update Lapse time
+            updateLapse
+
+            # dump IO message buffer
+            checkReadOutput
+        end
+    end
+
+
+    protected
     # increment stage
     def nextTask
         @stage += 1
@@ -73,26 +164,6 @@ class DownloadProcess < Qt::Process
         end
     end
 
-    def retryTask
-        $log.debug { "retry! in main." }
-        if @status == ERROR
-            # retry
-            case @stage
-            when DOWNLOAD
-                beginDownload
-            when CONVERT
-                beginConvert
-            end
-        else
-            $log.warn { "cannot retry the successfully finished or running process." }
-        end
-    end
-
-    def running?
-        @status == RUNNING
-    end
-
-    protected
     def beginDownload
         $log.info { " DownloadProcess : beginDownload." }
         @stage = DOWNLOAD
@@ -112,9 +183,14 @@ class DownloadProcess < Qt::Process
         cmdArgs = ['-noframedrop', '-dumpfile', @rawFilePath, '-dumpstream', @sourceUrl]
 
         # debug code.
-        if rand > 0.4 then
-            cmdApp = "touch"
-            cmdArgs = [ 'a/b', @rawFilePath ]
+        if DEBUG_DOWNLOAD then
+            if rand > 0.2 then
+                cmdApp = "test/sleepjob.rb"
+                cmdArgs = %w{ touch a/b/ }
+            else
+                cmdApp = "test/sleepjob.rb"
+                cmdArgs = %w{ touch } << @rawFilePath.shellescape
+            end
         end
 
         Command.new( cmdApp, cmdArgs, cmdMsg )
@@ -132,9 +208,17 @@ class DownloadProcess < Qt::Process
         cmdApp = "nice"
         cmdArgs = [ '-n', '19', 'ffmpeg', '-i', @rawFilePath, '-f', 'mp3', @outFilePath ]
 
-#         # debug code.
-#         cmdApp = "cp"
-#         cmdArgs = [ '-f', @rawFilePath, @outFilePath ]
+
+        # debug code.
+        if DEBUG_DOWNLOAD then
+            if rand > 0.2 then
+                cmdApp = "test/sleepjob.rb"
+                cmdArgs = %w{ touch a/b/ }
+            else
+                cmdApp = "test/sleepjob.rb"
+                cmdArgs = %w{ cp -f } + [ @rawFilePath.shellescape, @outFilePath.shellescape ]
+            end
+        end
 
         @currentCommand = Command.new( cmdApp, cmdArgs, cmdMsg )
         $log.info { @currentCommand.msg }
@@ -144,7 +228,11 @@ class DownloadProcess < Qt::Process
 
     def removeRawFile
         unless IRecSettings.leaveRawFile then
-            File.delete(@rawFilePath)
+            begin
+                File.delete(@rawFilePath)
+            rescue => e
+                $log.error { e }
+            end
         end
     end
 
@@ -177,48 +265,6 @@ class DownloadProcess < Qt::Process
     end
 
 
-    public
-    def status=(st)
-        @status = st
-        taskItem.status = status
-        $log.misc { "status:#{status}" }
-    end
-
-
-    def updateLapse
-        taskItem.updateTime(lapse)
-    end
-
-    def lapse
-        Time.now - @startTime
-    end
-
-    # slot :
-    def taskFinished(exitCode, exitStatus)
-        checkReadOutput
-        if (exitCode.to_i.nonzero? || exitStatus.to_i.nonzero?) && checkErroredStatus then
-            self.status = ERROR
-            $log.error { [ makeErrorMsg, "exitCode=#{exitCode}, exitStatus=#{exitStatus}" ] }
-        else
-            $log.info {
-                [ "Successed to download a File '%#2$s'",
-                    "Successed to convert a File '%#2$s'", ][@stage] %
-                [ @sourceUrl, @rawFilePath ]
-            }
-            nextTask
-        end
-    end
-
-
-    def updateView
-        if running? then
-            # update Lapse time
-            updateLapse
-
-            # dump IO message buffer
-            checkReadOutput
-        end
-    end
 
 
     protected

@@ -158,6 +158,12 @@ class TaskWindow < Qt::Widget
             if sts =~ /Error/i
                 a = menu.addAction(KDE::Icon.new('view-refresh'), 'Retry')
                 a.setVData('retryTask@')
+                a = menu.addAction(KDE::Icon.new('list-remove'), 'Remove')
+                a.setVData('removeTask@')
+            end
+            if sts =~ /\w+ing\b/i
+                a = menu.addAction(KDE::Icon.new('edit-delete'), 'Cancel')
+                a.setVData('cancelTask@')
             end
             a = menu.addAction(KDE::Icon.new('edit-clear-list'), 'Clear All Finished.')
             a.setVData('clearAllFinished@')
@@ -202,7 +208,7 @@ class TaskWindow < Qt::Widget
                     when SOURCE
                         ti.sourceUrl
                     when FILE
-                        File.exist?(filePath) ? filePath : rawFilePath
+                        ti.process.rawDownloaded? ? filePath : rawFilePath
                     else
                         nil
                     end
@@ -231,10 +237,23 @@ class TaskWindow < Qt::Widget
         # contextMenu Event
         def retryTask(wItem)
             ti = taskItemAtRow(wItem.row)
-            if ti then
+            if ti and ti.process.error? then
                 ti.process.retryTask
-                $log.debug { "task restarted." }
+                $log.info { "task restarted." }
             end
+        end
+
+        # contextMenu Event
+        def cancelTask(wItem)
+            ti = taskItemAtRow(wItem.row)
+            if ti and ti.process.running? then
+                ti.process.cancelTask
+                $log.info { "task canceled." }
+            end
+        end
+
+        # contextMenu Event
+        def removeTask(wItem)
         end
 
         # contextMenu Event
@@ -245,12 +264,15 @@ class TaskWindow < Qt::Widget
 
         # contextMenu Event
         def clearAllFinished(wItem)
+            self.each do |i|
+                deleteItem(i) if i.process.finished?
+            end
         end
 
         # contextMenu Event
         def clearAllErrors(wItem)
             self.each do |i|
-                deleteItem(i) if i.status =~ /error/i
+                deleteItem(i) if i.process.error?
             end
         end
 
@@ -311,10 +333,6 @@ class TaskWindow < Qt::Widget
 
     def each(&block)
         @table.each(&block)
-#         @table.rowCount.times do |r|
-#             i = @table.taskItemAtRow(r)
-#             yield( i ) if i
-#         end
     end
 end
 
