@@ -1,0 +1,116 @@
+#!/usr/bin/php
+<?php
+  /*
+    iplayer_url
+    
+    BBC iPlayer RTMP feed URL generator
+    Pass URL or programme page, iplayer page or just programme ID, prints out RTMP feed URL.
+    e.g. iplayer_url http://www.bbc.co.uk/iplayer/page/item/b008mfcn.shtml
+    
+    Copyright (C) 2008 Iain Wallace iain@strawp.net
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License version 3 as 
+    published by the Free Software Foundation.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see http://www.gnu.org/licenses/.    
+  */
+  
+  // Media selector base
+  define( "MS_BASE", "http://www.bbc.co.uk/mediaselector/3/stream/check/iplayer?pid=" );
+  define( "PLAYER_BASE", "http://www.bbc.co.uk/iplayer/page/item/" );
+  define( "META_BASE", "http://www.bbc.co.uk/iplayer/metafiles/episode/" );
+  
+  // These are all worked out at run-time in the real iPlayer, but they all seem to just use this anyway
+  define( "STREAM_IP", "217.243.192.45" );
+  define( "STREAM_PORT", "1935" );
+  define( "STREAM_PROTOCOL", "rtmp" );
+  
+  
+  // Whether to find out what the stream server IP is or just to use the default
+  $getip = false;
+  
+  // $verbose = false just outputs the stream URL
+  $verbose = true;
+  
+  if( $verbose ){
+    echo "
+iplayer_url  Copyright (C) 2008 Iain Wallace iain@strawp.net
+This program comes with ABSOLUTELY NO WARRANTY.
+This is free software, and you are welcome to redistribute it
+under the GPLv3 license.
+
+Usage:
+iplayer_url <iPlayer programme URL | Programme page URL | PID>
+\n\n";
+  }
+  
+  if( !preg_match( "/([a-z0-9]+)(\.shtml)?$/", $argv[1], $m ) ) die( "That doesn't look like a valid programme to me\n" );
+  $pid = $m[1];
+  
+  // Check for versions in the metadata XML file
+  if( $verbose ) echo "Getting meta data from ".META_BASE.$pid.".xml...\n";
+  $meta = simplexml_load_file( META_BASE.$pid.".xml" );
+  $str = getStringFromXpath( $meta, "/iplayerMedia/concept/versions/version/pid" );
+  if( $str ){
+    $pid = $str;
+    if( $verbose ) echo "Setting PID as ".$pid.", based on versions available\n";
+  }
+  
+  // Output some other information about the media
+  $aPaths = array(
+    "title",
+    "subtitle"
+  );
+  foreach( $aPaths as $path ){
+    if( $verbose ) echo $path.": ".getStringFromXpath( $meta, "/iplayerMedia/concept/".$path )."\n";
+  }
+  
+  // Get media selector info
+  if( $verbose ) echo "Getting media selector from ".MS_BASE.$pid."...\n";
+  $ms_data = simplexml_load_file( MS_BASE.$pid );
+  
+  
+  $aVars = array( "token", "identifier", "server" );
+  
+  // Get all the vars from the media selector XML
+  foreach( $aVars as $var ){
+    $$var = getStringFromXpath( $ms_data, "/stream/".$var );
+  }
+  
+  $auth = 'auth=' . $token . '&aifp=v001&slist=' . $identifier;
+  
+  // Get the ident
+  if( $getip ){
+    if( $verbose ) echo "Getting IP address from ident info from http://".$server."/fcs/ident...\n";
+    $ident = simplexml_load_file( "http://".$server."/fcs/ident" );
+    $str = getStringFromXpath( $ident, "/fcs/ip" );
+    if( $str ){
+      $ip = $str;
+    }else{
+      $ip = STREAM_IP;
+    }
+  }else $ip = STREAM_IP;
+
+  // RTMP and port 1935 are defaults of the actual application
+  $url = STREAM_PROTOCOL."://".$ip.':'.STREAM_PORT.'/ondemand?_fcs_vhost='.$server."&".$auth;
+  
+  if( $verbose ) echo "\nStream URL:\n";
+  echo $url;
+  if( $verbose ) echo "\n";
+  
+  function getStringFromXpath( $xml, $xpath ){
+    $obj = $xml->xpath($xpath);
+    if( isset( $obj[0][0] ) ){ 
+      return $obj[0][0];
+    }
+    return false;
+  }
+  
+?>
