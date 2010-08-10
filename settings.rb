@@ -9,6 +9,8 @@ require "mylibs.rb"
 #
 # select from traders, system menu, arbitarary file.
 #
+class KDE::ListWidget
+end
 
 class SelectServiceDlg < KDE::Dialog
     def initialize(parent, defaultName=nil)
@@ -28,6 +30,10 @@ class SelectServiceDlg < KDE::Dialog
 
     def name
         @selectedName
+    end
+
+    def iconName
+        SelectServiceDlg.exeName2IconName(serviceFromName(name).exec)
     end
 
     def accept
@@ -60,13 +66,21 @@ class SelectServiceDlg < KDE::Dialog
         end
     end
 
+    def self.exeName2IconName(exeName)
+        iconName = exeName.gsub(%r{[^ ]*/}, '')[/([-_\w\d])+/] .
+            gsub(/(dragon)/, '\1player').gsub(/kfmclient/, 'konqueror')
+    end
 
     protected
     def createWidget
         mainWidget = VBoxLayoutWidget.new
         mainWidget.addWidget(Qt::Label.new(@message))
         @serviceList = KDE::ListWidget.new
-        @serviceList.addItems( @services.map do |s| s.name end )
+        @services.each do |s|
+            iconName = SelectServiceDlg.exeName2IconName(s.exec)
+            puts "icon name : " + iconName
+            @serviceList.addItem( Qt::ListWidgetItem.new(KDE::Icon.new(iconName), s.name) )
+        end
         @selectFromMenu = KDE::PushButton.new(i18n('Select Other from Menu'))
         mainWidget.addWidget(@serviceList)
 #         mainWidget.addWidget(@selectFromMenu)
@@ -91,7 +105,7 @@ end
 class SelectDirectPlayerDlg < SelectServiceDlg
     def userInitialize
         @message = i18n('Select Direct Stream Player.')
-        @services = getServices('.wma')
+        @services = Mime.services('.wma')
     end
 end
 
@@ -311,21 +325,23 @@ class PlayerSettingsPage < Qt::Widget
         @webPlayer = Qt::RadioButton.new(i18n('Web Player'))
         @directPlayer = Qt::RadioButton.new(i18n('Direnct Stream Player'))
 
-        @webPlayerName = KDE::PushButton.new('Web Player')
+        @webPlayerName = KDE::PushButton.new('Konqueror')
         @webPlayerName.connect(SIGNAL(:pressed)) do
             @SelectWebPlayerDlg.setSelected(@webPlayerName.text)
             if @SelectWebPlayerDlg.exec == Qt::Dialog::Accepted then
                 @webPlayerName.text = @SelectWebPlayerDlg.name
+#                 @webPlayerName.setIcon(KDE::Icon.new(@SelectWebPlayerDlg.iconName))
                 @webPlayer.checked = true
             end
         end
         @webPlayerName.setProperty("kcfg_property", Qt::Variant.new("text"))
 
-        @directPlayerName = KDE::PushButton.new('Direct Player')
+        @directPlayerName = KDE::PushButton.new('KMPlayer')
         @directPlayerName.connect(SIGNAL(:pressed)) do
             @SelectDirectPlayerDlg.setSelected(@directPlayerName.text)
             if @SelectDirectPlayerDlg.exec == Qt::Dialog::Accepted then
                 @directPlayerName.text = @SelectDirectPlayerDlg.name
+#                 @directPlayerName.setIcon(KDE::Icon.new(@SelectDirectPlayerDlg.iconName))
                 @directPlayer.checked = true
             end
         end
