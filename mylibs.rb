@@ -201,35 +201,6 @@ end
 #
 #
 
-
-class String
-    def double_quote
-        '"' + self + '"'
-    end
-    alias   :dquote :double_quote
-
-    def single_quote
-        "'" + self + "'"
-    end
-    alias   :squote :single_quote
-
-    def _chomp_null
-        gsub(/\0.*/, '')
-    end
-
-    def sql_quote
-        str = _chomp_null
-        return 'NULL' if str.empty?
-        "'#{str.sql_escape}'"
-    end
-
-    def sql_escape
-        str = _chomp_null
-        str.gsub(/\\/, '\&\&').gsub(/'/, "''")    #'
-    end
-end
-
-
 module Enumerable
     class Proxy
         instance_methods.each { |m| undef_method(m) unless m.match(/^__/) }
@@ -266,5 +237,43 @@ class Qt::Action
 
     def vData
         self.data.toString
+    end
+end
+
+module Mime
+    def self.services(url)
+        mimeType = KDE::MimeType.findByUrl(KDE::Url.new(url))
+        mime = mimeType.name
+        services = KDE::MimeTypeTrader.self.query(mime)
+    end
+end
+
+#
+#
+#
+class String
+    def double_quote
+        '"' + self + '"'
+    end
+    alias   :dquote :double_quote
+
+    def single_quote
+        "'" + self + "'"
+    end
+    alias   :squote :single_quote
+
+    def _chomp_null
+        gsub(/\0.*/, '')
+    end
+
+    def sql_quote
+        str = _chomp_null
+        return 'NULL' if str.empty?
+        "'#{str.sql_escape}'"
+    end
+
+    def sql_escape
+        str = _chomp_null
+        str.gsub(/\\/, '\&\&').gsub(/'/, "''")    #'
     end
 end

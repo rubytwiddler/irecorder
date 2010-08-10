@@ -154,6 +154,8 @@ class TaskWindow < Qt::Widget
             if poColumn == FILE
                 a = menu.addAction(KDE::Icon.new('kfm'), 'Open Folder')
                 a.setVData('openFolder@')
+                a = menu.addAction(KDE::Icon.new('kfm'), 'Open Temp Folder')
+                a.setVData('openTempFolder@')
             end
             if sts =~ /Error/i
                 a = menu.addAction(KDE::Icon.new('view-refresh'), 'Retry')
@@ -180,11 +182,7 @@ class TaskWindow < Qt::Widget
         end
 
         def insertPlayerActions(menu, url)
-            mimeType = KDE::MimeType.findByUrl(KDE::Url.new(url))
-            mime = mimeType.name
-            services = KDE::MimeTypeTrader.self.query(mime)
-
-            services.each do |s|
+            Mime::services(url).each do |s|
                 if s.exec then
                     exeName = s.exec[/\w+/]
     #                 name = s.desktopEntryName
@@ -258,8 +256,20 @@ class TaskWindow < Qt::Widget
 
         # contextMenu Event
         def openFolder(wItem)
+            ti = taskItemAtRow(wItem.row)
+            return unless ti
+            filePath = File.join(IRecSettings.downloadDir.path, File.dirname(ti.savePath))
             proc = Qt::Process.new(self)
-            proc.start('dolphin', [File.dirname(getContextUrl(wItem))])
+            proc.start('dolphin', [filePath])
+        end
+
+        # contextMenu Event
+        def openTempFolder(wItem)
+            ti = taskItemAtRow(wItem.row)
+            return unless ti
+            rawFilePath = File.join(IRecSettings.rawDownloadDir.path, File.dirname(ti.savePath))
+            proc = Qt::Process.new(self)
+            proc.start('dolphin', [rawFilePath])
         end
 
         # contextMenu Event

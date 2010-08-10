@@ -2,31 +2,15 @@
 #    2007 by ruby.twiddler@gmail.com
 #
 require 'kio'
+require "mylibs.rb"
 
 
 #--------------------------------------------------------------------------
 #
 # select from traders, system menu, arbitarary file.
 #
-module MimeServices
-    AllOk = Proc.new do |s| true end
-
-    def getServices(url, filterProc = AllOk)
-        mimeType = KDE::MimeType.findByUrl(KDE::Url.new(url))
-        mime = mimeType.name
-        services = KDE::MimeTypeTrader.self.query(mime)
-
-        services.inject([]) do |l, s|
-            if s.exec and filterProc[s] then
-                l << s
-            end
-            l
-        end
-    end
-end
 
 class SelectServiceDlg < KDE::Dialog
-    include MimeServices
     def initialize(parent, defaultName=nil)
         super(parent)
         @message = i18n('Select Application')
@@ -39,7 +23,7 @@ class SelectServiceDlg < KDE::Dialog
 
     def userInitialize
         @message = i18n('Select Application for .html file.')
-        @services = getServices('.html')
+        @services = Mime.services('.html')
     end
 
     def name
@@ -95,13 +79,12 @@ end
 class SelectWebPlayerDlg < SelectServiceDlg
     def userInitialize
         @message = i18n('Select Web Player for iPlayer page.')
-        htmlAppFilter = Proc.new do |s|
+        @services = Mime.services('.html').select do |s|
             s.name !~ /office/i and
             s.serviceTypes.find do |st|
                 st =~ /application\//
             end
         end
-        @services = getServices('.html', htmlAppFilter)
     end
 end
 

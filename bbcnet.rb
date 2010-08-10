@@ -22,7 +22,8 @@ class BBCNet
 
     #------------------------------------------------------------------------
     # get stream metadata
-    # episode url => pid => xml playlist => version pid (vpid aka. identifier) => xml stream metadata => wma
+    # episode url => pid => xml playlist => version pid (vpid aka. identifier)
+    #   => xml stream metadata => wma
     #
     class MetaInfo
         def self.get(url)
@@ -57,7 +58,7 @@ class BBCNet
             return self if @vpid
 
             res = BBCNet.read("http://www.bbc.co.uk/iplayer/playlist/#{@pid}")
-#             res = IO.read("../tmp/iplayer-playlist-me.xml")
+#             res = IO.read("tmp/iplayer-playlist-me.xml")
 
             doc = Nokogiri::XML(res)
             item = doc.at_css("item")
@@ -88,7 +89,7 @@ class BBCNet
             readXmlPlaylist unless @vpid
 
             res = BBCNet.read("http://www.bbc.co.uk/mediaselector/4/mtis/stream/#{vpid}")
-#             res = IO.read("../tmp/iplayer-stream-meta-me.xml")
+#             res = IO.read("tmp/iplayer-stream-meta-me.xml")
 
             doc = Nokogiri::XML(res)
             me = doc.css("media")
@@ -228,10 +229,6 @@ if __FILE__ == $0 then
     if ARGV.size > 0 then
         pid = ARGV.shift
     end
-#     info = BBCNet.getInfo(pid)
-#     puts info.inspect
-#     puts "duration : " + info.duration
-#     puts "mp3 : " + info.streamDirectUrl(['mp3'])
     minfo = BBCNet::MetaInfo.new(pid)
     minfo.readXmlStreamMeta
     puts minfo.inspect
@@ -239,9 +236,4 @@ if __FILE__ == $0 then
     minfo.streams.each do |s|
         puts "url : " + s.url
     end
-
-    oldMethodUrl = BBCNet.getRawUrlsFromPid(pid)
-    puts "old method url : " + oldMethodUrl.inspect
-
-    puts "  old wma url : " + BBCNet.getDirectStreamUrl( oldMethodUrl['wma'] )
 end

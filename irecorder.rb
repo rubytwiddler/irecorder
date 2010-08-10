@@ -196,14 +196,9 @@ class ProgrammeTableWidget < Qt::TableWidget
     end
 
     def insertPlayerActions(menu)
-        mimeType = KDE::MimeType.findByUrl(KDE::Url.new('.wma'))
-        mime = mimeType.name
-        services = KDE::MimeTypeTrader.self.query(mime)
-
-        services.each do |s|
+        Mime::services('.wma').each do |s|
             if s.exec then
                 exeName = s.exec[/\w+/]
-#                 name = s.desktopEntryName
                 a = menu.addAction(KDE::Icon.new(exeName), 'Play with ' + exeName)
                 a.setVData('play@' + s.exec)
             end
@@ -216,9 +211,8 @@ class ProgrammeTableWidget < Qt::TableWidget
             url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
 
             $log.info { "episode Url : #{url}" }
-#             url = BBCNet.getWmaFromUrl(url)
             minfo = BBCNet::MetaInfo.get(url).update
-            url = minfo.wma
+            url = minfo.wma.url
 
             cmd, args = exe.split(/\s+/, 2)
             args = args.split(/\s+/).map do |a|
@@ -738,9 +732,8 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
                 url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
 
                 $log.info { "episode Url : #{url}" }
-#                 url = BBCNet.getWmaFromUrl(url)
                 minfo = BBCNet::MetaInfo.get(url).update
-                $log.info { "#{minfo.inspect}" }
+                $log.debug { "#{minfo.inspect}" }
                 url = minfo.wma.url
 
                 cmd, args = makeProcCommand(directPlayerCommand, url)
@@ -864,9 +857,8 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
                 url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
 
                 $log.info { "episode Url : #{url}" }
-#                 url = BBCNet.getWmaFromUrl(url)
                 minfo = BBCNet::MetaInfo.get(url).update
-                url = minfo.wma
+                url = minfo.wma.url
 
                 fName = getSaveName(prog, 'wma')
                 $log.info { "save name : #{fName}" }
