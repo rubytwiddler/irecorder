@@ -185,7 +185,6 @@ class TaskWindow < Qt::Widget
             Mime::services(url).each do |s|
                 if s.exec then
                     exeName = s.exec[/\w+/]
-    #                 name = s.desktopEntryName
                     insertPlayer(menu, exeName, s.exec)
                 end
             end
@@ -252,6 +251,12 @@ class TaskWindow < Qt::Widget
 
         # contextMenu Event
         def removeTask(wItem)
+            ti = taskItemAtRow(wItem.row)
+            if ti and ti.process.running? then
+                ti.process.cancelTask
+                $log.info { "task canceled." }
+            end
+            deleteItem(ti)
         end
 
         # contextMenu Event

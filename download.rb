@@ -37,6 +37,8 @@ class DownloadProcess < Qt::Process
         $log.misc { "status:#{status}" }
     end
 
+    #--------------------------
+    # check status
     def running?
         @status == RUNNING
     end
@@ -45,8 +47,10 @@ class DownloadProcess < Qt::Process
         @status == ERROR
     end
 
+    #--------------------------
+    # check stage
     def finished?
-        @status == FINISHED
+        @stage == FINISHED
     end
 
     def rawDownloaded?
@@ -184,7 +188,7 @@ class DownloadProcess < Qt::Process
 
         # debug code.
         if DEBUG_DOWNLOAD then
-            if rand > 0.2 then
+            if rand > 0.4 then
                 cmdApp = "test/sleepjob.rb"
                 cmdArgs = %w{ touch a/b/ }
             else
@@ -211,7 +215,7 @@ class DownloadProcess < Qt::Process
 
         # debug code.
         if DEBUG_DOWNLOAD then
-            if rand > 0.2 then
+            if rand > 0.4 then
                 cmdApp = "test/sleepjob.rb"
                 cmdArgs = %w{ touch a/b/ }
             else

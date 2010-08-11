@@ -78,7 +78,6 @@ class SelectServiceDlg < KDE::Dialog
         @serviceList = KDE::ListWidget.new
         @services.each do |s|
             iconName = SelectServiceDlg.exeName2IconName(s.exec)
-            puts "icon name : " + iconName
             @serviceList.addItem( Qt::ListWidgetItem.new(KDE::Icon.new(iconName), s.name) )
         end
         @selectFromMenu = KDE::PushButton.new(i18n('Select Other from Menu'))

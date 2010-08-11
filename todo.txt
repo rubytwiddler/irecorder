@@ -5,10 +5,9 @@ TODO - irecorder
    -get real broadcast length to check ok.
    - http 404 and no rawfile.
  *installer
- *right click open file/url
  *solve confliction of generated file names.
  *error dialog for misc errors. download/convert error. and retry.
- *clear downloaded files in task win.
+   -restrain frequent error pop up
  *feed cache
  *auto download subscription tags
 
