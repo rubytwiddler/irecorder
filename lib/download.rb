@@ -259,7 +259,7 @@ class DownloadProcess < Qt::Process
             @downNG
         when CONVERT
             begin
-                getDuration(@outFilePath) < getDuration(@rawFilePath) -4
+                AudilFile.getDuration(@outFilePath) < AudilFile.getDuration(@rawFilePath) -4
             rescue => e
                 true
             end

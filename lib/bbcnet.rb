@@ -58,7 +58,7 @@ class BBCNet
             return self if @vpid
 
             res = BBCNet.read("http://www.bbc.co.uk/iplayer/playlist/#{@pid}")
-#             res = IO.read("tmp/iplayer-playlist-me.xml")
+#             res = IO.read("../tmp/iplayer-playlist-me.xml")
 
             doc = Nokogiri::XML(res)
             item = doc.at_css("item")
@@ -89,7 +89,7 @@ class BBCNet
             readXmlPlaylist unless @vpid
 
             res = BBCNet.read("http://www.bbc.co.uk/mediaselector/4/mtis/stream/#{vpid}")
-#             res = IO.read("tmp/iplayer-stream-meta-me.xml")
+#             res = IO.read("../tmp/iplayer-stream-meta-me.xml")
 
             doc = Nokogiri::XML(res)
             me = doc.css("media")
@@ -204,7 +204,7 @@ end
 
 module AudioFile
     # return seconds of audio file duration.
-    def getDuration(file)
+    def self.getDuration(file)
         case file[/\.\w+$/].downcase
         when ".mp3"
             cmd = "| exiftool -S -Duration %s" % file.shellescape
@@ -221,10 +221,12 @@ module AudioFile
     end
 end
 
-include AudioFile
 
 
 if __FILE__ == $0 then
+    puts AudioFile::getDuration(ARGV.shift)
+    exit 0
+
     pid = "b00mzvfq"
     if ARGV.size > 0 then
         pid = ARGV.shift

@@ -1,0 +1,35 @@
+BBC iPlayer like audio recorder with KDE GUI.
+You can browse BBC Radio programmes and click to download stream file.
+file will be converted mp3 files automatically.
+iplayer allow to play without any other browser or play on your prefered browser.
+
+ Installation
+============
+install most important package kdebinding4.
+ on Mandriva Linux use urpmi command.
+
+  # sudo urpmi kdebinding4
+
+install mplayer ffmpeg exiftool packages if necessary
+
+  # sudo urpmi mplayer ffmpeg perl-Image-ExifTool
+
+install nokogiri gem.
+  # sudo gem install nokogiri
+
+Finally you can install irecorder.
+
+  # sudo gem install irecorder
+
+launch irecorder just type irecorder.rb
+
+  # irecorder.rb
+
+
+ Build Gem
+============
+if you want to gem package from source, use rake command.
+
+  # rake gem
+
+
