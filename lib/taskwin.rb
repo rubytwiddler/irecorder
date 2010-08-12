@@ -335,7 +335,7 @@ class TaskWindow < Qt::Widget
         @table.horizontalHeader.restoreState(config.readEntry('Header', @table.horizontalHeader.saveState))
     end
 
-    # retun : ID    # practicaly
+    # return : added TaskItem
     public
     def addTask(process, src, save)
         # insert at the top

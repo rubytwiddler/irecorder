@@ -1,17 +1,17 @@
 TODO - irecorder
  *error handling
    -overwrite check.
-   -error retry.
+   -error auto retry.
    -get real broadcast length to check ok.
    - http 404 and no rawfile.
- *installer
- *solve confliction of generated file names.
+ *solve conflict of generated file names.
  *error dialog for misc errors. download/convert error. and retry.
    -restrain frequent error pop up
  *feed cache
- *auto download subscription tags
+ *rpm package for Mandriva.
 
  *icon image
+ *auto download subscription tags
  *mencoder for dump
  *download from proxy (mplayer)
  *status bar for processing.

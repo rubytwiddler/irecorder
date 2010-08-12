@@ -12,7 +12,7 @@ require 'ftools'
 APP_NAME = File.basename(__FILE__).sub(/\.rb/, '')
 APP_DIR = File.expand_path(File.dirname(__FILE__))
 LIB_DIR = File::join(File::dirname(APP_DIR), "lib")
-APP_VERSION = "0.0.2"
+APP_VERSION = "0.0.3"
 
 # standard libs
 require 'rubygems'
