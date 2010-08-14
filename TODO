@@ -5,10 +5,10 @@ TODO - irecorder
    -get real broadcast length to check ok.
    - http 404 and no rawfile.
  *solve conflict of generated file names.
+   -remove data
  *error dialog for misc errors. download/convert error. and retry.
    -restrain frequent error pop up
  *feed cache
- *rpm package for Mandriva.
 
  *icon image
  *auto download subscription tags

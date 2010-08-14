@@ -1,3 +1,5 @@
+require 'fileutils'
+
 require "bbcnet.rb"
 
 #-------------------------------------------------------------------
@@ -80,7 +82,7 @@ class DownloadProcess < Qt::Process
         @rawFileName = fName
         @rawFilePath = File.join(IRecSettings.rawDownloadDir.path, fName)
         mkdirSavePath(@rawFilePath)
-        $log.info { "@rawFilePath : #{@rawFilePath }" }
+        $log.debug { "@rawFilePath : #{@rawFilePath }" }
 
         @stage = DOWNLOAD
         @status = INITIAL
@@ -91,22 +93,25 @@ class DownloadProcess < Qt::Process
 
     def beginTask
         # 1st stage : download
-#         if File.exist?(@rawFilePath) then
-#             @stage = CONVERT
-#             @outFileName = @rawFileName.gsub(/\.\w+$/i, '.mp3')
-#             @outFilePath = File.join(IRecSettings.downloadDir.path, @outFileName)
-#             if File.exist?(@outFilePath) then
-#                 taskFinished(1,0)
-#             else
-#                 $log.debug { "begin convert" }
-#                 beginConvert
-#                 return
-#             end
-#         else
-#             beginDownload
-#         end
+        if File.exist?(@rawFilePath) then
+            @stage = CONVERT
+            @outFileName = @rawFileName.gsub(/\.\w+$/i, '.mp3')
+            @outFilePath = File.join(IRecSettings.downloadDir.path, @outFileName)
+            $log.debug { "@rawFilePath duration:" + AudioFile.getDuration(@rawFilePath).to_s }
+            $log.debug { "@outFilePath duration:" + AudioFile.getDuration(@outFilePath).to_s }
+            $log.debug { "metainf duration:" + @metaInfo.duration.to_s }
+            if File.exist?(@outFilePath) then
+                taskFinished(1,0)
+            else
+                $log.debug { "begin convert" }
+                beginConvert
+                return
+            end
+        else
+            beginDownload
+        end
 
-        beginDownload
+#         beginDownload
     end
 
 
@@ -271,16 +276,18 @@ class DownloadProcess < Qt::Process
     def checkErroredStatus
         case @stage
         when DOWNLOAD
-            @downNG if @downNG
+            return @downNG if @downNG
             begin
-                AudioFile.getDuration(@rawFilePath) > @metaInfo.duration - 5
+                $log.debug { "check duration for download." }
+                AudioFile.getDuration(@rawFilePath) < @metaInfo.duration - 5
             rescue => e
                 $log.info{ e }
                 true
             end
         when CONVERT
             begin
-                AudioFile.getDuration(@outFilePath) < AudioFile.getDuration(@rawFilePath) -5
+                $log.debug { "check duration for convert." }
+                AudioFile.getDuration(@outFilePath) < @metaInfo.duration - 40
             rescue => e
                 $log.info{ e }
                 true
@@ -314,3 +321,5 @@ class DownloadProcess < Qt::Process
         end
     end
 end
+
+

@@ -263,7 +263,7 @@ class MainWindow < KDE::MainWindow
 #         BBCNet.setProxy('http://194.36.10.154:3127')
         # initialize values
         $log = MyLogger.new(@logWin)
-        $log.level = MyLogger::INFO
+        $log.level = MyLogger::DEBUG
         $log.info { 'Log Start.' }
 
         # assign from config file.

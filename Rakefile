@@ -12,7 +12,7 @@ spec = Gem::Specification.new do |s|
     s.platform = "linux"
     s.summary = "BBC iPlayer like audio recorder with KDE GUI."
     s.files = FileList["{bin,lib}/**/*"].to_a
-    s.files += %w{ README MIT-LICENSE Rakefile resources/bbcstyle.qss irecorder }
+    s.files += %w{ README MIT-LICENSE Rakefile resources/bbcstyle.qss }
     s.executables = [ 'irecorder.rb' ]
     s.license  = "MIT-LICENSE"
     s.require_path = "lib"
@@ -62,6 +62,6 @@ task :install4rpm do
         installToDir(f, destDir)
     end
 
-    installToDir('irecorder', File.join(prefix, 'bin'), :mode => 0755)
+    installToDir('bin/irecorder', prefix, :mode => 0755)
 end
 
