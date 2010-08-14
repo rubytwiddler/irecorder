@@ -337,9 +337,10 @@ class TaskWindow < Qt::Widget
 
     # return : added TaskItem
     public
-    def addTask(process, src, save)
+    def addTask(process)
         # insert at the top
-
+        src = process.sourceUrl
+        save = process.rawFileName
         taskItem = TaskItem.new(process, src, save, 0, 'prepare')
         @table.insertTaskItem(taskItem)
 

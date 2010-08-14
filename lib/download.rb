@@ -1,3 +1,5 @@
+require "bbcnet.rb"
+
 #-------------------------------------------------------------------
 #
 #
@@ -8,14 +10,14 @@ class DownloadProcess < Qt::Process
     attr_accessor   :taskItem
 
     #
-    DEBUG_DOWNLOAD = true
+    DEBUG_DOWNLOAD = false
 
-    # stage
+    # @stage
     DOWNLOAD = 0
     CONVERT = 1
     FINISHED = 2
 
-    # status
+    # @status
     INITIAL = 0
     RUNNING = 1
     ERROR = 2
@@ -66,12 +68,15 @@ class DownloadProcess < Qt::Process
         end
     end
 
-    def initialize(parent, src, fName)
+    attr_reader :sourceUrl, :rawFileName
+
+    def initialize(parent, metaInfo, fName)
         super(parent)
+        @metaInfo = metaInfo
         @parent = parent
         @taskItem = nil
         @startTime = Time.new
-        @sourceUrl = src
+        @sourceUrl = @metaInfo.wma.url
         @rawFileName = fName
         @rawFilePath = File.join(IRecSettings.rawDownloadDir.path, fName)
         mkdirSavePath(@rawFilePath)
@@ -87,10 +92,20 @@ class DownloadProcess < Qt::Process
     def beginTask
         # 1st stage : download
 #         if File.exist?(@rawFilePath) then
-#             $log.debug { "begin convert" }
-#             beginConvert
-#             return
+#             @stage = CONVERT
+#             @outFileName = @rawFileName.gsub(/\.\w+$/i, '.mp3')
+#             @outFilePath = File.join(IRecSettings.downloadDir.path, @outFileName)
+#             if File.exist?(@outFilePath) then
+#                 taskFinished(1,0)
+#             else
+#                 $log.debug { "begin convert" }
+#                 beginConvert
+#                 return
+#             end
+#         else
+#             beginDownload
 #         end
+
         beginDownload
     end
 
@@ -256,11 +271,18 @@ class DownloadProcess < Qt::Process
     def checkErroredStatus
         case @stage
         when DOWNLOAD
-            @downNG
+            @downNG if @downNG
+            begin
+                AudioFile.getDuration(@rawFilePath) > @metaInfo.duration - 5
+            rescue => e
+                $log.info{ e }
+                true
+            end
         when CONVERT
             begin
-                AudilFile.getDuration(@outFilePath) < AudilFile.getDuration(@rawFilePath) -4
+                AudioFile.getDuration(@outFilePath) < AudioFile.getDuration(@rawFilePath) -5
             rescue => e
+                $log.info{ e }
                 true
             end
         else

@@ -34,7 +34,7 @@ class BBCNet
         end
 
         attr_reader :pid
-        Keys = [ :duration, :vpid, :group, :media, :onAirDate, :channel, :title, :summary, :aacLow, :aacStd, :mp3, :wma, :streams ]
+        Keys = [ :duration, :vpid, :group, :media, :onAirDate, :channel, :title, :summary, :aacLow, :aacStd, :real, :wma, :streams ]
         def initialize(pid)
             @pid = pid
             Keys.each do |k|
@@ -80,8 +80,7 @@ class BBCNet
             alias       :kind :type
 
             def url
-                return @url if @url
-                @url = BBCNet.getDirectStreamUrl(@indirectUrl)
+                @url ||= BBCNet.getDirectStreamUrl(@indirectUrl)
             end
         end
 
@@ -97,7 +96,8 @@ class BBCNet
                 stmInf = StreamInfo.new
                 stmInf.encoding = m[:encoding]  # wma
                 stmInf.bitrate = m[:bitrate].to_i    # 48
-                stmInf.expires = BBCNet.getTime(m[:expires])    #
+                expiresStr = m[:expires]
+                stmInf.expires = BBCNet.getTime(expiresStr)  if expiresStr
                 stmInf.type = m[:kind]          # audio
 
                 con = m.at_css("connection")
@@ -113,6 +113,8 @@ class BBCNet
                     else
                         @aacStd = stmInf
                     end
+                when /\breal\b/i
+                    @real = stmInf
                 end
             end
             self
@@ -129,6 +131,7 @@ class BBCNet
         par = ((1..6).inject([]) do |a, n| a << tm[n].to_i end)
         Time.gm( *par )
     end
+
 
     #------------------------------------------------------------------------
     #

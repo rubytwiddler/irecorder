@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 #
-#    2009 by ruby.twiddler@gmail.com
+#    2010 by ruby.twiddler@gmail.com
 #
 #     IPlayer interface
 #      record real/wma (rtsp/mms) audio/video stream
@@ -10,8 +10,8 @@ $KCODE = 'UTF8'
 require 'ftools'
 
 APP_NAME = File.basename(__FILE__).sub(/\.rb/, '')
-APP_DIR = File.expand_path(File.dirname(__FILE__))
-LIB_DIR = File::join(File::dirname(APP_DIR), "lib")
+APP_DIR = File::dirname(File.expand_path(File.dirname(__FILE__)))
+LIB_DIR = File::join(APP_DIR, "lib")
 APP_VERSION = "0.0.3"
 
 # standard libs
@@ -253,7 +253,7 @@ class MainWindow < KDE::MainWindow
         setCaption(APP_NAME)
 
 
-        $app.styleSheet = IO.read('resources/bbcstyle.qss')
+        $app.styleSheet = IO.read(APP_DIR + '/resources/bbcstyle.qss')
 
         createWidgets
         createMenu
@@ -645,7 +645,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
     # ------------------------------------------------------------------------
     # slot :
     def reloadStyleSheet
-        styleStr = IO.read('resources/bbcstyle.qss')
+        styleStr = IO.read(APP_DIR + '/resources/bbcstyle.qss')
         $app.styleSheet = styleStr
         $app.styleSheet = styleStr
         $log.info { 'Reloaded StyleSheet.' }
@@ -864,8 +864,8 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
                 fName = getSaveName(prog, 'wma')
                 $log.info { "save name : #{fName}" }
 
-                startDownOneFile(url, fName)
-            rescue => e
+                startDownOneFile(minfo, fName)
+            rescue Timeout::Error, StandardError => e
                 $log.error { e }
                 KDE::MessageBox::information(self, i18n("There is not direct stream for programme '%s'.") % [prog.title])
             end
@@ -949,14 +949,14 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
 
     #-------------------------------------------------------------------
     # parameter
-    #  source : source url of download file.
+    #  metaInfo : source stream MetaInfo of download file.
     #  fName : save file name.
     #
     # start Dwnload One file.
     protected
-    def startDownOneFile(source, fName)
-        process = DownloadProcess.new(self, source, fName)
-        process.taskItem = @taskWin.addTask(process, source, fName)
+    def startDownOneFile(metaInfo, fName)
+        process = DownloadProcess.new(self, metaInfo, fName)
+        process.taskItem = @taskWin.addTask(process)
         process.beginTask
     end
 

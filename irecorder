@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+require 'rbconfig'
+require 'ftools'
+
+conf = Config::CONFIG
+sitelibdir = conf['sitelibdir']
+name = File.basename(__FILE__)
+load( File.join(sitelibdir, "#{name}/bin/#{name}.rb") )
