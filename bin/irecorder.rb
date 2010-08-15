@@ -12,7 +12,7 @@ require 'ftools'
 APP_NAME = File.basename(__FILE__).sub(/\.rb/, '')
 APP_DIR = File::dirname(File.expand_path(File.dirname(__FILE__)))
 LIB_DIR = File::join(APP_DIR, "lib")
-APP_VERSION = "0.0.3"
+APP_VERSION = "0.0.4"
 
 # standard libs
 require 'rubygems'
@@ -37,200 +37,8 @@ require "mylibs"
 require "logwin"
 require "taskwin"
 require "download"
+require "programmewin"
 require "settings"
-
-
-
-
-
-#---------------------------------------------------------------------------------------------
-#---------------------------------------------------------------------------------------------
-
-
-
-
-
-#---------------------------------------------------------------------------------------------
-#
-#
-class ProgrammeTableWidget < Qt::TableWidget
-    slots   'filterChanged(const QString &)'
-
-    #
-    #
-    class Programme
-        attr_reader :titleItem, :categoriesItem, :updatedItem
-        attr_reader :content, :link
-
-        def initialize(title, categories, updated, content, link)
-            @titleItem = Item.new(title)
-            @categoriesItem = Item.new(categories)
-            @updatedItem = Item.new(updated)
-            @content = content
-            @link = link
-        end
-
-        def title
-            @titleItem.text
-        end
-
-        def categories
-            @categoriesItem.text
-        end
-
-        def updated
-            @updatedItem.text
-        end
-    end
-
-    #
-    #
-    class Item < Qt::TableWidgetItem
-        def initialize(text)
-            super(text)
-            self.flags = Qt::ItemIsSelectable | Qt::ItemIsEnabled
-            self.toolTip = text
-        end
-    end
-
-
-    #------------------------------------------------------------------------
-    #
-    #
-    attr_accessor :mediaFilter
-
-    def initialize()
-        super(0, 3)
-
-        setHorizontalHeaderLabels(['Title', 'Category', 'Updated'])
-        self.horizontalHeader.stretchLastSection = true
-        self.selectionBehavior = Qt::AbstractItemView::SelectRows
-        self.alternatingRowColors = true
-        self.sortingEnabled = true
-        sortByColumn(2, Qt::DescendingOrder )
-
-        @mediaFilter = ''
-
-        # Hash table : key column_0_item  => Programme entry.
-        @table = Hash.new
-    end
-
-    def addEntry( row, title, categories, updated, content, link )
-        entry = Programme.new(title, categories, updated, content, link)
-        setItem( row, 0, entry.titleItem )
-        setItem( row, 1, entry.categoriesItem )
-        setItem( row, 2, entry.updatedItem )
-        @table[entry.titleItem] = entry
-    end
-
-    # return Programme object.
-    def [](row)
-        @table[item(row,0)]
-    end
-
-
-    #
-    # slot : called when filterLineEdit text is changed.
-    #
-    public
-
-    def filterChanged(text)
-        return unless text
-
-        text += ' ' + @mediaFilter unless @mediaFilter.empty?
-
-        regxs = text.split(/[,\s]+/).map do |w|
-                    /#{Regexp.escape(w.strip)}/i
-        end
-        rowCount.times do |r|
-            i0 = item(r,0)
-            i1 = item(r,1)
-            i2 = item(r,2)
-            txt = ((i0 && i0.text) || '') + ((i1 && i1.text) || '') + ((i2 && i2.text) || '')
-            if regxs.all? do |rx| rx =~ txt end then
-                showRow(r)
-            else
-                hideRow(r)
-            end
-        end
-    end
-
-    GroupName = "ProgrammeTable"
-    def writeSettings
-        config = $config.group(GroupName)
-        config.writeEntry('Header', horizontalHeader.saveState)
-    end
-
-    def readSettings
-        config = $config.group(GroupName)
-        horizontalHeader.restoreState(config.readEntry('Header', horizontalHeader.saveState))
-    end
-
-    protected
-    def contextMenuEvent(e)
-        item = itemAt(e.pos)
-        menu = createPopup
-        execPopup(menu, e.globalPos, item)
-    end
-
-    def createPopup()
-        menu = Qt::Menu.new
-        insertPlayerActions(menu)
-        menu
-    end
-
-    def execPopup(menu, pos, item)
-        action = menu.exec(pos)
-        if action then
-            action.data
-#             $log.code { "execute : '#{action.vData}'" }
-                cmd, exe = action.vData.split(/@/, 2)
-#                 $log.code { "cmd(#{cmd}), exe(#{exe})" }
-                case cmd
-                when 'play'
-                    playMedia(exe, item)
-                else
-#                     self.method(cmd).call(item)
-                end
-        end
-        menu.deleteLater
-    end
-
-    def insertPlayerActions(menu)
-        Mime::services('.wma').each do |s|
-            if s.exec then
-                exeName = s.exec[/\w+/]
-                a = menu.addAction(KDE::Icon.new(exeName), 'Play with ' + exeName)
-                a.setVData('play@' + s.exec)
-            end
-        end
-    end
-
-    def playMedia(exe, item)
-        begin
-            prog = self[item.row]
-            url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
-
-            $log.info { "episode Url : #{url}" }
-            minfo = BBCNet::MetaInfo.get(url).update
-            url = minfo.wma.url
-
-            cmd, args = exe.split(/\s+/, 2)
-            args = args.split(/\s+/).map do |a|
-                a.gsub(/%\w/, url)
-            end
-#             $log.debug { "execute cmd '#{cmd}', args '#{args.inspect}'" }
-            proc = Qt::Process.new(self)
-            proc.start(cmd, args)
-
-        rescue => e
-            $log.error { e }
-            KDE::MessageBox::information(self, i18n("There is not direct stream for this programme."))
-        end
-    end
-end
-
-
 
 
 #---------------------------------------------------------------------------------------------
@@ -263,7 +71,7 @@ class MainWindow < KDE::MainWindow
 #         BBCNet.setProxy('http://194.36.10.154:3127')
         # initialize values
         $log = MyLogger.new(@logWin)
-        $log.level = MyLogger::DEBUG
+        $log.level = MyLogger::INFO
         $log.info { 'Log Start.' }
 
         # assign from config file.

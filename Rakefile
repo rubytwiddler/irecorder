@@ -22,12 +22,9 @@ spec = Gem::Specification.new do |s|
 BBC iPlayer like audio recorder with KDE GUI.
 You can browse BBC Radio programmes and click to download stream file.
 files will be converted to mp3 files automatically.
-iplayer allow to play without any other browser or on your prefered media player
+irecorder allow to play without any other browser or on your prefered media player
 like mplayer.
 irecorder require kdebindings.
- svn://anonsvn.kde.org/home/kde/branches/KDE/4.4/kdebindings
- http://websvn.kde.org/branches/KDE/4.4/kdebindings/
-please check your distro package to install it.
     EOF
     s.has_rdoc = false
     s.extra_rdoc_files = ["README"]

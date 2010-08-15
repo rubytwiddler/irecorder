@@ -1,0 +1,11 @@
+
+[Desktop Entry]
+Categories=Qt;AudioVideo;Player;Video;
+Name=irecorder
+Comment=irecorder
+Exec=irecorder
+GenericName=irecorder
+Icon=irecorder
+Type=Application
+X-KDE-StartupNotify=false
+X-Desktop-File-Install-Version=0.15

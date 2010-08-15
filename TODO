@@ -2,7 +2,6 @@ TODO - irecorder
  *error handling
    -overwrite check.
    -error auto retry.
-   -get real broadcast length to check ok.
    - http 404 and no rawfile.
  *solve conflict of generated file names.
    -remove data
