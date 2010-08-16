@@ -71,7 +71,7 @@ class MainWindow < KDE::MainWindow
 #         BBCNet.setProxy('http://194.36.10.154:3127')
         # initialize values
         $log = MyLogger.new(@logWin)
-        $log.level = MyLogger::INFO
+        $log.level = MyLogger::DEBUG
         $log.info { 'Log Start.' }
 
         # assign from config file.
@@ -541,7 +541,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
                 url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
 
                 $log.info { "episode Url : #{url}" }
-                minfo = BBCNet::MetaInfo.get(url).update
+                minfo = BBCNet::CacheMetaInfoDevice.read(url)
                 $log.debug { "#{minfo.inspect}" }
                 url = minfo.wma.url
 
@@ -570,7 +570,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         $log.info{ "feeding from '#{feedAdr}'" }
 
         begin
-            makeTablefromRss( BBCNet.read(feedAdr) )
+            makeTablefromRss( CacheRssDevice.read(feedAdr) )
         rescue IOError, OpenURI::HTTPError => e
             $log.error { e }
         end
@@ -609,8 +609,8 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
 
 
     protected
-    def makeTablefromRss(rssRaw)
-        rss = RSS::Parser.parse(rssRaw)
+    def makeTablefromRss(rss)
+#         rss = RSS::Parser.parse(rssRaw)
         sortFlag = @programmeTable.sortingEnabled
         @programmeTable.sortingEnabled = false
         @programmeTable.hide
@@ -666,7 +666,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
                 url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
 
                 $log.info { "episode Url : #{url}" }
-                minfo = BBCNet::MetaInfo.get(url).update
+                minfo = BBCNet::CacheMetaInfoDevice.read(url)
                 url = minfo.wma.url
 
                 fName = getSaveName(prog, 'wma')
@@ -788,6 +788,7 @@ end
 #
 
 about = KDE::AboutData.new(APP_NAME, APP_NAME, KDE::ki18n(APP_NAME), APP_VERSION)
+about.setProgramIconName('irecorder')
 KDE::CmdLineArgs.init(ARGV, about)
 # options = KDE::CmdLineOptions.new()
 # options.add( "+url", KDE::ki18n( "The url to record)" ),"")
