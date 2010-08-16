@@ -12,113 +12,8 @@ require 'fileutils'
 require 'tmpdir'
 require 'singleton'
 
-class CacheDeviceBase
-    include Singleton
-
-    class CachedData
-        attr_accessor :expireTime, :url, :id
-    end
-
-    attr_accessor :expireDuration, :cacheMax
-    def initialize(expireDuration = 26*60, cacheMax=10)
-        @expireDuration = expireDuration      # 12 minutes
-        @cache = Hash.new
-        @cacheLRU = []          # Least Recently Used
-        @cacheMax = cacheMax
-    end
-
-    # return : data, id
-    #  id : key to restore data.
-#     def rawRead(url)
-# #         RSS::Parser.parse(CacheHttpDiskDevice.read(url))
-#     end
-
-    # return : data
-    #   restore data from id.
-    def restoreCache(id)
-        id
-    end
-
-    def read(url)
-        startTime = Time.now
-        cached = @cache[url]
-        if cached and cached.expireTime > startTime then
-            @cacheLRU.delete(cached)
-            @cacheLRU.push(cached)
-            data = restoreCache(cached.id)
-            $log.debug { "cached %s: Time %f sec" %
-                         [self.class.name, (Time.now - startTime).to_f] }
-            return data
-        end
-        if @cacheLRU.size >= @cacheMax then
-            oldest = @cacheLRU.shift
-            @cache.delete(oldest)
-        end
-        cached = CachedData.new
-        cached.url = url
-        cached.expireTime = startTime + @expireDuration
-        data, cached.id = rawRead(url)
-        @cache[url] = cached
-        @cacheLRU.push(cached)
-        $log.debug {"raw data %s: Time %f sec" %
-                    [self.class.name, (Time.now - startTime).to_f] }
-        data
-    end
-
-
-    def self.read(url)
-        self.instance.read(url)
-    end
-end
-
-class CacheRssDevice < CacheDeviceBase
-    def initialize(expireDuration = 12*60, cacheMax=6)
-        super(expireDuration, cacheMax)
-    end
-
-    # return : [ data, id ]
-    #  id : key to restore data.
-    def rawRead(url)
-         res = RSS::Parser.parse(CacheHttpDiskDevice.read(url))
-         [ res, res ]
-    end
-end
-
-
-class CacheHttpDiskDevice < CacheDeviceBase
-    def initialize(expireDuration = 12*60, cacheMax=30)
-        super(expireDuration, cacheMax)
-        @tmpdir = Dir.tmpdir + '/bbc_cache'
-        FileUtils.mkdir_p(@tmpdir)
-    end
-
-    # return : data
-    #   restore data from id.
-    def restoreCache(id)
-        IO.read(id)
-    end
-
-    # return : [ data, id ]
-    #  id : key to restore data.
-    def rawRead(url)
-        puts "rawRead(): " + self.class.name
-        tmpfname = tempFileName(url)
-
-        if File.exist?(tmpfname) and
-                File.ctime(tmpfname) + @expireDuration > Time.now then
-            res = IO.read(tmpfname)
-        else
-            res = BBCNet.read(url)
-            open(tmpfname, "w") do |f| f.write(res) end
-        end
-        [ res, tmpfname ]
-    end
-
-    def tempFileName(url)
-        File.join(@tmpdir, url.scan(%r{\w+/\w+$}).first.gsub(%r|/|, '_'))
-    end
-end
-
+# my libs
+require "cache"
 
 UrlRegexp = URI.regexp(['rtsp','http'])
 
@@ -129,14 +24,14 @@ class BBCNet
     MmsRegexp = URI.regexp(['mms'])
     DirectStreamRegexp = URI.regexp(['mms', 'rtsp', 'rtmp', 'rtmpt'])
 
-    class CacheMetaInfoDevice < CacheDeviceBase
+    class CacheMetaInfoDevice < CasheDevice::CacheDeviceBase
         def initialize(expireDuration = 6*60, cacheMax=200)
             super(expireDuration, cacheMax)
         end
 
-        # return : [ data, id ]
-        #  id : key to restore data.
-        def rawRead(pid)
+        # return : [ data, key ]
+        #  key : key to restore data.
+        def directRead(pid)
             res = BBCNet::MetaInfo.new(pid).update
             [ res, res ]
         end

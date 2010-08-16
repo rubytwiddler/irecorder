@@ -338,6 +338,20 @@ QTabBar::tab:only-one {
     margin: 0; /* if there is only one tab, we don't want overlapping margins */
 }
 
+
+
+/*
+    Dock Widget
+*/
+QDockWidget::title {
+  text-align: left;
+  background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0,
+        stop:0 rgb(0, 0, 0), stop:0.48 rgb(0, 0, 0),
+        stop:0.5 rgb(59, 59, 59), stop:1 rgb(125, 125, 125));
+  padding-left: 10px;
+}
+
+
 /*
     Channel ToolBox
 */
