@@ -7,12 +7,12 @@ TODO - irecorder
    -remove data
  *error dialog for misc errors. download/convert error. and retry.
    -restrain frequent error pop up
- *feed cache
+ *error GstDecodeBin2: This appears to be a text file  # Digital Planet
 
  *icon image
  *auto download subscription tags
  *mencoder for dump
- *download from proxy (mplayer)
+ *play/download from proxy (mplayer)
  *status bar for processing.
  *stylesheet -menu colour
  *log message level.
@@ -21,7 +21,3 @@ TODO - irecorder
  *fileName + sub category
  *fileName + date
  *multilanguage?
-
-success but message is error.
-INFO :realrtsp: Stream EOF detected
-INFO :Core dumped ;)

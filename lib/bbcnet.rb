@@ -32,8 +32,8 @@ class BBCNet
         # return : [ data, key ]
         #  key : key to restore data.
         def directRead(pid)
-            res = BBCNet::MetaInfo.new(pid).update
-            [ res, res ]
+            data = BBCNet::MetaInfo.new(pid).update
+            [ data, data ]
         end
 
         def self.read(url)

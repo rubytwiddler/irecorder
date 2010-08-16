@@ -2,8 +2,8 @@
 #
 #    2010 by ruby.twiddler@gmail.com
 #
-#     IPlayer interface
-#      record real/wma (rtsp/mms) audio/video stream
+#     iPlayer interface
+#      record real/wma (rtsp/mms) audio stream
 #
 
 $KCODE = 'UTF8'
@@ -103,7 +103,7 @@ class MainWindow < KDE::MainWindow
         reloadStyleAction.setShortcut(KDE::Shortcut.new('Ctrl+R'))
         clearStyleAction = KDE::Action.new(KDE::Icon.new('list-remove'), i18n('&Clear StyleSheet'), self)
         clearStyleAction.setShortcut(KDE::Shortcut.new('Ctrl+L'))
-        quitAction = KDE::Action.new(KDE::Icon.new('exit'), i18n('&Quit'), self)
+        quitAction = KDE::Action.new(KDE::Icon.new('application-exit'), i18n('&Quit'), self)
         quitAction.setShortcut(KDE::Shortcut.new('Ctrl+Q'))
         fileMenu = KDE::Menu.new('&File', self)
         fileMenu.addAction(recordAction)
