@@ -362,7 +362,8 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
                 connect( w, SIGNAL(:clicked), self, SLOT(:mediaFilterChanged) )
             end
 
-            playBtn = KDE::PushButton.new( KDE::Icon.new('media-playback-start'), i18n("Play")) do |w|
+            playIcon = KDE::Icon.new(':images/play-22.png')
+            playBtn = KDE::PushButton.new( playIcon, i18n("Play")) do |w|
                 w.objectName = 'playButton'
                 connect( w, SIGNAL(:clicked), self, SLOT(:playProgramme) )
             end

@@ -2,5 +2,6 @@
  <qresource>
      <file>images/irecorder-32.png</file>
      <file>images/download-22.png</file>
+     <file>images/play-22.png</file>
  </qresource>
  </RCC>
