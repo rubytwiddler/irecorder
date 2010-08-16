@@ -1,0 +1,6 @@
+ <!DOCTYPE RCC><RCC version="1.0">
+ <qresource>
+     <file>images/irecorder-32.png</file>
+     <file>images/download-22.png</file>
+ </qresource>
+ </RCC>

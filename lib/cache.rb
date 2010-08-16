@@ -50,7 +50,7 @@ module CasheDevice
             data, cached.key = directRead(url)
             @cache[url] = cached
             @cacheLRU.push(cached)
-            $log.debug {"raw data %s: Time %f sec" %
+            $log.debug {"direct read %s: Time %f sec" %
                         [self.class.name, (Time.now - startTime).to_f] }
             data
         end

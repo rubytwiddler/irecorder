@@ -32,6 +32,7 @@ require 'qtwebkit'
 # my libraries and programs
 #
 $:.unshift(LIB_DIR)
+require "irecorder_resource"
 require "bbcnet"
 require "mylibs"
 require "logwin"
@@ -366,7 +367,8 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
                 connect( w, SIGNAL(:clicked), self, SLOT(:playProgramme) )
             end
 
-            downloadBtn = KDE::PushButton.new( KDE::Icon.new('arrow-down'), i18n("Download")) do |w|
+            downloadIcon = KDE::Icon.new(':images/download-22.png')
+            downloadBtn = KDE::PushButton.new( downloadIcon, i18n("Download")) do |w|
                 w.objectName = 'downloadButton'
                 connect( w, SIGNAL(:clicked), self, SLOT(:startDownload) )
             end
@@ -807,7 +809,7 @@ end
 #
 
 about = KDE::AboutData.new(APP_NAME, APP_NAME, KDE::ki18n(APP_NAME), APP_VERSION)
-about.setProgramIconName('irecorder')
+about.setProgramIconName(':images/irecorder-32.png')
 KDE::CmdLineArgs.init(ARGV, about)
 # options = KDE::CmdLineOptions.new()
 # options.add( "+url", KDE::ki18n( "The url to record)" ),"")
