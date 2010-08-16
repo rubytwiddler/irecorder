@@ -342,6 +342,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
                     )
                 end
             )
+            vbxw.addWidget( @listTitleLabel = Qt::Label.new('') )
             vbxw.addWidget(@programmeTable)
 
             # 'Start Download' Button
@@ -575,7 +576,9 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
             $log.error { e }
         end
         mediaFilterChanged
+        setListTitle
     end
+
 
     #
     # get feed address
@@ -602,11 +605,27 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
 
         return nil  if channelStr.nil?
 
-        list = %w[ list highlights popular ][@listTypeGroup.checkedId]
+        @listType = @listTypeGroup.checkedId
+        list = %w[ list highlights popular ][@listType]
 
         "http://feeds.bbc.co.uk/iplayer/#{channelStr}/#{list}"
     end
 
+
+    def getCategoryTitle
+        CategoryRssTbl[ @channelIndex ][0]
+    end
+
+    def setListTitle
+        names = []
+        if getChannelTitle
+            names << getChannelTitle
+        else
+            names << CategoryRssTbl[ @channelIndex ][0]
+        end
+        names << %w[ All Highlights Popular ][@listType]
+        @listTitleLabel.text = names.join(' / ')
+    end
 
     protected
     def makeTablefromRss(rss)
@@ -721,7 +740,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
 
     # channel [BBC Radio 4, ..]
     def getChannelName
-        title = getChannelTitle
+        getChannelTitle
     end
 
     def getChannelTitle
