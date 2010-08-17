@@ -25,7 +25,7 @@ class BBCNet
     DirectStreamRegexp = URI.regexp(['mms', 'rtsp', 'rtmp', 'rtmpt'])
 
     class CacheMetaInfoDevice < CasheDevice::CacheDeviceBase
-        def initialize(expireDuration = 6*60, cacheMax=200)
+        def initialize(expireDuration = 40*60, cacheMax=200)
             super(expireDuration, cacheMax)
         end
 
@@ -189,9 +189,14 @@ class BBCNet
         old = ''
         while url != old and not url[DirectStreamRegexp] do
             old = url
-            res = self.read(url)
+            res = BBCNet.read(url)
+            # ??? why I cannot do this ? ruby's bug ?
             url = res[ DirectStreamRegexp ] or res[ UrlRegexp ] or old
-            url ||= old         # ??? why need this ? ruby's bug ?
+#             url = res[ DirectStreamRegexp ]
+#             url ||= res[ UrlRegexp ]
+#             url ||= old
+            $log.debug { "new url:#{url},  old url:#{old}" }
+            $log.debug { "nourl in response '#{res}'" } if url[ UrlRegexp ]
         end
         url
     end
@@ -205,7 +210,7 @@ class BBCNet
 
         uri = URI.parse(url)
         res = Net::HTTP.start(uri.host, uri.port) do |http|
-            http.get(uri.path, header)
+            http.get(uri.request_uri, header)
         end
         res.body
     end
