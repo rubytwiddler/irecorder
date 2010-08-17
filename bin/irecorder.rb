@@ -646,7 +646,8 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
             title = i.title.content.to_s
             updated = i.updated.content.to_s
             contents = i.content.content
-            link = i.links.find do |l| l.rel == 'self' end.href
+            linkItem = i.links.find do |l| l.rel == 'self' end
+            link = linkItem ? linkItem.href : nil
             categories = i.categories.map do |c| c.term end.join(',')
             $log.misc { title }
             @programmeTable.addEntry( r, title, categories, updated, contents, link )

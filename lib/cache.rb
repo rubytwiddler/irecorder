@@ -19,9 +19,9 @@ module CasheDevice
 
         # return : data, key
         #  key : key to restore data.
-    #     def directRead(url)
-    # #         RSS::Parser.parse(CacheHttpDiskDevice.read(url))
-    #     end
+         def directRead(url)
+             raise "Implement directRead method."
+         end
 
         # return : data
         #   restore data from key.

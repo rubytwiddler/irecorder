@@ -186,10 +186,12 @@ class BBCNet
 
     # .asf/.ram => .wma/.ra
     def self.getDirectStreamUrl(url)
-        unless url[DirectStreamRegexp] then
+        old = ''
+        while url != old and not url[DirectStreamRegexp] do
+            old = url
             res = self.read(url)
-            newSrc= res[ DirectStreamRegexp ]
-            url = newSrc unless newSrc.nil?
+            url = res[ DirectStreamRegexp ] or res[ UrlRegexp ] or old
+            url ||= old         # ??? why need this ? ruby's bug ?
         end
         url
     end
