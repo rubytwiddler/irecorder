@@ -162,6 +162,8 @@ class TaskWindow < Qt::Widget
                 a.setVData('retryTask@')
                 a = menu.addAction(KDE::Icon.new('list-remove'), 'Remove')
                 a.setVData('removeTask@')
+                a = menu.addAction(KDE::Icon.new('list-remove-data'), 'Remove Task and Data')
+                a.setVData('removeTaskData@')
             end
             if sts =~ /\w+ing\b/i
                 a = menu.addAction(KDE::Icon.new('edit-delete'), 'Cancel')
@@ -199,13 +201,16 @@ class TaskWindow < Qt::Widget
         def getContextUrl(wItem)
             ti = taskItemAtRow(wItem.row)
             return nil unless ti
-            rawFilePath = File.join(IRecSettings.rawDownloadDir.path, ti.savePath)
-            filePath = File.join(IRecSettings.downloadDir.path, ti.savePath)
+#             rawFilePath = File.join(IRecSettings.rawDownloadDir.path, ti.savePath)
+#             filePath = File.join(IRecSettings.downloadDir.path, ti.savePath)
+            rawFilePath = ti.process.rawFilePath
+            outFilePath = ti.process.outFilePath
             url =   case wItem.column
                     when SOURCE
                         ti.sourceUrl
                     when FILE
-                        ti.process.rawDownloaded? ? filePath : rawFilePath
+                        $log.debug { "getContextUrl check #{ti.process.rawDownloaded?}" }
+                        ti.process.rawDownloaded? ? outFilePath : rawFilePath
                     else
                         nil
                     end
@@ -254,7 +259,17 @@ class TaskWindow < Qt::Widget
             ti = taskItemAtRow(wItem.row)
             if ti and ti.process.running? then
                 ti.process.cancelTask
-                $log.info { "task canceled." }
+                $log.info { "task removed." }
+            end
+            deleteItem(ti)
+        end
+
+        # contextMenu Event
+        def removeTaskData(wItem)
+            ti = taskItemAtRow(wItem.row)
+            if ti and ti.process.running? then
+                ti.process.removeData
+                $log.info { "task and data removed." }
             end
             deleteItem(ti)
         end

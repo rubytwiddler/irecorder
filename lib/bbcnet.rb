@@ -242,6 +242,7 @@ module AudioFile
         end
         msg = open(cmd) do |f| f.read end
         a = msg.scan(/(?:(\d+):){0,2}(\d+)/)[0]
+        return 0 unless a
         i = -1
         a.reverse.inject(0) do |s, d|
             i += 1

@@ -71,6 +71,7 @@ class DownloadProcess < Qt::Process
     end
 
     attr_reader :sourceUrl, :rawFileName
+    attr_reader :rawFilePath, :outFilePath
 
     def initialize(parent, metaInfo, fName)
         super(parent)
@@ -82,7 +83,11 @@ class DownloadProcess < Qt::Process
         @rawFileName = fName
         @rawFilePath = File.join(IRecSettings.rawDownloadDir.path, fName)
         mkdirSavePath(@rawFilePath)
+        @outFileName = @rawFileName.gsub(/\.\w+$/i, '.mp3')
+        @outFilePath = File.join(IRecSettings.downloadDir.path, @outFileName)
+        mkdirSavePath(@outFilePath)
         $log.debug { "@rawFilePath : #{@rawFilePath }" }
+        $log.debug { "@outFilePath : #{@outFilePath}" }
 
         @stage = DOWNLOAD
         @status = INITIAL
@@ -94,19 +99,24 @@ class DownloadProcess < Qt::Process
     def beginTask
         # 1st stage : download
         if File.exist?(@rawFilePath) then
-            @stage = CONVERT
-            @outFileName = @rawFileName.gsub(/\.\w+$/i, '.mp3')
-            @outFilePath = File.join(IRecSettings.downloadDir.path, @outFileName)
+            @stage = DOWNLOAD
+            @downNG = true
+            self.status = RUNNING
+            @currentCommand = makeMPlayerDownloadCmd
+            taskFinished(1,0)
+#             @stage = CONVERT
+#             @outFileName = @rawFileName.gsub(/\.\w+$/i, '.mp3')
+#             @outFilePath = File.join(IRecSettings.downloadDir.path, @outFileName)
             $log.debug { "@rawFilePath duration:" + AudioFile.getDuration(@rawFilePath).to_s }
             $log.debug { "@outFilePath duration:" + AudioFile.getDuration(@outFilePath).to_s }
             $log.debug { "metainf duration:" + @metaInfo.duration.to_s }
-            if File.exist?(@outFilePath) then
-                taskFinished(1,0)
-            else
-                $log.debug { "begin convert" }
-                beginConvert
-                return
-            end
+#             if File.exist?(@outFilePath) then
+#                 taskFinished(1,0)
+#             else
+#                 $log.debug { "begin convert" }
+#                 beginConvert
+#                 return
+#             end
         else
             beginDownload
         end
@@ -135,6 +145,18 @@ class DownloadProcess < Qt::Process
     def cancelTask
         if running? then
             self.terminate
+        end
+    end
+
+    def removeData
+        if running? then
+            self.terminate
+        end
+        begin
+            File.delete(@rawFilePath)
+            File.delete(@outFilePath)
+        rescue => e
+            $log.info { e }
         end
     end
 
@@ -223,9 +245,6 @@ class DownloadProcess < Qt::Process
     def beginConvert
         @stage = CONVERT
         self.status = RUNNING
-        @outFileName = @rawFileName.gsub(/\.\w+$/i, '.mp3')
-        @outFilePath = File.join(IRecSettings.downloadDir.path, @outFileName)
-        mkdirSavePath(@outFilePath)
 
         cmdMsg = "nice -n 19 ffmpeg -i %s -f mp3 %s" %
                     [ @rawFilePath.shellescape, @outFilePath.shellescape]
@@ -276,20 +295,23 @@ class DownloadProcess < Qt::Process
     def checkErroredStatus
         case @stage
         when DOWNLOAD
-            return @downNG if @downNG
+            return @downNG unless @downNG
             begin
                 $log.debug { "check duration for download." }
-                AudioFile.getDuration(@rawFilePath) < @metaInfo.duration - 5
+                rawDuration = AudioFile.getDuration(@rawFilePath)
+                return true if rawDuration < @metaInfo.duration - 100
+                $log.debug { "check file size for download." }
+                File.size(@rawFilePath) < @metaInfo.duration * 5500
             rescue => e
-                $log.info{ e }
+                $log.warn { e }
                 true
             end
         when CONVERT
             begin
                 $log.debug { "check duration for convert." }
-                AudioFile.getDuration(@outFilePath) < @metaInfo.duration - 40
+                AudioFile.getDuration(@outFilePath) < AudioFile.getDuration(@rawFilePath) - 10
             rescue => e
-                $log.info{ e }
+                $log.warn { e }
                 true
             end
         else

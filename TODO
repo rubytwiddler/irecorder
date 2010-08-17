@@ -7,7 +7,6 @@ TODO - irecorder
    -remove data
  *error dialog for misc errors. download/convert error. and retry.
    -restrain frequent error pop up
- *error GstDecodeBin2: This appears to be a text file  # Digital Planet
 
  *icon image
  *auto download subscription tags
@@ -17,6 +16,7 @@ TODO - irecorder
  *stylesheet -menu colour
  *log message level.
  *log limit line number
+ *right click context menu on task 'play temp file with'
  *resume task
  *fileName + sub category
  *fileName + date
