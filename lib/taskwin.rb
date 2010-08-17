@@ -201,8 +201,6 @@ class TaskWindow < Qt::Widget
         def getContextUrl(wItem)
             ti = taskItemAtRow(wItem.row)
             return nil unless ti
-#             rawFilePath = File.join(IRecSettings.rawDownloadDir.path, ti.savePath)
-#             filePath = File.join(IRecSettings.downloadDir.path, ti.savePath)
             rawFilePath = ti.process.rawFilePath
             outFilePath = ti.process.outFilePath
             url =   case wItem.column

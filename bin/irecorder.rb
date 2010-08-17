@@ -811,7 +811,7 @@ end
 #
 
 about = KDE::AboutData.new(APP_NAME, APP_NAME, KDE::ki18n(APP_NAME), APP_VERSION)
-about.setProgramIconName(':images/irecorder-32.png')
+about.setProgramIconName(':images/irecorder-22.png')
 KDE::CmdLineArgs.init(ARGV, about)
 # options = KDE::CmdLineOptions.new()
 # options.add( "+url", KDE::ki18n( "The url to record)" ),"")

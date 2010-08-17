@@ -16,9 +16,9 @@
    version="1.1"
    inkscape:version="0.47pre3 r22311"
    sodipodi:docname="irecorder-app-logo.svg"
-   inkscape:export-filename="/home/kaji/dev/projects/ruby/irecorder/resources/irecorder-16.png"
-   inkscape:export-xdpi="22.5"
-   inkscape:export-ydpi="22.5">
+   inkscape:export-filename="/home/r.t/dev/projects/ruby/irecorder/resources/images/irecorder-22.png"
+   inkscape:export-xdpi="30.9375"
+   inkscape:export-ydpi="30.9375">
   <defs
      id="defs2818">
     <linearGradient
@@ -74,6 +74,14 @@
        inkscape:vp_y="0 : 1000 : 0"
        inkscape:vp_x="0 : 0.5 : 1"
        sodipodi:type="inkscape:persp3d" />
+    <filter
+       inkscape:collect="always"
+       id="filter3687">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.43303403"
+         id="feGaussianBlur3689" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -82,18 +90,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="6.8532716"
+     inkscape:zoom="6.622469"
      inkscape:cx="32.103912"
      inkscape:cy="31.489299"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="Logo"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
      inkscape:snap-global="true"
      inkscape:window-width="908"
      inkscape:window-height="698"
-     inkscape:window-x="197"
-     inkscape:window-y="230"
+     inkscape:window-x="0"
+     inkscape:window-y="326"
      inkscape:window-maximized="0" />
   <metadata
      id="metadata2821">
@@ -108,33 +116,46 @@
     </rdf:RDF>
   </metadata>
   <g
-     id="layer1"
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer">
+     id="Back"
+     inkscape:label="Back"
+     inkscape:groupmode="layer"
+     sodipodi:insensitive="true">
     <rect
        style="fill:url(#linearGradient3614);fill-opacity:1;fill-rule:evenodd;stroke:none"
        id="rect2826"
        width="64.628464"
        height="65.078407"
        x="-0.21032037"
-       y="-0.028502539"
-       inkscape:export-filename="/home/kaji/dev/projects/ruby/irecorder/tmp/irecbarlogo.png"
-       inkscape:export-xdpi="87.753197"
-       inkscape:export-ydpi="87.753197" />
+       y="-0.028502539" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="Logo"
+     inkscape:label="Logo">
+    <path
+       sodipodi:nodetypes="ccccccccsccccccssccccccscccc"
+       id="R"
+       d="m 34.093979,11.823842 0.160648,10.380838 10.422126,9.241291 -10.529225,13.781359 -0.05355,15.597706 8.511031,0 0,-17.305949 2.810876,-0.497704 c 1.37386,1.8e-5 3.886639,-0.155297 4.720794,0.741857 0.834119,0.897188 2.458688,2.188572 3.276492,4.639372 l 1.372067,12.422424 9.078432,0 -1.495172,-14.161507 c -0.932301,-2.822794 -1.996927,-4.432131 -2.929171,-5.810732 -0.915944,-1.400442 -3.630408,-3.046523 -4.791634,-3.440427 2.126211,-0.984679 3.641006,-2.172653 5.220876,-3.609975 1.67777,-1.526391 2.467824,-5.729557 2.467854,-8.968164 -3e-5,-4.682761 -1.754257,-6.769582 -3.782328,-8.93597 -2.011772,-2.166295 -7.134945,-4.074372 -11.485523,-4.074419 l -12.974593,0 z m 8.6718,7.63389 5.1089,0.278317 c 1.766391,4.1e-5 4.317177,1.209396 5.085911,2.172178 0.785051,0.962854 1.485101,3.775336 0.751888,5.878727 -0.829921,2.380814 -1.170865,1.968188 -2.920537,3.699416 -1.280121,0.982587 -1.298865,0.688129 -4.153915,0.960267 l -3.813281,-4.901948 -0.05897,-8.086957 z"
+       style="font-size:44.69659804999999864px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:semi-condensed;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;fill:#dd1a6d;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans Bold Semi-Condensed" />
     <g
        id="g3807"
        transform="matrix(1.0128299,0,0,1.4556648,0.60074902,-17.696202)">
       <path
+         style="fill:none;stroke:#5c0b3d;stroke-width:4.12854527999999998;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:0.66796875000000000;stroke-dasharray:none;filter:url(#filter3687)"
+         d="M 46.069585,35.220078 16.971566,52.952909 8.7358318,53.103899 17.196992,52.952946"
+         id="shadow"
+         sodipodi:nodetypes="cccc" />
+      <path
          sodipodi:nodetypes="ccc"
-         id="path3645"
-         d="M 16.172385,52.398032 45.133144,33.579262 16.386655,15.836733"
-         style="fill:none;stroke:#e5269a;stroke-width:2.26645708;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         id="Arrow"
+         d="M 16.103755,51.443384 45.201774,33.710553 16.319041,16.99186"
+         style="fill:none;stroke:#e5269a;stroke-width:4.12854528;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
       <rect
          y="29.023123"
          x="6.4974775"
          height="23.447206"
          width="9.46632"
-         id="rect2884"
+         id="i 2"
          style="fill:#e5269a;fill-opacity:1;fill-rule:nonzero;stroke:#e5269a;stroke-width:2.0824399;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
       <rect
          ry="0"
@@ -142,13 +163,8 @@
          x="6.3285618"
          height="6.4724703"
          width="9.4388256"
-         id="rect3658"
+         id="i 1"
          style="fill:#e5269a;fill-opacity:1;fill-rule:nonzero;stroke:#e5269a;stroke-width:2.21449614;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
     </g>
-    <path
-       sodipodi:nodetypes="ccccccccsccccccssccccccscccc"
-       id="path3783"
-       d="m 30.446086,3.3607308 0.550328,15.0082972 14.782499,12.512347 -15.149386,14.4866 -0.183443,15.457061 9.553949,0 0,-20.2949 3.155314,-0.583663 c 1.542208,2.1e-5 4.362895,-0.18212 5.299267,0.869984 0.936328,1.052143 2.759968,2.566566 3.677984,5.440648 l 1.540194,14.567931 10.190878,0 -1.678386,-16.607374 C 61.138742,40.907337 59.943659,39.020048 58.897181,37.403345 57.869,35.761028 54.821913,33.83065 53.518394,33.368714 55.905143,32.213969 57.605559,30.820816 59.37902,29.135251 61.262379,27.345234 62.149244,22.416129 62.149278,18.618176 62.149244,13.126644 60.18006,10.679402 57.903474,8.1388526 55.645186,5.5984122 49.894235,3.360787 45.010548,3.3607308 l -14.564462,0 z m 9.734418,8.9523572 5.734929,0.326386 c 1.982841,4.7e-5 4.846192,1.418273 5.709126,2.547339 0.881247,1.129151 1.667081,4.427384 0.84402,6.894057 -0.931616,2.792009 -1.314339,2.308118 -3.27841,4.33835 -1.446597,1.154803 -3.173407,2.414585 -5.156248,2.414554 L 40.000033,24.50248 40.180504,12.313088 z"
-       style="font-size:44.69659805px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:semi-condensed;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;fill:#e5269a;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans Bold Semi-Condensed" />
   </g>
 </svg>

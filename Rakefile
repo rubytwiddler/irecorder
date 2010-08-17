@@ -9,6 +9,7 @@ spec = Gem::Specification.new do |s|
     s.version = "0.0.4"
     s.author = "ruby.twiddler"
     s.email = "ruby.twiddler at gmail.com"
+    s.homepage = "http://wiki.github.com/rubytwiddler/irecorder/"
     s.platform = "linux"
     s.summary = "BBC iPlayer like audio recorder with KDE GUI."
     s.files = FileList["{bin,lib}/**/*"].to_a
@@ -62,3 +63,11 @@ task :install4rpm do
     installToDir('bin/irecorder', prefix, :mode => 0755)
 end
 
+
+resouce_files = [ 'resources/irecorder.qrc' ] + FileList['resources/images/*.png']
+desc "package resources"
+file 'lib/irecorder_resource.rb' => resouce_files  do
+    %x{ rbrcc resources/irecorder.qrc >lib/irecorder_resource.rb }
+end
+
+task :resource => 'lib/irecorder_resource.rb'

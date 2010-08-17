@@ -7,8 +7,8 @@ TODO - irecorder
    -remove data
  *error dialog for misc errors. download/convert error. and retry.
    -restrain frequent error pop up
+   & notification pop up.
 
- *icon image
  *auto download subscription tags
  *mencoder for dump
  *play/download from proxy (mplayer)
@@ -21,3 +21,4 @@ TODO - irecorder
  *fileName + sub category
  *fileName + date
  *multilanguage?
+ *install application icon image
