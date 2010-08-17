@@ -190,13 +190,9 @@ class BBCNet
         while url != old and not url[DirectStreamRegexp] do
             old = url
             res = BBCNet.read(url)
-            # ??? why I cannot do this ? ruby's bug ?
             url = res[ DirectStreamRegexp ] or res[ UrlRegexp ] or old
-#             url = res[ DirectStreamRegexp ]
-#             url ||= res[ UrlRegexp ]
-#             url ||= old
             $log.debug { "new url:#{url},  old url:#{old}" }
-            $log.debug { "nourl in response '#{res}'" } if url[ UrlRegexp ]
+            $log.debug { "no url in response '#{res}'" } if url[ UrlRegexp ]
         end
         url
     end
