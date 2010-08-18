@@ -50,8 +50,6 @@ class BBCNet
     class MetaInfo
         def self.get(url)
             pid = BBCNet.extractPid(url)
-#             info = @@cachePid[pid]
-#             return info if info
             self.new(pid)
         end
 
@@ -234,6 +232,8 @@ end
 module AudioFile
     # return seconds of audio file duration.
     def self.getDuration(file)
+        return 0 unless File.exist?(file)
+
         case file[/\.\w+$/].downcase
         when ".mp3"
             cmd = "| exiftool -S -Duration %s" % file.shellescape

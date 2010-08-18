@@ -476,6 +476,9 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         color = "#%06x" % (@programmeSummaryWebView.palette.color(Qt::Palette::Text).rgb & 0xffffff)
 
         html = <<-EOF
+        <style type="text/css">
+        img { float: left; margin: 4px; }
+        </style>
         <font color="#{color}">
           #{prog.content}
         </font>

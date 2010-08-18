@@ -122,33 +122,28 @@ class TaskWindow < Qt::Widget
             poRow =  wItem.row
             poColumn = wItem.column
             $log.misc { "right clicked item (row:#{poRow}, column:#{poColumn})" }
-            url = getContextUrl(wItem)
-            sts = taskItemAtRow(wItem.row).status
+            process = taskItemAtRow(wItem.row).process
 
             menu = Qt::Menu.new
-            insertDefaultActions(menu, poColumn, url, sts)
-            if url then
-                menu.addSeparator
-                insertPlayerActions(menu, url)
-                menu.addSeparator
-                insertMPlayerAction(menu)
-            end
+            insertDefaultActions(menu, poColumn, process)
+            createPlayerMenu(menu, poColumn, process)
             action = menu.exec(pos)
             if action then
                 $log.code { "execute : '#{action.data.toString}'" }
                 cmd, exe = action.data.toString.split(/@/, 2)
                 $log.code { "cmd(#{cmd}), exe(#{exe})" }
-                case cmd
-                when 'play'
-                    playMedia(exe, wItem)
+                if cmd =~ /^play/
+                    playMedia(cmd, process, exe)
+                elsif self.respond_to?(cmd)
+                    self.method(cmd).call(process, wItem)
                 else
-                    self.method(cmd).call(wItem)
+                    $log.warn { "No method #{cmd} in contextmenu." }
                 end
             end
             menu.deleteLater
         end
 
-        def insertDefaultActions(menu, poColumn, url, sts)
+        def insertDefaultActions(menu, poColumn, process)
             a = menu.addAction(KDE::Icon.new('edit-copy'), 'Copy Text')
             a.setVData('copyText@')
             if poColumn == FILE
@@ -157,7 +152,7 @@ class TaskWindow < Qt::Widget
                 a = menu.addAction(KDE::Icon.new('kfm'), 'Open Temp Folder')
                 a.setVData('openTempFolder@')
             end
-            if sts =~ /Error/i
+            if process.error?
                 a = menu.addAction(KDE::Icon.new('view-refresh'), 'Retry')
                 a.setVData('retryTask@')
                 a = menu.addAction(KDE::Icon.new('list-remove'), 'Remove')
@@ -165,7 +160,7 @@ class TaskWindow < Qt::Widget
                 a = menu.addAction(KDE::Icon.new('list-remove-data'), 'Remove Task and Data')
                 a.setVData('removeTaskData@')
             end
-            if sts =~ /\w+ing\b/i
+            if process.running?
                 a = menu.addAction(KDE::Icon.new('edit-delete'), 'Cancel')
                 a.setVData('cancelTask@')
             end
@@ -176,135 +171,121 @@ class TaskWindow < Qt::Widget
         end
 
 
-        def insertMPlayerAction(menu)
-            player = 'mplayer'
-            mplayerPath = %x(which #{player})
-            return if mplayerPath =~ /no #{player}/
-            insertPlayer(menu, player, player +  ' %U')
-        end
 
-        def insertPlayerActions(menu, url)
-            Mime::services(url).each do |s|
-                if s.exec then
-                    exeName = s.exec[/\w+/]
-                    insertPlayer(menu, exeName, s.exec)
+        def createPlayerMenu(menu, poColumn, process)
+            case poColumn
+            when SOURCE
+                menu.addSeparator
+                createPlayers(menu, i18n('Play Source with'), "playSource@", '.wma')
+            when FILE
+                menu.addSeparator
+                if process.rawDownloaded? then
+                    createPlayers(menu, i18n('Play File with'), "playMP3@", '.mp3')
                 end
+                createPlayers(menu, i18n('Play Temp File with'), "playTemp@", '.wma')
             end
         end
 
-        def insertPlayer(menu, exeName, exec = exeName)
-            a = menu.addAction(KDE::Icon.new(exeName), 'Play with ' + exeName)
-            a.setVData('play@' + exec)
+        def createPlayers(menu, playText, playerCmd, url)
+            playersMenu = Qt::Menu.new(playText)
+            Mime::services(url).each do |s|
+                exeName = s.exec[/\w+/]
+                a = playersMenu.addAction(KDE::Icon.new(exeName), 'Play with ' + exeName)
+                a.setVData(playerCmd + s.exec)
+            end
+            menu.addMenu(playersMenu)
         end
 
 
-        def getContextUrl(wItem)
-            ti = taskItemAtRow(wItem.row)
-            return nil unless ti
-            rawFilePath = ti.process.rawFilePath
-            outFilePath = ti.process.outFilePath
-            url =   case wItem.column
-                    when SOURCE
-                        ti.sourceUrl
-                    when FILE
-                        $log.debug { "getContextUrl check #{ti.process.rawDownloaded?}" }
-                        ti.process.rawDownloaded? ? outFilePath : rawFilePath
-                    else
-                        nil
-                    end
-        end
+        def playMedia(cmd, process, exe)
+            case cmd
+            when /Temp/
+                url = process.rawFilePath
+            when /Source/
+                url = process.sourceUrl
+            when /MP3/
+                url = process.outFilePath
+            end
 
-
-        # contextMenu Event
-        def playMedia(exe, wItem)
-            url = getContextUrl(wItem)
-            return unless url
-            cmd, args = exe.split(/\s+/, 2)
+            playCmd, args = exe.split(/\s+/, 2)
             args = args.split(/\s+/).map do |a|
                 a.gsub(/%\w/, url)
             end
-#             cmd = 'test/testarg.rb'     # debug test
-            $log.debug { "execute cmd '#{cmd}', args '#{args.inspect}'" }
+            $log.debug { "execute cmd '#{playCmd}', args '#{args.inspect}'" }
             proc = Qt::Process.new(self)
-            proc.start(cmd, args)
+            proc.start(playCmd, args)
         end
 
         # contextMenu Event
-        def copyText(wItem)
+        def copyText(process, wItem)
             $app.clipboard.setText(wItem.text)
         end
 
         # contextMenu Event
-        def retryTask(wItem)
-            ti = taskItemAtRow(wItem.row)
-            if ti and ti.process.error? then
-                ti.process.retryTask
+        def retryTask(process, wItem)
+            if process.error? then
+                process.retryTask
                 $log.info { "task restarted." }
             end
         end
 
         # contextMenu Event
-        def cancelTask(wItem)
-            ti = taskItemAtRow(wItem.row)
-            if ti and ti.process.running? then
-                ti.process.cancelTask
+        def cancelTask(process, wItem)
+            if process.running? then
+                process.cancelTask
                 $log.info { "task canceled." }
             end
         end
 
         # contextMenu Event
-        def removeTask(wItem)
-            ti = taskItemAtRow(wItem.row)
-            if ti and ti.process.running? then
-                ti.process.cancelTask
+        def removeTask(process, wItem)
+            if process.running? then
+                process.cancelTask
                 $log.info { "task removed." }
             end
+            ti = taskItemAtRow(wItem.row)
             deleteItem(ti)
         end
 
         # contextMenu Event
-        def removeTaskData(wItem)
-            ti = taskItemAtRow(wItem.row)
-            if ti and ti.process.running? then
-                ti.process.removeData
+        def removeTaskData(process, wItem)
+            if process.running? then
+                process.removeData
                 $log.info { "task and data removed." }
             end
+            ti = taskItemAtRow(wItem.row)
             deleteItem(ti)
         end
 
         # contextMenu Event
-        def openFolder(wItem)
-            ti = taskItemAtRow(wItem.row)
-            return unless ti
-            filePath = File.join(IRecSettings.downloadDir.path, File.dirname(ti.savePath))
+        def openFolder(process, wItem)
+            outFilePath = File.dirname(process.outFilePath)
             proc = Qt::Process.new(self)
-            proc.start('dolphin', [filePath])
+            proc.start('dolphin', [outFilePath ])
         end
 
         # contextMenu Event
-        def openTempFolder(wItem)
-            ti = taskItemAtRow(wItem.row)
-            return unless ti
-            rawFilePath = File.join(IRecSettings.rawDownloadDir.path, File.dirname(ti.savePath))
+        def openTempFolder(process, wItem)
+            rawFilePath = File.dirname(process.rawFilePath)
             proc = Qt::Process.new(self)
             proc.start('dolphin', [rawFilePath])
         end
 
         # contextMenu Event
-        def clearAllFinished(wItem)
+        def clearAllFinished(process, wItem)
             self.each do |i|
                 deleteItem(i) if i.process.finished?
             end
         end
 
         # contextMenu Event
-        def clearAllErrors(wItem)
+        def clearAllErrors(process, wItem)
             self.each do |i|
                 deleteItem(i) if i.process.error?
             end
         end
-
     end
+
 
     #--------------------------------------------
     #
