@@ -313,9 +313,6 @@ class PlayerSettingsPage < Qt::Widget
         @SelectWebPlayerDlg = SelectWebPlayerDlg.new(self, IRecSettings.webPlayerName)
         @SelectDirectPlayerDlg = SelectDirectPlayerDlg.new(self, IRecSettings.directPlayerName)
         IRecSettings.instance.regConverter(@SelectWebPlayerDlg, @SelectDirectPlayerDlg)
-        puts "web player:" + IRecSettings.webPlayerCommand.to_s
-        puts "direct player:" +  IRecSettings.directPlayerCommand.to_s
-
 
         @playerTypeSmall = Qt::RadioButton.new(i18n('small iplayer'))
         @playerTypeBeta = Qt::RadioButton.new(i18n('beta iplayer'))

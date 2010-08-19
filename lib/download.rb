@@ -104,24 +104,15 @@ class DownloadProcess < Qt::Process
             self.status = RUNNING
             @currentCommand = makeMPlayerDownloadCmd
             taskFinished(1,0)
-#             @stage = CONVERT
-#             @outFileName = @rawFileName.gsub(/\.\w+$/i, '.mp3')
-#             @outFilePath = File.join(IRecSettings.downloadDir.path, @outFileName)
             $log.debug { "@rawFilePath duration:" + AudioFile.getDuration(@rawFilePath).to_s }
             $log.debug { "@outFilePath duration:" + AudioFile.getDuration(@outFilePath).to_s }
             $log.debug { "metainf duration:" + @metaInfo.duration.to_s }
-#             if File.exist?(@outFilePath) then
-#                 taskFinished(1,0)
-#             else
-#                 $log.debug { "begin convert" }
-#                 beginConvert
-#                 return
-#             end
+            if self.error? then
+                beginDownload
+            end
         else
             beginDownload
         end
-
-#         beginDownload
     end
 
 

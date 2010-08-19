@@ -433,6 +433,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
     def closeEvent(event)
         writeSettings
         super(event)
+        $config.sync    # important!  qtruby can't invoke destructor properly.
     end
 
     def readSettings
@@ -440,6 +441,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         @mainTabPage.restoreState(config.readEntry('MainTabPageState', @mainTabPage.saveState))
         @progTableFrame.restoreState(config.readEntry('ProgTableFrame',
                                                       @progTableFrame.saveState))
+        @channelTypeToolBox.currentIndex = config.readEntry('ChannelType', @channelTypeToolBox.currentIndex)
 
         @programmeTable.readSettings
         @taskWin.readSettings
@@ -449,9 +451,20 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         config = $config.group(GroupName)
         config.writeEntry('MainTabPageState', @mainTabPage.saveState)
         config.writeEntry('ProgTableFrame', @progTableFrame.saveState)
+        config.writeEntry('ChannelType', @channelTypeToolBox.currentIndex)
 
         @programmeTable.writeSettings
         @taskWin.writeSettings
+#         dumpConfig(GroupName)
+    end
+
+    def dumpConfig(group)
+        puts "dump #{group} config"
+        entries  = KDE::Global.config.entryMap(group)
+        confGroup = KDE::Global.config.group(group)
+        entries.each do |key, val|
+            puts "     key(#{key}) = #{val.inspect}"
+        end
     end
 
     # ------------------------------------------------------------------------

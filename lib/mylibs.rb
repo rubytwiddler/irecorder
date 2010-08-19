@@ -218,17 +218,17 @@ module Enumerable
 end
 
 #
-class Hash
-    alias   old_blaket []
-    def [](key)
-        unless key.kind_of?(Regexp)
-            return old_blaket(key)
-        end
-
-        retk, retv = self.find { |k,v| k =~ key }
-        retv
-    end
-end
+# class Hash
+#     alias   old_blaket []
+#     def [](key)
+#         unless key.kind_of?(Regexp)
+#             return old_blaket(key)
+#         end
+#
+#         retk, retv = self.find { |k,v| k =~ key }
+#         retv
+#     end
+# end
 
 class Qt::Action
     def setVData(data)
