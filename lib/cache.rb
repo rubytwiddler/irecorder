@@ -9,9 +9,9 @@ module CasheDevice
             attr_accessor :expireTime, :url, :key
         end
 
-        attr_accessor :expireDuration, :cacheMax
-        def initialize(expireDuration = 26*60, cacheMax=10)
-            @expireDuration = expireDuration      # 12 minutes
+        attr_accessor :cacheDuration, :cacheMax
+        def initialize(cacheDuration = 26*60, cacheMax=10)
+            @cacheDuration = cacheDuration      # 12 minutes
             @cache = Hash.new
             @cacheLRU = []          # Least Recently Used
             @cacheMax = cacheMax
@@ -46,7 +46,7 @@ module CasheDevice
             end
             cached = CachedData.new
             cached.url = url
-            cached.expireTime = startTime + @expireDuration
+            cached.expireTime = startTime + @cacheDuration
             data, cached.key = directRead(url)
             @cache[url] = cached
             @cacheLRU.push(cached)
@@ -67,8 +67,8 @@ end
 #   practical implementations.
 #
 class CacheRssDevice < CasheDevice::CacheDeviceBase
-    def initialize(expireDuration = 12*60, cacheMax=6)
-        super(expireDuration, cacheMax)
+    def initialize(cacheDuration = 12*60, cacheMax=6)
+        super(cacheDuration, cacheMax)
     end
 
     # return : [ data, key ]
@@ -81,8 +81,8 @@ end
 
 
 class CacheHttpDiskDevice < CasheDevice::CacheDeviceBase
-    def initialize(expireDuration = 12*60, cacheMax=30)
-        super(expireDuration, cacheMax)
+    def initialize(cacheDuration = 12*60, cacheMax=30)
+        super(cacheDuration, cacheMax)
         @tmpdir = Dir.tmpdir + '/bbc_cache'
         FileUtils.mkdir_p(@tmpdir)
     end
@@ -100,7 +100,7 @@ class CacheHttpDiskDevice < CasheDevice::CacheDeviceBase
         tmpfname = tempFileName(url)
 
         if File.exist?(tmpfname) and
-                File.ctime(tmpfname) + @expireDuration > Time.now then
+                File.ctime(tmpfname) + @cacheDuration > Time.now then
             data = IO.read(tmpfname)
         else
             data = BBCNet.read(url)

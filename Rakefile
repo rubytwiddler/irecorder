@@ -6,7 +6,7 @@ require 'rake/gempackagetask'
 
 spec = Gem::Specification.new do |s|
     s.name = "irecorder"
-    s.version = "0.0.4"
+    s.version = "0.0.5"
     s.author = "ruby.twiddler"
     s.email = "ruby.twiddler at gmail.com"
     s.homepage = "http://wiki.github.com/rubytwiddler/irecorder/"

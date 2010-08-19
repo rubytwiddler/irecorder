@@ -25,8 +25,8 @@ class BBCNet
     DirectStreamRegexp = URI.regexp(['mms', 'rtsp', 'rtmp', 'rtmpt'])
 
     class CacheMetaInfoDevice < CasheDevice::CacheDeviceBase
-        def initialize(expireDuration = 40*60, cacheMax=200)
-            super(expireDuration, cacheMax)
+        def initialize(cacheDuration = 40*60, cacheMax=200)
+            super(cacheDuration, cacheMax)
         end
 
         # return : [ data, key ]

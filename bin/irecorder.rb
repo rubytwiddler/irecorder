@@ -12,7 +12,7 @@ require 'ftools'
 APP_NAME = File.basename(__FILE__).sub(/\.rb/, '')
 APP_DIR = File::dirname(File.expand_path(File.dirname(__FILE__)))
 LIB_DIR = File::join(APP_DIR, "lib")
-APP_VERSION = "0.0.4"
+APP_VERSION = "0.0.5"
 
 # standard libs
 require 'rubygems'
@@ -251,6 +251,9 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         toolBox = Qt::ToolBox.new do |w|
             w.objectName = 'channelToolBox'
         end
+
+        # default value
+        toolBox.currentIndex = 2
 
         # TV & Radio Channels selector
         @tvChannelListBox = KDE::ListWidget.new
