@@ -158,11 +158,6 @@ class BBCNet
     #
 
     # convert epsode Url to console Url
-    # example
-    #  from
-    #    http://www.bbc.co.uk/iplayer/episode/b007jpkt/Miss_Marple_A_Caribbean_Mystery_Episode_1/
-    #  to
-    #    http://www.bbc.co.uk/iplayer/console/b007jpkt
     def self.getPlayerConsoleUrl(url)
        "http://www.bbc.co.uk/iplayer/console/" + extractPid(url)
     end

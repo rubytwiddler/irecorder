@@ -107,7 +107,6 @@ class TaskWindow < Qt::Widget
         # context menu : right click popup menu.
         protected
         def contextMenuEvent(e)
-            $log.misc { "right button is clicked." }
             wItem = itemAt(e.pos)
             if wItem
                 openContextPopup(e.globalPos, wItem)

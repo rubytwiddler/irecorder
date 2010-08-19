@@ -117,47 +117,45 @@ class ProgrammeTableWidget < Qt::TableWidget
 
     protected
     def contextMenuEvent(e)
-        item = itemAt(e.pos)
+        prog = self[itemAt(e.pos).row]
         menu = createPopup
-        execPopup(menu, e.globalPos, item)
+        action = menu.exec(e.globalPos)
+        action and execPopup(action, prog)
+        menu.deleteLater
     end
 
     def createPopup()
         menu = Qt::Menu.new
+        a = menu.addAction(KDE::Icon.new('search'), i18n('Search Same Programme'))
+        a.setVData('searchSame@')
+        menu.addSeparator
         insertPlayerActions(menu)
         menu
     end
 
-    def execPopup(menu, pos, item)
-        action = menu.exec(pos)
-        if action then
-            action.data
-#             $log.code { "execute : '#{action.vData}'" }
-                cmd, exe = action.vData.split(/@/, 2)
-#                 $log.code { "cmd(#{cmd}), exe(#{exe})" }
-                case cmd
-                when 'play'
-                    playMedia(exe, item)
-                else
-#                     self.method(cmd).call(item)
-                end
+    def execPopup(action, item)
+        $log.code { "execute : '#{action.vData}'" }
+        cmd, exe = action.vData.split(/@/, 2)
+        $log.code { "cmd(#{cmd}), exe(#{exe})" }
+        if cmd == 'play'
+            playMedia(exe, item)
+        elsif self.respond_to?(cmd)
+            self.method(cmd).call(item)
+        else
+            $log.warn { "No method #{cmd} in contextmenu." }
         end
-        menu.deleteLater
     end
 
     def insertPlayerActions(menu)
         Mime::services('.wma').each do |s|
-            if s.exec then
-                exeName = s.exec[/\w+/]
-                a = menu.addAction(KDE::Icon.new(exeName), 'Play with ' + exeName)
-                a.setVData('play@' + s.exec)
-            end
+            exeName = s.exec[/\w+/]
+            a = menu.addAction(KDE::Icon.new(exeName), 'Play with ' + exeName)
+            a.setVData('play@' + s.exec)
         end
     end
 
-    def playMedia(exe, item)
+    def playMedia(exe, prog)
         begin
-            prog = self[item.row]
             url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
 
             $log.info { "episode Url : #{url}" }
@@ -168,7 +166,7 @@ class ProgrammeTableWidget < Qt::TableWidget
             args = args.split(/\s+/).map do |a|
                 a.gsub(/%\w/, url)
             end
-#             $log.debug { "execute cmd '#{cmd}', args '#{args.inspect}'" }
+            $log.debug { "execute cmd '#{cmd}', args '#{args.inspect}'" }
             proc = Qt::Process.new(self)
             proc.start(cmd, args)
 
@@ -176,6 +174,11 @@ class ProgrammeTableWidget < Qt::TableWidget
             $log.error { e }
             KDE::MessageBox::information(self, i18n("There is not direct stream for this programme."))
         end
+    end
+
+    signals  'filterRequest(const QString &)'
+    def searchSame(prog)
+        emit filterRequest( prog.title.sub(/:.*/, '') )
     end
 end
 

@@ -342,6 +342,8 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
                             connect(w,SIGNAL('textChanged(const QString &)'),
                                     @programmeTable, SLOT('filterChanged(const QString &)'))
                             w.setClearButtonShown(true)
+                            connect(@programmeTable, SIGNAL('filterRequest(const QString &)'),
+                                w, SLOT('setText(const QString &)'))
                         end
                     )
                 end
@@ -723,7 +725,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
     end
 
 
-    private
+    protected
     #
     def getSaveName(prog, ext='wma')
         tags = prog.categories.split(/,/)
