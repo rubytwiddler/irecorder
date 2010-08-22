@@ -10,6 +10,7 @@ TODO - irecorder
    & notification pop up.
 
  *auto download subscription tags
+ *auto start program, in system tray, auto restart download.
  *mencoder for dump
  *play/download from proxy (mplayer)
  *status bar for processing.

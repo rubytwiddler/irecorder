@@ -568,6 +568,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
                 $log.info { "episode Url : #{url}" }
                 minfo = BBCNet::CacheMetaInfoDevice.read(url)
                 $log.debug { "#{minfo.inspect}" }
+                raise "No stream Url" unless minfo.wma
                 url = minfo.wma.url
 
                 cmd, args = makeProcCommand(directPlayerCommand, url)
@@ -577,10 +578,19 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
                 proc.start(cmd, args)
             end
         rescue => e
-            $log.error { e }
-            KDE::MessageBox::information(self, i18n("There is not direct stream for this programme."))
+            if e.kind_of? RuntimeError
+                $log.info { e.message }
+            else
+                $log.error { e }
+            end
+            # some messages must be treated.
+            # already expired.
+            # some xml error.
+            # no url
+            passiveMessage(i18n("There is not direct stream for this programme.\n %s" %[prog.title]))
         end
     end
+
 
 
     # ------------------------------------------------------------------------
@@ -653,7 +663,6 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
 
     protected
     def makeTablefromRss(rss)
-#         rss = RSS::Parser.parse(rssRaw)
         sortFlag = @programmeTable.sortingEnabled
         @programmeTable.sortingEnabled = false
         @programmeTable.hide
@@ -704,9 +713,13 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         rowsSet = {}      # use Hash as Set.
         @programmeTable.selectedItems.each do |i| rowsSet[i.row] = true end
 
-        rowsSet.keys.sort.map do |r|
+        titles = {}
+        rowsSet.keys.map do |r|
+            @programmeTable[r]
+        end .each do |p| titles[p.title] = p end
+
+        titles.each_value do |prog|
             begin
-                prog = @programmeTable[r]
                 url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
 
                 $log.info { "episode Url : #{url}" }
@@ -717,9 +730,16 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
                 $log.info { "save name : #{fName}" }
 
                 startDownOneFile(minfo, fName)
+
+                passiveMessage(i18n("Start Download programme '%s'") % [prog.title])
+
             rescue Timeout::Error, StandardError => e
-                $log.error { e }
-                KDE::MessageBox::information(self, i18n("There is not direct stream for programme '%s'.") % [prog.title])
+                if e.kind_of? RuntimeError
+                    $log.info { e.message }
+                else
+                    $log.error { e }
+                end
+                passiveMessage(i18n("There is not direct stream for this programme.\n%s" %[prog.title]))
             end
         end
     end
@@ -828,7 +848,7 @@ end
 
 
 #
-#    main start
+# #    main start
 #
 
 about = KDE::AboutData.new(APP_NAME, APP_NAME, KDE::ki18n(APP_NAME), APP_VERSION)

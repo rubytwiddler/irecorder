@@ -81,6 +81,9 @@ class BBCNet
 #             res = IO.read("../tmp/iplayer-playlist-me.xml")
 
             doc = Nokogiri::XML(res)
+            item = doc.at_css("noItems")
+            raise "No Playlist " + item[:reason] if item
+
             item = doc.at_css("item")
             @media = item[:kind].gsub(/programme/i, '')
             @duration = item[:duration].to_i

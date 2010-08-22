@@ -107,7 +107,7 @@ class DownloadProcess < Qt::Process
             $log.debug { "@rawFilePath duration:" + AudioFile.getDuration(@rawFilePath).to_s }
             $log.debug { "@outFilePath duration:" + AudioFile.getDuration(@outFilePath).to_s }
             $log.debug { "metainf duration:" + @metaInfo.duration.to_s }
-            if self.error? then
+            unless self.error? then
                 beginDownload
             end
         else
@@ -136,13 +136,12 @@ class DownloadProcess < Qt::Process
     def cancelTask
         if running? then
             self.terminate
+            taskFinished(1,0)
         end
     end
 
     def removeData
-        if running? then
-            self.terminate
-        end
+        cancelTask
         begin
             File.delete(@rawFilePath)
             File.delete(@outFilePath)
@@ -164,13 +163,18 @@ class DownloadProcess < Qt::Process
         checkReadOutput
         if (exitCode.to_i.nonzero? || exitStatus.to_i.nonzero?) && checkErroredStatus then
             self.status = ERROR
-            $log.error { [ makeErrorMsg, "exitCode=#{exitCode}, exitStatus=#{exitStatus}" ] }
+            errMsg = makeErrorMsg
+            $log.error { [ errMsg, "exitCode=#{exitCode}, exitStatus=#{exitStatus}" ] }
+            passiveMessage(errMsg)
         else
             $log.info {
                 [ "Successed to download a File '%#2$s'",
                     "Successed to convert a File '%#2$s'", ][@stage] %
                 [ @sourceUrl, @rawFilePath ]
             }
+            if @stage == CONVERT then
+                passiveMessage(i18n("Download, Convert Complete. '%#1$s'") % [@outFilePath])
+            end
             nextTask
         end
     end
@@ -222,10 +226,10 @@ class DownloadProcess < Qt::Process
         # debug code.
         if DEBUG_DOWNLOAD then
             if rand > 0.4 then
-                cmdApp = "test/sleepjob.rb"
+                cmdApp = APP_DIR + "/mytests/sleepjob.rb"
                 cmdArgs = %w{ touch a/b/ }
             else
-                cmdApp = "test/sleepjob.rb"
+                cmdApp = APP_DIR + "/mytests/sleepjob.rb"
                 cmdArgs = %w{ touch } << @rawFilePath.shellescape
             end
         end
@@ -246,10 +250,10 @@ class DownloadProcess < Qt::Process
         # debug code.
         if DEBUG_DOWNLOAD then
             if rand > 0.4 then
-                cmdApp = "test/sleepjob.rb"
+                cmdApp = APP_DIR + "/mytests/sleepjob.rb"
                 cmdArgs = %w{ touch a/b/ }
             else
-                cmdApp = "test/sleepjob.rb"
+                cmdApp = APP_DIR + "/mytests/sleepjob.rb"
                 cmdArgs = %w{ cp -f } + [ @rawFilePath.shellescape, @outFilePath.shellescape ]
             end
         end

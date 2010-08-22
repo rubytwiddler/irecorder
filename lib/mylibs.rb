@@ -105,6 +105,11 @@ class HBoxLayoutWidget < Qt::Widget
     end
 end
 
+def passiveMessage(text)
+    %x{ kdialog --passivepopup #{text.shellescape} }
+end
+
+
 #--------------------------------------------------------------------------
 #
 #

@@ -1,4 +1,4 @@
-#---------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------
 #
 #  Task Window
 #
@@ -120,7 +120,6 @@ class TaskWindow < Qt::Widget
         def openContextPopup(pos, wItem)
             poRow =  wItem.row
             poColumn = wItem.column
-            $log.misc { "right clicked item (row:#{poRow}, column:#{poColumn})" }
             process = taskItemAtRow(wItem.row).process
 
             menu = Qt::Menu.new
@@ -181,7 +180,9 @@ class TaskWindow < Qt::Widget
                 if process.rawDownloaded? then
                     createPlayers(menu, i18n('Play File with'), "playMP3@", '.mp3')
                 end
-                createPlayers(menu, i18n('Play Temp File with'), "playTemp@", '.wma')
+                if not process.finished? or File.exist?(process.outFilePath) then
+                    createPlayers(menu, i18n('Play Temp File with'), "playTemp@", '.wma')
+                end
             end
         end
 

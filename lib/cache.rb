@@ -81,7 +81,7 @@ end
 
 
 class CacheHttpDiskDevice < CasheDevice::CacheDeviceBase
-    def initialize(cacheDuration = 12*60, cacheMax=30)
+    def initialize(cacheDuration = 12*60, cacheMax=50)
         super(cacheDuration, cacheMax)
         @tmpdir = Dir.tmpdir + '/bbc_cache'
         FileUtils.mkdir_p(@tmpdir)
@@ -96,8 +96,14 @@ class CacheHttpDiskDevice < CasheDevice::CacheDeviceBase
     # return : [ data, key ]
     #  key : key to restore data.
     def directRead(url)
-        puts "directRead(): " + self.class.name
+        $log.debug { "directRead(): " + self.class.name }
         tmpfname = tempFileName(url)
+
+        if File.exist?(tmpfname) then
+            $log.debug { "File ctime  : " + File.ctime(tmpfname).to_s}
+            $log.debug { "expire time : " + (File.ctime(tmpfname) + @cacheDuration).to_s }
+            $log.debug { "Now Time    : " + Time.now.to_s }
+        end
 
         if File.exist?(tmpfname) and
                 File.ctime(tmpfname) + @cacheDuration > Time.now then
