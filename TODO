@@ -1,8 +1,11 @@
 TODO - irecorder
  *error handling
    -overwrite check.
+     check .mp3 file befor download
+   -check raw .wma file's integrity
    -error auto retry.
    - http 404 and no rawfile.
+ *retry from download
  *solve conflict of generated file names.
    -remove data
  *error dialog for misc errors. download/convert error. and retry.

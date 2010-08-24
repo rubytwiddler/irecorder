@@ -587,7 +587,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
             # already expired.
             # some xml error.
             # no url
-            passiveMessage(i18n("There is not direct stream for this programme.\n %s" %[prog.title]))
+            passiveMessage(i18n("There is no direct stream for this programme.\n %s" %[prog.title]))
         end
     end
 
@@ -606,7 +606,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
 
         begin
             makeTablefromRss( CacheRssDevice.read(feedAdr) )
-        rescue IOError, OpenURI::HTTPError => e
+        rescue  => e
             $log.error { e }
         end
         mediaFilterChanged
@@ -663,11 +663,13 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
 
     protected
     def makeTablefromRss(rss)
+        @filterLineEdit.clear
+        return unless rss and rss.entries and rss.entries.size > 0
+
         sortFlag = @programmeTable.sortingEnabled
         @programmeTable.sortingEnabled = false
         @programmeTable.hide
         @programmeTable.clearContents
-        @filterLineEdit.clear
         @programmeTable.rowCount = rss.entries.size
         setMediaFilter
 
@@ -739,7 +741,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
                 else
                     $log.error { e }
                 end
-                passiveMessage(i18n("There is not direct stream for this programme.\n%s" %[prog.title]))
+                passiveMessage(i18n("There is no direct stream for this programme.\n%s" %[prog.title]))
             end
         end
     end
