@@ -128,6 +128,8 @@ class ProgrammeTableWidget < Qt::TableWidget
         menu = Qt::Menu.new
         a = menu.addAction(KDE::Icon.new('search'), i18n('Search Same Programme'))
         a.setVData('searchSame@')
+        a = menu.addAction(KDE::Icon.new('search'), i18n('Search Same Category tags'))
+        a.setVData('searchSameTags@')
         menu.addSeparator
         insertPlayerActions(menu)
         menu
@@ -179,6 +181,10 @@ class ProgrammeTableWidget < Qt::TableWidget
     signals  'filterRequest(const QString &)'
     def searchSame(prog)
         emit filterRequest( prog.title.sub(/:.*/, '') )
+    end
+
+    def searchSameTags(prog)
+        emit filterRequest( prog.categories )
     end
 end
 

@@ -269,7 +269,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         # Category selector
         @categoryListBox = KDE::ListWidget.new
         @categoryListBox.addItems( CategoryRssTbl.map do |w| w[0] end )
-        toolBox.addItem( @categoryListBox, 'Categories' )
+        toolBox.addItem( @categoryListBox, 'Radio Categories' )
 
         toolBox
     end
@@ -634,7 +634,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         when 2
             # get Category
             @channelIndex = @categoryListBox.currentRow
-            channelStr = 'categories/' + CategoryRssTbl[ @channelIndex ][1]
+            channelStr = 'categories/' + CategoryRssTbl[ @channelIndex ][1] + '/radio'
         end
 
         return nil  if channelStr.nil?
@@ -664,12 +664,12 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
     protected
     def makeTablefromRss(rss)
         @filterLineEdit.clear
+        @programmeTable.clearContents
         return unless rss and rss.entries and rss.entries.size > 0
 
         sortFlag = @programmeTable.sortingEnabled
         @programmeTable.sortingEnabled = false
         @programmeTable.hide
-        @programmeTable.clearContents
         @programmeTable.rowCount = rss.entries.size
         setMediaFilter
 

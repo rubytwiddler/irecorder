@@ -186,7 +186,7 @@ class BBCNet
         while url != old and not url[DirectStreamRegexp] do
             old = url
             res = BBCNet.read(url)
-            url = res[ DirectStreamRegexp ] or res[ UrlRegexp ] or old
+            url = res[ DirectStreamRegexp ] || res[ UrlRegexp ] || old
             $log.debug { "new url:#{url},  old url:#{old}" }
             $log.debug { "no url in response '#{res}'" } if url[ UrlRegexp ]
         end

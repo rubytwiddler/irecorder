@@ -11,6 +11,7 @@ TODO - irecorder
  *error dialog for misc errors. download/convert error. and retry.
    -restrain frequent error pop up
    & notification pop up.
+ *change help menu.
 
  *auto download subscription tags
  *auto start program, in system tray, auto restart download.

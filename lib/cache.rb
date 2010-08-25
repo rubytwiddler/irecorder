@@ -116,6 +116,6 @@ class CacheHttpDiskDevice < CasheDevice::CacheDeviceBase
     end
 
     def tempFileName(url)
-        File.join(@tmpdir, url.scan(%r{\w+/\w+$}).first.gsub(%r|/|, '_'))
+        File.join(@tmpdir, url.scan(%r{(?:iplayer/)[\w\/]+$}).first.gsub!(/iplayer\//,'').gsub!(%r|/|, '_'))
     end
 end
