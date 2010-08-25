@@ -49,7 +49,7 @@ require "settings"
 #
 class MainWindow < KDE::MainWindow
     slots   :startDownload, :updateTask, :getList, :reloadStyleSheet, :clearStyleSheet
-    slots   :mediaFilterChanged, :playProgramme
+    slots   :playProgramme
     slots   'programmeCellClicked(int,int)'
 
     GroupName = "MainWindow"
@@ -194,6 +194,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
 
     #-------------------------------------------------------------
     #
+    TvType, RadioType, RadioCategoryType = [-1,0,1]    # TvType = -1 (hide)
     TVChannelRssTbl = [
         ['BBC One', 'bbc_one' ],
         ['BBC Two', 'bbc_two' ],
@@ -256,10 +257,11 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         toolBox.currentIndex = 2
 
         # TV & Radio Channels selector
-        @tvChannelListBox = KDE::ListWidget.new
-        # TV Channels
-        @tvChannelListBox.addItems( TVChannelRssTbl.map do |w| w[0] end )
-        toolBox.addItem( @tvChannelListBox, 'TV Channels' )
+#         @tvChannelListBox = KDE::ListWidget.new
+#         # TV Channels
+#         @tvChannelListBox.addItems( TVChannelRssTbl.map do |w| w[0] end )
+#         toolBox.addItem( @tvChannelListBox, 'TV Channels' )
+
 
         # Radio Channels
         @radioChannelListBox = KDE::ListWidget.new
@@ -351,35 +353,20 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
             vbxw.addWidget( @listTitleLabel = Qt::Label.new('') )
             vbxw.addWidget(@programmeTable)
 
-            # 'Start Download' Button
-            @tvFilterBtn = KDE::PushButton.new(i18n("TV")) do |w|
-                w.objectName = 'mediaButton'
-                w.checkable = true
-                w.autoExclusive = true
-                connect( w, SIGNAL(:clicked), self, SLOT(:mediaFilterChanged) )
-            end
-
-            @radioFilterBtn = KDE::PushButton.new(i18n("Radio")) do |w|
-                w.objectName = 'mediaButton'
-                w.checkable = true
-                w.autoExclusive = true
-                w.checked = true
-                connect( w, SIGNAL(:clicked), self, SLOT(:mediaFilterChanged) )
-            end
-
             playIcon = KDE::Icon.new(':images/play-22.png')
             playBtn = KDE::PushButton.new( playIcon, i18n("Play")) do |w|
                 w.objectName = 'playButton'
                 connect( w, SIGNAL(:clicked), self, SLOT(:playProgramme) )
             end
 
+            # 'Start Download' Button
             downloadIcon = KDE::Icon.new(':images/download-22.png')
             downloadBtn = KDE::PushButton.new( downloadIcon, i18n("Download")) do |w|
                 w.objectName = 'downloadButton'
                 connect( w, SIGNAL(:clicked), self, SLOT(:startDownload) )
             end
 
-            vbxw.addWidgets( @tvFilterBtn, @radioFilterBtn, nil, playBtn, nil, downloadBtn, nil )
+            vbxw.addWidgets( nil, playBtn, nil, downloadBtn, nil )
         end
     end
 
@@ -505,11 +492,6 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         @programmeSummaryWebView.setHtml(html)
     end
 
-    # slot :
-    def mediaFilterChanged
-        setMediaFilter
-        @programmeTable.filterChanged(@filterLineEdit.text)
-    end
 
 
     # slot
@@ -609,7 +591,6 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         rescue  => e
             $log.error { e }
         end
-        mediaFilterChanged
         setListTitle
     end
 
@@ -623,15 +604,15 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
 
         channelStr = nil
         case  @channelType
-        when 0
+        when TvType
             # get TV channel
             @channelIndex = @tvChannelListBox.currentRow
             channelStr = TVChannelRssTbl[ @channelIndex ][1]
-        when 1
+        when RadioType
             # get Radio channel
             @channelIndex = @radioChannelListBox.currentRow
             channelStr = RadioChannelRssTbl[ @channelIndex ][1]
-        when 2
+        when RadioCategoryType
             # get Category
             @channelIndex = @categoryListBox.currentRow
             channelStr = 'categories/' + CategoryRssTbl[ @channelIndex ][1] + '/radio'
@@ -671,7 +652,6 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         @programmeTable.sortingEnabled = false
         @programmeTable.hide
         @programmeTable.rowCount = rss.entries.size
-        setMediaFilter
 
         # ['Title', 'Category', 'Updated' ]
         rss.entries.each_with_index do |i, r|
@@ -689,19 +669,6 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         @programmeTable.show
     end
 
-    def setMediaFilter
-        @programmeTable.mediaFilter =
-            case  @channelType
-            when 2
-                @tvFilterBtn.enabled = true
-                @radioFilterBtn.enabled = true
-                @tvFilterBtn.checked ? 'tv' : 'radio'
-            else
-                @tvFilterBtn.enabled = false
-                @radioFilterBtn.enabled = false
-                ''
-            end
-    end
 
 
     # ------------------------------------------------------------------------
@@ -792,10 +759,10 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
 
     def getChannelTitle
         case  @channelType
-        when 0
+        when TvType
         # get TV channel
             TVChannelRssTbl[ @channelIndex ][0]
-        when 1
+        when RadioType
         # get Radio channel
             RadioChannelRssTbl[ @channelIndex ][0]
         else

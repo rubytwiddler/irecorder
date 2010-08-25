@@ -46,7 +46,6 @@ class ProgrammeTableWidget < Qt::TableWidget
     #------------------------------------------------------------------------
     #
     #
-    attr_accessor :mediaFilter
 
     def initialize()
         super(0, 3)
@@ -58,7 +57,6 @@ class ProgrammeTableWidget < Qt::TableWidget
         self.sortingEnabled = true
         sortByColumn(2, Qt::DescendingOrder )
 
-        @mediaFilter = ''
 
         # Hash table : key column_0_item  => Programme entry.
         @table = Hash.new
@@ -86,7 +84,7 @@ class ProgrammeTableWidget < Qt::TableWidget
     def filterChanged(text)
         return unless text
 
-        text += ' ' + @mediaFilter unless @mediaFilter.empty?
+        text += ' '
 
         regxs = text.split(/[,\s]+/).map do |w|
                     /#{Regexp.escape(w.strip)}/i
