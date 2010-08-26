@@ -12,7 +12,7 @@ require 'ftools'
 APP_NAME = File.basename(__FILE__).sub(/\.rb/, '')
 APP_DIR = File::dirname(File.expand_path(File.dirname(__FILE__)))
 LIB_DIR = File::join(APP_DIR, "lib")
-APP_VERSION = "0.0.5"
+APP_VERSION = "0.0.6"
 
 # standard libs
 require 'rubygems'
@@ -48,9 +48,6 @@ require "settings"
 #  Main Window Class
 #
 class MainWindow < KDE::MainWindow
-    slots   :startDownload, :updateTask, :getList, :reloadStyleSheet, :clearStyleSheet
-    slots   :playProgramme
-    slots   'programmeCellClicked(int,int)'
 
     GroupName = "MainWindow"
 
@@ -132,20 +129,42 @@ class MainWindow < KDE::MainWindow
 
 
         # Help menu
-        about = i18n(<<-ABOUT
-#{APP_NAME} #{APP_VERSION}
+        aboutDlg = KDE::AboutApplicationDialog.new($about)
+        openAboutAction = KDE::Action.new(KDE::Icon.new('irecorder'),
+                                          i18n('About iRecorder'), self)
+        connect(openAboutAction, SIGNAL(:triggered), aboutDlg, SLOT(:exec))
 
-BBC iPlayer like audio (mms/rtsp) stream recorder.
-        ABOUT
-        )
-        helpMenu = KDE::HelpMenu.new(self, about)
+        #
+        openDocUrlAction = KDE::Action.new(KDE::Icon.new('help-contents'),
+                                           i18n('Open Document Wiki'), self)
+        connect(openDocUrlAction, SIGNAL(:triggered), self, SLOT(:openDocUrl))
+
+        #
+        openReportIssueUrlAction = KDE::Action.new(
+            KDE::Icon.new('tools-report-bug'), i18n('Report Bug'), self)
+        connect(openReportIssueUrlAction, SIGNAL(:triggered), self,
+                SLOT(:openReportIssueUrl))
+
+        #
+        openSourceAction = KDE::Action.new(KDE::Icon.new('document-open-folder'),
+                                           i18n('Open Source Folder'), self)
+        connect(openSourceAction, SIGNAL(:triggered), self, SLOT(:openSource))
+
+        helpMenu = KDE::Menu.new(i18n('&Help'), self)
+        helpMenu.addAction(openDocUrlAction)
+#         helpMenu.addAction(openHomeUrlAction)
+        helpMenu.addAction(openReportIssueUrlAction)
+#         helpMenu.addAction(openRDocAction)
+        helpMenu.addAction(openSourceAction)
+        helpMenu.addSeparator
+        helpMenu.addAction(openAboutAction)
 
         # insert menus in MenuBar
         menu = KDE::MenuBar.new
         menu.addMenu( fileMenu )
         menu.addMenu( settingsMenu )
         menu.addSeparator
-        menu.addMenu( helpMenu.menu )
+        menu.addMenu( helpMenu )
         setMenuBar(menu)
     end
 
@@ -460,7 +479,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
     end
 
     # ------------------------------------------------------------------------
-    # slot :
+    slots  :reloadStyleSheet
     def reloadStyleSheet
         styleStr = IO.read(APP_DIR + '/resources/bbcstyle.qss')
         $app.styleSheet = styleStr
@@ -468,7 +487,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         $log.info { 'Reloaded StyleSheet.' }
     end
 
-    # slot :
+    slots   :clearStyleSheet
     def clearStyleSheet
         $app.styleSheet = nil
         $log.info { 'Cleared StyleSheet.' }
@@ -476,6 +495,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
 
 
     # slot :
+    slots   'programmeCellClicked(int,int)'
     def programmeCellClicked(row, column)
         prog = @programmeTable[row]
         color = "#%06x" % (@programmeSummaryWebView.palette.color(Qt::Palette::Text).rgb & 0xffffff)
@@ -494,18 +514,19 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
 
 
 
-    # slot
+    def makeProcCommand(command, url)
+        cmd, args = command.split(/\s+/, 2)
+        args = args.split(/\s+/).map do |a|
+            a.gsub(/%\w/, url)
+        end
+        [ cmd, args ]
+    end
+
+    slots   :playProgramme
     def playProgramme
         items = @programmeTable.selectedItems
         return unless items.size > 0
 
-        def makeProcCommand(command, url)
-            cmd, args = command.split(/\s+/, 2)
-            args = args.split(/\s+/).map do |a|
-                a.gsub(/%\w/, url)
-            end
-            [ cmd, args ]
-        end
 
         def getIplayerUrl(prog)
             # big type console
@@ -573,13 +594,38 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
         end
     end
 
+    slots :openDocUrl
+    def openDocUrl
+        openUrlDocument('http://github.com/rubytwiddler/irecorder/wiki')
+    end
 
+    slots :openReportIssueUrl
+    def openReportIssueUrl
+        openUrlDocument('http://github.com/rubytwiddler/irecorder/issues')
+    end
+
+    slots  :openSource
+    def openSource
+        cmd = 'dolphin'
+        args = [ APP_DIR ]
+        proc = Qt::Process.new(self)
+        proc.start(cmd, args)
+    end
+
+    def openUrlDocument(url)
+        webPlayerCommand = IRecSettings.webPlayerCommand
+        cmd, args = makeProcCommand(webPlayerCommand, url)
+        $log.debug { "execute cmd '#{cmd}', args '#{args.inspect}'" }
+        proc = Qt::Process.new(self)
+        proc.start(cmd, args)
+    end
 
     # ------------------------------------------------------------------------
     #
     # slot: called when 'Get List' Button clicked signal invoked.
     #
     public
+    slots  :getList
     def getList
         feedAdr = getFeedAdr
         return if feedAdr.nil?
@@ -644,8 +690,9 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
 
     protected
     def makeTablefromRss(rss)
-        @filterLineEdit.clear
         @programmeTable.clearContents
+        @programmeTable.rowCount = 0
+        @filterLineEdit.clear
         return unless rss and rss.entries and rss.entries.size > 0
 
         sortFlag = @programmeTable.sortingEnabled
@@ -678,6 +725,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
     #   Start Downloading
     #
     public
+    slots  :startDownload
     def startDownload
         rowsSet = {}      # use Hash as Set.
         @programmeTable.selectedItems.each do |i| rowsSet[i.row] = true end
@@ -808,6 +856,7 @@ BBC iPlayer like audio (mms/rtsp) stream recorder.
     # slot :  periodically called to update task view.
     #
     protected
+    slots  :updateTask
     def updateTask
         @taskWin.each do |task|
             task.process.updateView
@@ -820,9 +869,12 @@ end
 # #    main start
 #
 
-about = KDE::AboutData.new(APP_NAME, APP_NAME, KDE::ki18n(APP_NAME), APP_VERSION)
-about.setProgramIconName(':images/irecorder-22.png')
-KDE::CmdLineArgs.init(ARGV, about)
+$about = KDE::AboutData.new(APP_NAME, APP_NAME, KDE::ki18n(APP_NAME), APP_VERSION,
+                            KDE::ki18n('BBC iRecorder KDE')
+                           )
+$about.setProgramIconName(':images/irecorder-22.png')
+$about.addLicenseTextFile(APP_DIR + '/MIT-LICENSE')
+KDE::CmdLineArgs.init(ARGV, $about)
 # options = KDE::CmdLineOptions.new()
 # options.add( "+url", KDE::ki18n( "The url to record)" ),"")
 

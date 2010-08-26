@@ -3,8 +3,6 @@
 #
 #
 class ProgrammeTableWidget < Qt::TableWidget
-    slots   'filterChanged(const QString &)'
-
     #
     #
     class Programme
@@ -80,11 +78,9 @@ class ProgrammeTableWidget < Qt::TableWidget
     # slot : called when filterLineEdit text is changed.
     #
     public
-
+    slots   'filterChanged(const QString &)'
     def filterChanged(text)
         return unless text
-
-        text += ' '
 
         regxs = text.split(/[,\s]+/).map do |w|
                     /#{Regexp.escape(w.strip)}/i

@@ -3,7 +3,7 @@ You can browse BBC Radio programmes and click to download stream file.
 files will be converted to mp3 files automatically.
 irecorder allow to play without any other browser or play on your prefered browser.
 
-== KDE ruby
+ KDE ruby
 ==============
 irecorder require kdebindings.
 please check your distro package to install it.
@@ -11,7 +11,7 @@ or you can compile from source.
 http://download.kde.org/download.php?url=stable/4.5.0/src/kdebindings-4.5.0.tar.bz2
 
 
-== Installation
+ Installation
 ==================
 install most important package kdebindings4.
  on Mandriva Linux use urpmi command.
@@ -36,7 +36,7 @@ launch irecorder just type irecorder.rb
   # irecorder.rb
 
 
-== Build Gem
+ Build Gem
 =================
 if you want to gem package from source, use rake command.
 

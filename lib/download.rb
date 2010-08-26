@@ -7,7 +7,6 @@ require "bbcnet.rb"
 #
 #
 class DownloadProcess < Qt::Process
-    slots   'taskFinished(int,QProcess::ExitStatus)'
     attr_reader     :sourceUrl, :fileName
     attr_accessor   :taskItem
 
@@ -107,7 +106,7 @@ class DownloadProcess < Qt::Process
             $log.debug { "@rawFilePath duration:" + AudioFile.getDuration(@rawFilePath).to_s }
             $log.debug { "@outFilePath duration:" + AudioFile.getDuration(@outFilePath).to_s }
             $log.debug { "metainf duration:" + @metaInfo.duration.to_s }
-            unless self.error? then
+            if self.error? then
                 beginDownload
             end
         else
@@ -158,7 +157,7 @@ class DownloadProcess < Qt::Process
         Time.now - @startTime
     end
 
-    # slot :
+    slots   'taskFinished(int,QProcess::ExitStatus)'
     def taskFinished(exitCode, exitStatus)
         checkReadOutput
         if (exitCode.to_i.nonzero? || exitStatus.to_i.nonzero?) && checkErroredStatus then

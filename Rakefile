@@ -6,10 +6,10 @@ require 'rake/gempackagetask'
 
 spec = Gem::Specification.new do |s|
     s.name = "irecorder"
-    s.version = "0.0.5"
+    s.version = "0.0.6"
     s.author = "ruby.twiddler"
     s.email = "ruby.twiddler at gmail.com"
-    s.homepage = "http://wiki.github.com/rubytwiddler/irecorder/"
+    s.homepage = "http://github.com/rubytwiddler/irecorder/wiki"
     s.platform = "linux"
     s.summary = "BBC iPlayer like audio recorder with KDE GUI."
     s.files = FileList["{bin,lib}/**/*"].to_a
@@ -17,7 +17,7 @@ spec = Gem::Specification.new do |s|
     s.executables = [ 'irecorder.rb' ]
     s.license  = "MIT-LICENSE"
     s.require_path = "lib"
-    s.requirements = %w{ korundum4 qtwebkit kio }
+    s.requirements = %w{ korundum4 qtwebkit kio ktexteditor }
     s.add_runtime_dependency( 'nokogiri', '>= 1.4.0' )
     s.description = <<-EOF
 BBC iPlayer like audio recorder with KDE GUI.
