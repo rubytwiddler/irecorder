@@ -303,7 +303,15 @@ class DownloadProcess < Qt::Process
         when CONVERT
             begin
                 $log.debug { "check duration for convert." }
-                AudioFile.getDuration(@outFilePath) < AudioFile.getDuration(@rawFilePath) - 10
+                outDuration = AudioFile.getDuration(@outFilePath)
+                rawDuration = AudioFile.getDuration(@rawFilePath)
+                isError = outDuration < rawDuration - 3*60 - 10
+                if isError then
+                    $log.warn { [ "duration check error",
+                                  " outDuration : #{outDuration}",
+                                  " rawDuration : #{rawDuration}" ] }
+                end
+                isError
             rescue => e
                 $log.warn { e }
                 true

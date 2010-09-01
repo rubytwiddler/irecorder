@@ -2,7 +2,7 @@
 #
 #    2010 by ruby.twiddler@gmail.com
 #
-#     iPlayer interface
+#     iPlayer like stream recorder
 #      record real/wma (rtsp/mms) audio stream
 #
 

@@ -24,6 +24,11 @@
 }
 
 
+QLabel a {
+    text-decoration: underline; color: rgb(84, 174, 255);
+}
+
+
 /*
     Popup & Menu
 */

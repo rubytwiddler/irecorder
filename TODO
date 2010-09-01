@@ -9,8 +9,6 @@ TODO - irecorder
  *solve conflict of generated file names.
    -remove data
  *error dialog for misc errors. download/convert error. and retry.
-   -restrain frequent error pop up
-   & notification pop up.
 
  *auto download subscription tags
  *auto start program, in system tray, auto restart download.

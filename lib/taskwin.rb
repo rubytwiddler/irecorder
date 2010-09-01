@@ -180,7 +180,7 @@ class TaskWindow < Qt::Widget
                 if process.rawDownloaded? then
                     createPlayers(menu, i18n('Play File with'), "playMP3@", '.mp3')
                 end
-                if not process.finished? or File.exist?(process.outFilePath) then
+                if !process.finished? or File.exist?(process.rawFilePath) then
                     createPlayers(menu, i18n('Play Temp File with'), "playTemp@", '.wma')
                 end
             end
@@ -250,9 +250,10 @@ class TaskWindow < Qt::Widget
         # contextMenu Event
         def removeTaskData(process, wItem)
             if process.running? then
-                process.removeData
-                $log.info { "task and data removed." }
+                process.cancelTask
             end
+            process.removeData
+            $log.info { "task and data removed." }
             ti = taskItemAtRow(wItem.row)
             deleteItem(ti)
         end
@@ -294,6 +295,7 @@ class TaskWindow < Qt::Widget
         def initialize(text)
             super(text)
             self.flags = Qt::ItemIsSelectable | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled
+            self.toolTip = text
         end
     end
 
