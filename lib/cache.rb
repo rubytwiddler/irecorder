@@ -74,7 +74,7 @@ class CacheRssDevice < CasheDevice::CacheDeviceBase
     # return : [ data, key ]
     #  key : key to restore data.
     def directRead(url)
-         data = RSS::Parser.parse(CacheHttpDiskDevice.read(url))
+         data = Nokogiri::XML(CacheHttpDiskDevice.read(url))
          [ data, data ]
     end
 end

@@ -693,21 +693,22 @@ class MainWindow < KDE::MainWindow
         @programmeTable.clearContents
         @programmeTable.rowCount = 0
         @filterLineEdit.clear
-        return unless rss and rss.entries and rss.entries.size > 0
+        entries = rss.css('entry')
+        return unless rss and entries and entries.size
 
         sortFlag = @programmeTable.sortingEnabled
         @programmeTable.sortingEnabled = false
         @programmeTable.hide
-        @programmeTable.rowCount = rss.entries.size
+        @programmeTable.rowCount = entries.size
 
         # ['Title', 'Category', 'Updated' ]
-        rss.entries.each_with_index do |i, r|
-            title = i.title.content.to_s
-            updated = i.updated.content.to_s
-            contents = i.content.content
-            linkItem = i.links.find do |l| l.rel == 'self' end
-            link = linkItem ? linkItem.href : nil
-            categories = i.categories.map do |c| c.term end.join(',')
+        entries.each_with_index do |i, r|
+            title = i.at_css('title').content
+            updated = i.at_css('updated').content
+            contents = i.at_css('content').content
+            linkItem = i.css('link').find do |l| l['rel'] == 'self' end
+            link = linkItem ? linkItem['href'] : nil
+            categories = i.css('category').map do |c| c['term'] end.join(',')
             $log.misc { title }
             @programmeTable.addEntry( r, title, categories, updated, contents, link )
         end
@@ -866,7 +867,7 @@ end
 
 
 #
-# #    main start
+#    main start
 #
 
 $about = KDE::AboutData.new(APP_NAME, APP_NAME, KDE::ki18n(APP_NAME), APP_VERSION,
