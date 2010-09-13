@@ -105,9 +105,74 @@ class HBoxLayoutWidget < Qt::Widget
     end
 end
 
+
+#--------------------------------------------------------------------------
+#
+#
 def passiveMessage(text)
     %x{ kdialog --passivepopup #{text.shellescape} }
 end
+
+
+
+#--------------------------------------------------------------------------
+#
+#
+
+class Qt::Action
+    def setVData(data)
+        setData(Qt::Variant.new(data))
+    end
+
+    def vData
+        self.data.toString
+    end
+end
+
+module Mime
+    def self.services(url)
+        mimeType = KDE::MimeType.findByUrl(KDE::Url.new(url))
+        mime = mimeType.name
+        services = KDE::MimeTypeTrader.self.query(mime)
+    end
+end
+
+class KDE::ActionCollection
+    # @return : KDE::Action
+    # @parameter name :
+    # @parameter parent : parent Qt::Object
+    # @parameter options { :text=>name, :icon=>iconName, :shortCut=>key, :triggered=>SLOT or [object, SLOT] }
+    def addNew(name, parent=self.parent, options = {})
+        text = options[:text] || name
+        icon = options[:icon]
+        if icon then
+            action = KDE::Action.new(KDE::Icon.new(icon), text, parent)
+        else
+            action = KDE::Action.new(text, parent)
+        end
+        shortCut = options[:shortCut]
+        if shortCut then
+            action.setShortcut(KDE::Shortcut.new(shortCut))
+        end
+        self.addAction(action.text, action)
+        slot = options[:triggered]
+        if slot then
+            if slot.kind_of? Array then
+                self.connect(action, SIGNAL(:triggered), slot[0], \
+                               SLOT(slot[1]))
+            else
+                self.connect(action, SIGNAL(:triggered), parent, \
+                               SLOT(slot))
+            end
+        end
+        action
+    end
+end
+
+
+
+
+
 
 
 #--------------------------------------------------------------------------
@@ -125,6 +190,10 @@ class SettingsBase < KDE::ConfigSkeleton
 
     def addStringItem(sym, default="")
         defineItem(sym, 'toString', ItemString, default)
+    end
+
+    def addIntItem(sym, default="")
+        defineItem(sym, 'value', ItemInt, default)
     end
 
     def addUrlItem(sym, default=KDE::Url.new)
@@ -179,9 +248,9 @@ class SettingsBase < KDE::ConfigSkeleton
 
             def set#{name}(v)
                 item = findItem('#{name}')
-                unless item.immutable?
-                    item.property = @#{name} = Qt::Variant.fromValue(v)
-                end
+#                 unless item.immutable?
+                    item.property = Qt::Variant.fromValue(v)
+#                 end
             end
 
             def self.set#{name}(v)
@@ -198,14 +267,98 @@ class SettingsBase < KDE::ConfigSkeleton
             end
         }
     end
-end
 
+    def self.allChildren(obj)
+        all = children = obj.children
+        children.each do |o|
+            all += allChildren(o)
+        end
+        all
+    end
+
+    def self.printAllProperties(obj)
+        puts "============= settings properties =============="
+        options = self.instance
+        allChildren(obj).each do |o|
+            if o.objectName =~ /^kcfg_/ then
+                name = o.objectName.sub(/^kcfg_/, '')
+                if o.kind_of? Qt::CheckBox
+                    prop = o.checked.to_s
+                elsif o.kind_of? Qt::ComboBox
+                    prop = o.currentIndex.to_s
+                elsif o.kind_of? KDE::UrlRequester
+                    prop = o.text
+                else
+                    prop = '?'
+                end
+                if options.respond_to? name then
+                    val = options.send(name).inspect
+                else
+                    val = ''
+                end
+                err = prop == val ? '' : '  !!  Error !!'
+                puts " name:#{name}, property:#{prop}, settings value:#{val} #{err}"
+            end
+        end
+    end
+
+    def self.updateWidgets(obj)
+        options = self.instance
+        allChildren(obj).each do |o|
+            if o.objectName =~ /^kcfg_/ then
+                name = o.objectName.sub(/^kcfg_/, '')
+                if options.respond_to? name then
+                    val = options.send(name)
+                    if o.kind_of? Qt::CheckBox
+                        o.checked = val
+                    elsif o.kind_of? Qt::ComboBox
+                        o.currentIndex = val
+                    elsif o.kind_of? KDE::UrlRequester
+                        o.setUrl(val)
+                    end
+                end
+            end
+        end
+    end
+
+    def self.updateSettings(obj)
+        options = self.instance
+        allChildren(obj).each do |o|
+            if o.objectName =~ /^kcfg_/ then
+                name = o.objectName.sub(/^kcfg_/, '') + '='
+                if options.respond_to? name then
+                    if o.kind_of? Qt::CheckBox
+                        options.send(name, o.checked)
+                        if options.send(name[0..-2]) != o.checked then
+                            puts "Error !!  : #{name[0..-2]}(#{options.send(name[0..-2])} != #{o.checked}"
+                        end
+                    elsif o.kind_of? Qt::ComboBox
+                        options.send(name, o.currentIndex)
+                    elsif o.kind_of? KDE::UrlRequester
+                        options.send(name, o.url)
+                    else
+                        puts "not know type class:#{o.class.name}"
+                    end
+                end
+            end
+        end
+    end
+end
 
 
 #--------------------------------------------------------------------------
 #
 #
+def openDirectory(dir)
+    cmd = KDE::MimeTypeTrader.self.query('inode/directory').first.exec[/\w+/]
+    cmd += " " + dir
+    fork do exec(cmd) end
+end
 
+#--------------------------------------------------------------------------
+#
+#   stdlib
+#
 module Enumerable
     class Proxy
         instance_methods.each { |m| undef_method(m) unless m.match(/^__/) }
@@ -219,37 +372,6 @@ module Enumerable
 
     def every
         Proxy.new(self)
-    end
-end
-
-#
-# class Hash
-#     alias   old_blaket []
-#     def [](key)
-#         unless key.kind_of?(Regexp)
-#             return old_blaket(key)
-#         end
-#
-#         retk, retv = self.find { |k,v| k =~ key }
-#         retv
-#     end
-# end
-
-class Qt::Action
-    def setVData(data)
-        setData(Qt::Variant.new(data))
-    end
-
-    def vData
-        self.data.toString
-    end
-end
-
-module Mime
-    def self.services(url)
-        mimeType = KDE::MimeType.findByUrl(KDE::Url.new(url))
-        mime = mimeType.name
-        services = KDE::MimeTypeTrader.self.query(mime)
     end
 end
 
@@ -282,3 +404,4 @@ class String
         str.gsub(/\\/, '\&\&').gsub(/'/, "''")    #'
     end
 end
+

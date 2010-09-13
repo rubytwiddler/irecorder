@@ -141,10 +141,9 @@ class DownloadProcess < Qt::Process
     end
 
     def beginTask
-        # 1st stage : download
         startTask = decideStartTask
 
-        #
+        # ask whether proceed or commence from start.
         case startTask
         when FINISHED
             ret = OkCancelDialog.ask(nil, \
@@ -160,7 +159,7 @@ class DownloadProcess < Qt::Process
             end
         end
 
-        #
+        # initialize task
         case startTask
         when DOWNLOAD
             beginDownload
@@ -388,9 +387,9 @@ class DownloadProcess < Qt::Process
         case @stage
         when DOWNLOAD
             return @downNG unless @downNG
-            rawFileValid?
+            rawFileError?
         when CONVERT
-            outFileValid?
+            outFileError?
         else
             true
         end

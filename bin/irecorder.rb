@@ -59,6 +59,7 @@ class MainWindow < KDE::MainWindow
 
 
         $app.styleSheet = IO.read(APP_DIR + '/resources/bbcstyle.qss')
+        @actions = KDE::ActionCollection.new(self)
 
         createWidgets
         createMenu
@@ -73,6 +74,7 @@ class MainWindow < KDE::MainWindow
 
         # assign from config file.
         readSettings
+        @actions.readSettings
         setAutoSaveSettings(GroupName)
 
         initializeTaskTimer
@@ -95,13 +97,14 @@ class MainWindow < KDE::MainWindow
     def createMenu
 
         # File menu
-        recordAction = KDE::Action.new(KDE::Icon.new('arrow-down'), i18n('Start &Download'), self)
-        reloadStyleAction = KDE::Action.new(KDE::Icon.new('view-refresh'), i18n('&Reload StyleSheet'), self)
-        reloadStyleAction.setShortcut(KDE::Shortcut.new('Ctrl+R'))
-        clearStyleAction = KDE::Action.new(KDE::Icon.new('list-remove'), i18n('&Clear StyleSheet'), self)
-        clearStyleAction.setShortcut(KDE::Shortcut.new('Ctrl+L'))
-        quitAction = KDE::Action.new(KDE::Icon.new('application-exit'), i18n('&Quit'), self)
-        quitAction.setShortcut(KDE::Shortcut.new('Ctrl+Q'))
+        recordAction = @actions.addNew(i18n('Start Download'), self, \
+            { :icon => 'arrow-down', :triggered => :startDownload })
+        reloadStyleAction = @actions.addNew(i18n('&Reload StyleSheet'), self, \
+            { :icon => 'view-refresh', :shortCut => 'Ctrl+R', :triggered => :reloadStyleSheet })
+        clearStyleAction = @actions.addNew(i18n('&Clear StyleSheet'), self, \
+            { :icon => 'list-remove', :shortCut => 'Ctrl+L', :triggered => :clearStyleSheet })
+        quitAction = @actions.addNew(i18n('&Quit'), self, \
+            { :icon => 'application-exit', :shortCut => 'Ctrl+Q', :triggered => :close })
 
         fileMenu = KDE::Menu.new('&File', self)
         fileMenu.addAction(recordAction)
@@ -109,52 +112,37 @@ class MainWindow < KDE::MainWindow
         fileMenu.addAction(clearStyleAction)
         fileMenu.addAction(quitAction)
 
-        # connect actions
-        connect(recordAction, SIGNAL(:triggered), self, SLOT(:startDownload))
-        connect(reloadStyleAction, SIGNAL(:triggered), self, SLOT(:reloadStyleSheet))
-        connect(clearStyleAction, SIGNAL(:triggered), self, SLOT(:clearStyleSheet))
-        connect(quitAction, SIGNAL(:triggered), self, SLOT(:close))
 
         # settings menu
         playerDockAction = @playerDock.toggleViewAction
         playerDockAction.text = i18n('Show Player')
-        configureAppAction = KDE::Action.new(KDE::Icon.new('configure'),
-                                              i18n("Configure #{APP_NAME}"), self)
+        configureAppAction = @actions.addNew(i18n('Configure %s') % APP_NAME, self, \
+            { :icon => 'configure', :shortCut => 'F2', :triggered => :configureApp })
+
         settingsMenu = KDE::Menu.new(i18n('&Settings'), self)
         settingsMenu.addAction(playerDockAction)
         settingsMenu.addSeparator
         settingsMenu.addAction(configureAppAction)
-        # connect actions
-        connect(configureAppAction, SIGNAL(:triggered), self, SLOT(:configureApp))
 
 
         # Help menu
         aboutDlg = KDE::AboutApplicationDialog.new($about)
-        openAboutAction = KDE::Action.new(KDE::Icon.new('irecorder'),
-                                          i18n('About iRecorder'), self)
-        connect(openAboutAction, SIGNAL(:triggered), aboutDlg, SLOT(:exec))
+        openAboutAction = @actions.addNew(i18n('About %s') % APP_NAME, self, \
+            { :icon => 'irecorder', :triggered =>[aboutDlg, :exec] })
+        openDocUrlAction = @actions.addNew(i18n('Open Document Wiki'), self, \
+            { :icon => 'help-contents', :triggered =>:openDocUrl})
+        openReportIssueUrlAction = @actions.addNew(i18n('Report Bug'), self, \
+            { :icon => 'tools-report-bug', :triggered =>:openReportIssueUrl })
+        openRdocAction = @actions.addNew(i18n('Open Rdoc'), self, \
+            { :icon => 'help-contents', :triggered =>:openRdoc })
+        openSourceAction = @actions.addNew(i18n('Open Source Folder'), self, \
+            { :icon => 'document-open-folder', :triggered =>:openSource })
 
-        #
-        openDocUrlAction = KDE::Action.new(KDE::Icon.new('help-contents'),
-                                           i18n('Open Document Wiki'), self)
-        connect(openDocUrlAction, SIGNAL(:triggered), self, SLOT(:openDocUrl))
-
-        #
-        openReportIssueUrlAction = KDE::Action.new(
-            KDE::Icon.new('tools-report-bug'), i18n('Report Bug'), self)
-        connect(openReportIssueUrlAction, SIGNAL(:triggered), self,
-                SLOT(:openReportIssueUrl))
-
-        #
-        openSourceAction = KDE::Action.new(KDE::Icon.new('document-open-folder'),
-                                           i18n('Open Source Folder'), self)
-        connect(openSourceAction, SIGNAL(:triggered), self, SLOT(:openSource))
 
         helpMenu = KDE::Menu.new(i18n('&Help'), self)
         helpMenu.addAction(openDocUrlAction)
-#         helpMenu.addAction(openHomeUrlAction)
         helpMenu.addAction(openReportIssueUrlAction)
-#         helpMenu.addAction(openRDocAction)
+        helpMenu.addAction(openRdocAction)
         helpMenu.addAction(openSourceAction)
         helpMenu.addSeparator
         helpMenu.addAction(openAboutAction)
@@ -604,12 +592,20 @@ class MainWindow < KDE::MainWindow
         openUrlDocument('http://github.com/rubytwiddler/irecorder/issues')
     end
 
+    slots :openRdoc
+    def openRdoc
+        @@gemPath ||= %x{ gem environment gempath }.split(/:/)
+        relPath = '/doc/' + APP_NAME + '-' + APP_VERSION + '/rdoc/index.html'
+        topPath = @@gemPath.find do |p|
+            File.exist?(p + relPath)
+        end
+        return unless topPath
+        openUrlDocument(topPath + relPath)
+    end
+
     slots  :openSource
     def openSource
-        cmd = 'dolphin'
-        args = [ APP_DIR ]
-        proc = Qt::Process.new(self)
-        proc.start(cmd, args)
+        openDirectory(APP_DIR)
     end
 
     def openUrlDocument(url)
