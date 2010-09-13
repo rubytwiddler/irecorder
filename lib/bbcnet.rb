@@ -10,9 +10,11 @@ require 'shellwords'
 require 'fileutils'
 require 'tmpdir'
 require 'singleton'
+require 'Qt'
 
 # my libs
 require "cache"
+require "logwin"
 
 UrlRegexp = URI.regexp(['rtsp','http'])
 
@@ -28,7 +30,7 @@ class BBCNet
             super(cacheDuration, cacheMax)
         end
 
-        # return : [ data, key ]
+        # @return : [ data, key ]
         #  key : key to restore data.
         def directRead(pid)
             data = BBCNet::MetaInfo.new(pid).update
@@ -251,9 +253,10 @@ end
 
 
 if __FILE__ == $0 then
-    puts AudioFile::getDuration(ARGV.shift)
-    exit 0
+#     puts AudioFile::getDuration(ARGV.shift)
+#     exit 0
 
+    $log = MyLogger.new(STDOUT)
     pid = "b00mzvfq"
     if ARGV.size > 0 then
         pid = ARGV.shift

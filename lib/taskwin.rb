@@ -63,6 +63,7 @@ class TaskWindow < Qt::Widget
 
             # Hash table : key column_0_item  => TaskItem
             @taskItemTbl = {}
+            self.selectionMode = Qt::AbstractItemView::SingleSelection
         end
 
         public

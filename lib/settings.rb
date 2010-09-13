@@ -9,9 +9,6 @@ require "mylibs.rb"
 #
 # select from traders, system menu, arbitarary file.
 #
-class KDE::ListWidget
-end
-
 class SelectServiceDlg < KDE::Dialog
     def initialize(parent, defaultName=nil)
         super(parent)

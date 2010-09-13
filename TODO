@@ -3,9 +3,12 @@ TODO - irecorder
    -error auto retry.
    - http 404 and no rawfile.
  *retry from download
- *solve conflict of generated file names.
    -remove data
  *error dialog for misc errors. download/convert error. and retry.
+ *bug passivePopup wordwraped message is invisible.
+ *solve conflict of generated file names.
+   *crime catch up : same title name. need special treatment.
+ *check download same file.
 
  *auto download subscription tags
  *auto start program, in system tray, auto restart download.

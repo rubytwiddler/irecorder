@@ -5,6 +5,30 @@ require "bbcnet.rb"
 #-------------------------------------------------------------------
 #
 #
+class OkCancelDialog < KDE::Dialog
+    def initialize(parent)
+        super(parent)
+        setButtons( KDE::Dialog::Ok | KDE::Dialog::Cancel )
+        @textEdit = Qt::Label.new do |w|
+            w.wordWrap= true
+        end
+        setMainWidget(@textEdit)
+    end
+
+    attr_reader :textEdit
+
+    def self.ask(parent, text, title = text)
+        @@dialog ||= self.new(parent)
+        @@dialog.textEdit.text = text
+        @@dialog.caption = title
+        @@dialog.exec
+    end
+end
+
+
+#-------------------------------------------------------------------
+#
+#
 #
 class DownloadProcess < Qt::Process
     attr_reader     :sourceUrl, :fileName
@@ -94,23 +118,56 @@ class DownloadProcess < Qt::Process
         connect(self, SIGNAL('finished(int,QProcess::ExitStatus)'), self, SLOT('taskFinished(int,QProcess::ExitStatus)') )
     end
 
+    def decideFinish?
+        if File.exist?(@outFilePath) then
+            # check outFile validity.
+            return ! outFileError?
+        end
+        return false
+    end
+
+    def decideConvert?
+        if File.exist?(@rawFilePath) then
+            # check rawFile validity.
+            return ! rawFileError?
+        end
+        return false
+    end
+
+    def decideStartTask
+        return FINISHED if decideFinish?
+        return CONVERT if decideConvert?
+        return DOWNLOAD
+    end
 
     def beginTask
         # 1st stage : download
-        if File.exist?(@rawFilePath) then
-            @stage = DOWNLOAD
-            @downNG = true
-            self.status = RUNNING
-            @currentCommand = makeMPlayerDownloadCmd
-            taskFinished(1,0)
-            $log.debug { "@rawFilePath duration:" + AudioFile.getDuration(@rawFilePath).to_s }
-            $log.debug { "@outFilePath duration:" + AudioFile.getDuration(@outFilePath).to_s }
-            $log.debug { "metainf duration:" + @metaInfo.duration.to_s }
-            if self.error? then
-                beginDownload
+        startTask = decideStartTask
+
+        #
+        case startTask
+        when FINISHED
+            ret = OkCancelDialog.ask(nil, \
+                i18n('File %s is already exist. Download it anyway ?') % @outFileName)
+            if ret == Qt::Dialog::Accepted then
+                startTask = DOWNLOAD
             end
-        else
+        when CONVERT
+            ret = OkCancelDialog.ask(nil, \
+                i18n('Raw file %s is already exist. Download it anyway ?') % @rawFileName)
+            if ret == Qt::Dialog::Accepted then
+                startTask = DOWNLOAD
+            end
+        end
+
+        #
+        case startTask
+        when DOWNLOAD
             beginDownload
+        when CONVERT
+            beginConvert
+        when FINISHED
+            allTaskFinished
         end
     end
 
@@ -285,37 +342,55 @@ class DownloadProcess < Qt::Process
         $log.info { msg }
     end
 
+
+    def rawFileError?
+        begin
+            $log.debug { "check duration for download." }
+            rawDuration = AudioFile.getDuration(@rawFilePath)
+            isError = rawDuration < @metaInfo.duration - 100
+            if isError then
+                $log.warn { [ "duration check error",
+                                " rawDuration : #{rawDuration}" ] }
+            end
+            return isError if isError
+            $log.debug { "check file size for download." }
+            isError = File.size(@rawFilePath) < @metaInfo.duration * 5500
+            if isError then
+                $log.warn { [ "duration check error",
+                              " File.size(@rawFilePath) :#{File.size(@rawFilePath)}",
+                                " @metaInfo.duration : #{@metaInfo.duration}" ] }
+            end
+            return isError
+        rescue => e
+            $log.warn { e }
+            return true
+        end
+    end
+
+    def outFileError?
+        begin
+            $log.debug { "check duration for convert." }
+            outDuration = AudioFile.getDuration(@outFilePath)
+            isError = outDuration < @metaInfo.duration - 3*60 - 10
+            if isError then
+                $log.warn { [ "duration check error",
+                                " outDuration : #{outDuration}" ] }
+            end
+            return isError
+        rescue => e
+            $log.warn { e }
+            return true
+        end
+    end
+
     # return error or not
     def checkErroredStatus
         case @stage
         when DOWNLOAD
             return @downNG unless @downNG
-            begin
-                $log.debug { "check duration for download." }
-                rawDuration = AudioFile.getDuration(@rawFilePath)
-                return true if rawDuration < @metaInfo.duration - 100
-                $log.debug { "check file size for download." }
-                File.size(@rawFilePath) < @metaInfo.duration * 5500
-            rescue => e
-                $log.warn { e }
-                true
-            end
+            rawFileValid?
         when CONVERT
-            begin
-                $log.debug { "check duration for convert." }
-                outDuration = AudioFile.getDuration(@outFilePath)
-                rawDuration = AudioFile.getDuration(@rawFilePath)
-                isError = outDuration < rawDuration - 3*60 - 10
-                if isError then
-                    $log.warn { [ "duration check error",
-                                  " outDuration : #{outDuration}",
-                                  " rawDuration : #{rawDuration}" ] }
-                end
-                isError
-            rescue => e
-                $log.warn { e }
-                true
-            end
+            outFileValid?
         else
             true
         end

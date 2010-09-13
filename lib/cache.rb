@@ -11,19 +11,19 @@ module CasheDevice
 
         attr_accessor :cacheDuration, :cacheMax
         def initialize(cacheDuration = 26*60, cacheMax=10)
-            @cacheDuration = cacheDuration      # 12 minutes
+            @cacheDuration = cacheDuration
             @cache = Hash.new
             @cacheLRU = []          # Least Recently Used
             @cacheMax = cacheMax
         end
 
-        # return : data, key
+        # @return : data, key
         #  key : key to restore data.
          def directRead(url)
              raise "Implement directRead method."
          end
 
-        # return : data
+        # @return : data
         #   restore data from key.
         def restoreCache(key)
             key
@@ -71,7 +71,7 @@ class CacheRssDevice < CasheDevice::CacheDeviceBase
         super(cacheDuration, cacheMax)
     end
 
-    # return : [ data, key ]
+    # @return : [ data, key ]
     #  key : key to restore data.
     def directRead(url)
          data = Nokogiri::XML(CacheHttpDiskDevice.read(url))
@@ -87,22 +87,22 @@ class CacheHttpDiskDevice < CasheDevice::CacheDeviceBase
         FileUtils.mkdir_p(@tmpdir)
     end
 
-    # return : data
+    # @return : data
     #   restore data from key.
     def restoreCache(key)
         IO.read(key)
     end
 
-    # return : [ data, key ]
+    # @return : [ data, key ]
     #  key : key to restore data.
     def directRead(url)
-        $log.debug { "directRead(): " + self.class.name }
+        $log.misc { "directRead(): " + self.class.name }
         tmpfname = tempFileName(url)
 
         if File.exist?(tmpfname) then
-            $log.debug { "File ctime  : " + File.ctime(tmpfname).to_s}
-            $log.debug { "expire time : " + (File.ctime(tmpfname) + @cacheDuration).to_s }
-            $log.debug { "Now Time    : " + Time.now.to_s }
+            $log.misc { "File ctime  : " + File.ctime(tmpfname).to_s}
+            $log.misc { "expire time : " + (File.ctime(tmpfname) + @cacheDuration).to_s }
+            $log.misc { "Now Time    : " + Time.now.to_s }
         end
 
         if File.exist?(tmpfname) and

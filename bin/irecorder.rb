@@ -12,7 +12,7 @@ require 'ftools'
 APP_NAME = File.basename(__FILE__).sub(/\.rb/, '')
 APP_DIR = File::dirname(File.expand_path(File.dirname(__FILE__)))
 LIB_DIR = File::join(APP_DIR, "lib")
-APP_VERSION = "0.0.6"
+APP_VERSION = "0.0.7"
 
 # standard libs
 require 'rubygems'
@@ -102,7 +102,13 @@ class MainWindow < KDE::MainWindow
         clearStyleAction.setShortcut(KDE::Shortcut.new('Ctrl+L'))
         quitAction = KDE::Action.new(KDE::Icon.new('application-exit'), i18n('&Quit'), self)
         quitAction.setShortcut(KDE::Shortcut.new('Ctrl+Q'))
+
+        testAction = KDE::Action.new(i18n('Test Dialog'), self)
+        testAction.setShortcut(KDE::Shortcut.new('F5'))
+        connect(testAction, SIGNAL(:triggered), self, SLOT(:testDlg))
+
         fileMenu = KDE::Menu.new('&File', self)
+        fileMenu.addAction(testAction)
         fileMenu.addAction(recordAction)
         fileMenu.addAction(reloadStyleAction)
         fileMenu.addAction(clearStyleAction)
@@ -861,6 +867,12 @@ class MainWindow < KDE::MainWindow
         @taskWin.each do |task|
             task.process.updateView
         end
+    end
+
+    slots :testDlg
+    def testDlg
+        ret = OkCancelDialog.ask(self, 'test dialog proceed ?', 'Test dialog')
+        puts "ret = " + ret.to_s
     end
 end
 

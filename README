@@ -6,23 +6,23 @@ irecorder allow to play without any other browser or play on your prefered brows
  KDE ruby
 ==============
 irecorder require kdebindings.
-please check your distro package to install it.
+Please check your distro package to install it.
 or you can compile from source.
 http://download.kde.org/download.php?url=stable/4.5.0/src/kdebindings-4.5.0.tar.bz2
 
 
  Installation
 ==================
-install most important package kdebindings4.
+Install most important package kdebindings4.
  on Mandriva Linux use urpmi command.
 
   # sudo urpmi ruby-kde4 ruby-qt4
 
-install mplayer ffmpeg exiftool packages if necessary
+Install mplayer ffmpeg exiftool packages if necessary
 
   # sudo urpmi mplayer ffmpeg perl-Image-ExifTool
 
-install nokogiri gem.
+Install nokogiri gem.
   # sudo gem install nokogiri
 
 Finally you can install irecorder.
@@ -31,14 +31,14 @@ Finally you can install irecorder.
  or directly specify your downloaded gem file.
   # sudo gem install -l irecorder-0.0.x.gem
 
-launch irecorder just type irecorder.rb
+To launch irecorder just type irecorder.rb
 
   # irecorder.rb
 
 
  Build Gem
 =================
-if you want to gem package from source, use rake command.
+If you want to gem package from source, use rake command.
 
   # rake gem
 
