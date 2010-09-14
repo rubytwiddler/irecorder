@@ -2,13 +2,14 @@ TODO - irecorder
  *error handling
    -error auto retry.
    - http 404 and no rawfile.
- *retry from download
-   -remove data
  *error dialog for misc errors. download/convert error. and retry.
  *bug passivePopup wordwraped message is invisible.
  *solve conflict of generated file names.
    *crime catch up : same title name. need special treatment.
  *check download same file.
+ *add to system desktop launcher menu.
+ *no more beta player site.
+ *remove kde::kio dependency. mandriva 2010.1 doesn't have the lib.
 
  *auto download subscription tags
  *auto start program, in system tray, auto restart download.
@@ -21,5 +22,6 @@ TODO - irecorder
  *resume task
  *fileName + sub category
  *fileName + date
+ *hide log window.
  *multilanguage?
  *install application icon image

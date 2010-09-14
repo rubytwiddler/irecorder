@@ -15,6 +15,7 @@ spec = Gem::Specification.new do |s|
     s.files += %w{ README MIT-LICENSE Rakefile resources/bbcstyle.qss }
     s.executables = [ 'irecorder.rb' ]
     s.require_path = "lib"
+    s.extensions = [ 'ext/Rakefile' ]
     s.requirements = %w{ korundum4 qtwebkit kio ktexteditor }
     s.add_runtime_dependency( 'nokogiri', '>= 1.4.0' )
     s.description = <<-EOF

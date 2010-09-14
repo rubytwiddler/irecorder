@@ -1,7 +1,6 @@
 #
 #    2007 by ruby.twiddler@gmail.com
 #
-require 'kio'
 require "mylibs.rb"
 
 
@@ -119,8 +118,8 @@ class IRecSettings < SettingsBase
         setCurrentGroup("Preferences")
 
         # meta programed version.
-        addUrlItem(:rawDownloadDir, Qt::Dir::tempPath + '/RadioRaw')
-        addUrlItem(:downloadDir, KDE::GlobalSettings.musicPath)
+        addStringItem(:rawDownloadDir, Qt::Dir::tempPath + '/RadioRaw')
+        addStringItem(:downloadDir, KDE::GlobalSettings.musicPath)
         addBoolItem(:dirAddMediaName, true)
         addBoolItem(:dirAddChannelName, false)
         addBoolItem(:dirAddGenreName, true)
@@ -187,11 +186,8 @@ class FolderSettingsPage < Qt::Widget
     protected
 
     def createWidget
-        @rawFileDirLine = KDE::UrlRequester.new(KDE::Url.new(KDE::GlobalSettings.downloadPath))
-        @rawFileDirLine.mode = KDE::File::Directory | KDE::File::LocalOnly
-
-        @downloadDirLine = KDE::UrlRequester.new(KDE::Url.new(KDE::GlobalSettings.downloadPath))
-        @downloadDirLine.mode = KDE::File::Directory | KDE::File::LocalOnly
+        @rawFileDirLine = FolderSelectorLineEdit.new(KDE::GlobalSettings.downloadPath)
+        @downloadDirLine = FolderSelectorLineEdit.new(KDE::GlobalSettings.downloadPath)
 
         @dirSampleLabel = Qt::Label.new('Example) ')
         @dirAddMediaName = Qt::CheckBox.new(i18n('Add media directory'))

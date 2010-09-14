@@ -104,10 +104,10 @@ class DownloadProcess < Qt::Process
         @startTime = Time.new
         @sourceUrl = @metaInfo.wma.url
         @rawFileName = fName
-        @rawFilePath = File.join(IRecSettings.rawDownloadDir.path, fName)
+        @rawFilePath = File.join(IRecSettings.rawDownloadDir, fName)
         mkdirSavePath(@rawFilePath)
         @outFileName = @rawFileName.gsub(/\.\w+$/i, '.mp3')
-        @outFilePath = File.join(IRecSettings.downloadDir.path, @outFileName)
+        @outFilePath = File.join(IRecSettings.downloadDir, @outFileName)
         mkdirSavePath(@outFilePath)
         $log.debug { "@rawFilePath : #{@rawFilePath }" }
         $log.debug { "@outFilePath : #{@outFilePath}" }
@@ -172,7 +172,7 @@ class DownloadProcess < Qt::Process
 
 
     def retryTask
-        $log.debug { "retry! in main." }
+        $log.debug { "retry." }
         if error? then
             # retry
             case @stage
@@ -188,10 +188,24 @@ class DownloadProcess < Qt::Process
         end
     end
 
+    def retryDownload
+        $log.debug { "retry from download." }
+        if error? then
+            # retry
+            @startTime = Time.new
+            beginDownload
+        else
+            $log.warn { "cannot retry the successfully finished or running process." }
+        end
+    end
+
     def cancelTask
         if running? then
             self.terminate
-            taskFinished(1,0)
+            self.status = ERROR
+            errMsg = "Stopped " + %w{ Download Convert ? }[@stage]
+            $log.error { [ errMsg ] }
+            passiveMessage(errMsg)
         end
     end
 
@@ -213,18 +227,22 @@ class DownloadProcess < Qt::Process
         Time.now - @startTime
     end
 
+    def errorStop(exitCode, exitStatus)
+        self.status = ERROR
+        errMsg = makeErrorMsg
+        $log.error { [ errMsg, "exitCode=#{exitCode}, exitStatus=#{exitStatus}" ] }
+        passiveMessage(errMsg)
+    end
+
     slots   'taskFinished(int,QProcess::ExitStatus)'
     def taskFinished(exitCode, exitStatus)
         checkReadOutput
-        if (exitCode.to_i.nonzero? || exitStatus.to_i.nonzero?) && checkErroredStatus then
-            self.status = ERROR
-            errMsg = makeErrorMsg
-            $log.error { [ errMsg, "exitCode=#{exitCode}, exitStatus=#{exitStatus}" ] }
-            passiveMessage(errMsg)
+        if error? || ((exitCode.to_i.nonzero? || exitStatus.to_i.nonzero?) && checkErroredStatus) then
+            errorStop(exitCode, exitStatus)
         else
             $log.info {
                 [ "Successed to download a File '%#2$s'",
-                    "Successed to convert a File '%#2$s'", ][@stage] %
+                    "Successed to convert a File '%#2$s'", "?" ][@stage] %
                 [ @sourceUrl, @rawFilePath ]
             }
             if @stage == CONVERT then
@@ -406,7 +424,7 @@ class DownloadProcess < Qt::Process
 
     def makeErrorMsg
         [ "Failed to download a File '%#2$s'",
-            "Failed to convert a File '%#2$s'", ][@stage] %
+            "Failed to convert a File '%#2$s'", "?"][@stage] %
             [ @sourceUrl, @rawFilePath ]
     end
 

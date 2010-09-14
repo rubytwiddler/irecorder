@@ -154,6 +154,10 @@ class TaskWindow < Qt::Widget
             if process.error?
                 a = menu.addAction(KDE::Icon.new('view-refresh'), 'Retry')
                 a.setVData('retryTask@')
+                if process.rawDownloaded?
+                    a = menu.addAction(KDE::Icon.new('view-refresh'), 'Retry from Download')
+                    a.setVData('retryDownload@')
+                end
                 a = menu.addAction(KDE::Icon.new('list-remove'), 'Remove')
                 a.setVData('removeTask@')
                 a = menu.addAction(KDE::Icon.new('list-remove-data'), 'Remove Task and Data')
@@ -227,6 +231,14 @@ class TaskWindow < Qt::Widget
             if process.error? then
                 process.retryTask
                 $log.info { "task restarted." }
+            end
+        end
+
+        # contextMenu Event
+        def retryDownload(process, wItem)
+            if process.error? then
+                process.retryDownload
+                $log.info { "task restarted from download." }
             end
         end
 

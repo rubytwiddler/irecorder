@@ -114,6 +114,57 @@ def passiveMessage(text)
 end
 
 
+#--------------------------------------------------------------------------
+#
+#  Mandriva doesn't include kio smoke library.
+#   FolderSelectorLineEdit substitute KDE::UrlRequester
+#
+class FolderSelectorLineEdit < Qt::Widget
+    def initialize(dir=nil, parent=nil)
+        super(parent)
+
+        # widgets
+        @lineEdit = KDE::LineEdit.new
+        @lineEdit.text = dir if dir
+        @dirSelectBtn = KDE::PushButton.new(KDE::Icon.new('folder'),'')
+
+        # connect
+        connect(@dirSelectBtn, SIGNAL(:clicked), self, SLOT(:openSelectDlg))
+
+        # layout
+        lo = Qt::HBoxLayout.new do |l|
+            l.setContentsMargins(0,0,0,0)
+            l.addWidgets(@lineEdit, @dirSelectBtn)
+        end
+        setLayout(lo)
+    end
+
+    slots :openSelectDlg
+    def openSelectDlg
+        path = Qt::FileDialog::getExistingDirectory(self,'select folder', @lineEdit.text)
+        unless !path || path.empty?
+            @lineEdit.text = path
+        end
+    end
+
+    # for settings manager.
+    def objectName=(name)
+        @lineEdit.objectName = name
+    end
+
+    def folder
+        @LineEdit.text
+    end
+    # compatibility for UrlRequester
+    alias text folder
+
+    def folder=(dir)
+        @LineEdit.text = dir
+    end
+end
+
+
+
 
 #--------------------------------------------------------------------------
 #
@@ -313,6 +364,8 @@ class SettingsBase < KDE::ConfigSkeleton
                         o.checked = val
                     elsif o.kind_of? Qt::ComboBox
                         o.currentIndex = val
+                    elsif o.kind_of? KDE::LineEdit
+                        o.text = val
                     elsif o.kind_of? KDE::UrlRequester
                         o.setUrl(val)
                     end
@@ -334,6 +387,8 @@ class SettingsBase < KDE::ConfigSkeleton
                         end
                     elsif o.kind_of? Qt::ComboBox
                         options.send(name, o.currentIndex)
+                    elsif o.kind_of? KDE::LineEdit
+                        options.send(name, o.text)
                     elsif o.kind_of? KDE::UrlRequester
                         options.send(name, o.url)
                     else
