@@ -410,6 +410,12 @@ def openDirectory(dir)
     fork do exec(cmd) end
 end
 
+def openUrlDocument(url)
+    cmd = Mime::services('.html').first.exec
+    cmd.gsub!(/%\w+/, url)
+    fork do exec(cmd) end
+end
+
 #--------------------------------------------------------------------------
 #
 #   stdlib

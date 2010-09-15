@@ -9,8 +9,9 @@
 $KCODE = 'UTF8'
 require 'ftools'
 
-APP_NAME = File.basename(__FILE__).sub(/\.rb/, '')
-APP_DIR = File::dirname(File.expand_path(File.dirname(__FILE__)))
+APP_FILE = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
+APP_NAME = File.basename(APP_FILE).sub(/\.rb/, '')
+APP_DIR = File::dirname(File.expand_path(File.dirname(APP_FILE)))
 LIB_DIR = File::join(APP_DIR, "lib")
 APP_VERSION = "0.0.7"
 

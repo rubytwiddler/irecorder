@@ -16,6 +16,7 @@ class SelectServiceDlg < KDE::Dialog
         self.windowTitle = @message
         @selectedName = @services[0].name
         createWidget
+        connect(self, SIGNAL(:accepted), self, SLOT(:selected))
         setSelected(defaultName)
     end
 
@@ -30,11 +31,12 @@ class SelectServiceDlg < KDE::Dialog
 
     def iconName
         SelectServiceDlg.exeName2IconName(serviceFromName(name).exec)
+        parent.accept
     end
 
-    def accept
+    slots :selected
+    def selected
         @selectedName = @serviceList.selectedItems.first.text
-        super
     end
 
     def commandFromName(name)
@@ -76,9 +78,7 @@ class SelectServiceDlg < KDE::Dialog
             iconName = SelectServiceDlg.exeName2IconName(s.exec)
             @serviceList.addItem( Qt::ListWidgetItem.new(KDE::Icon.new(iconName), s.name) )
         end
-        @selectFromMenu = KDE::PushButton.new(i18n('Select Other from Menu'))
         mainWidget.addWidget(@serviceList)
-#         mainWidget.addWidget(@selectFromMenu)
 
         setMainWidget(mainWidget)
     end
