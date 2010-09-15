@@ -31,7 +31,6 @@ class SelectServiceDlg < KDE::Dialog
 
     def iconName
         SelectServiceDlg.exeName2IconName(serviceFromName(name).exec)
-        parent.accept
     end
 
     slots :selected
