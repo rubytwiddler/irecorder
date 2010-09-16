@@ -5,22 +5,31 @@ require 'ftools'
 
 desc "Install Application Menu"
 task :install_menu do
-    menuDir = %x{ kde4-config --install xdgdata-apps }.strip
-    menuEntryFile = File.join(menuDir, 'irecorder.desktop')
-    open(menuEntryFile,'w') do |f|
-        f.write(<<-EOF
+    appDirs= %x{ kde4-config --install xdgdata-apps }.strip.split(/:/)
+    if %x{ whoami }.strip == 'root' then
+        menuDir = appDirs.find { |d| d !~ %r{^/home} }
+    else
+        menuDir = appDirs.find { |d| d =~ %r{^/home} }
+    end
+        if menuDir then
+
+        menuEntryFile = File.join(menuDir, 'irecorder.desktop')
+
+        open(menuEntryFile,'w') do |f|
+            f.write(<<-EOF
 [Desktop Entry]
 Name=iRecorder
-Comment=BBC iPlayer like audio recorder with KDE GUI.
+Comment=Audio recorder with KDE GUI.
 Exec=irecorder.rb %f
 Icon=irecorder
 Terminal=false
 Type=Application
 Categories=Qt;KDE;AudioVideo;Radio;News;Music;Player
 MimeType=application/x-gem;
-    EOF
-               )
-        %x{ update-menus }
+        EOF
+                )
+            %x{ update-menus }
+        end
     end
 end
 

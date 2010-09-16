@@ -6,11 +6,11 @@ require 'rake/gempackagetask'
 
 spec = Gem::Specification.new do |s|
     s.name = "irecorder"
-    s.version = "0.0.7"
+    s.version = "0.0.8"
     s.author = "ruby.twiddler"
     s.email = "ruby.twiddler at gmail.com"
     s.homepage = "http://github.com/rubytwiddler/irecorder/wiki"
-    s.summary = "BBC iPlayer like audio recorder with KDE GUI."
+    s.summary = "iRecorder is Audio recorder which has KDE GUI looks like BBC iPlayer."
     s.files = FileList["{bin,lib}/**/*"].to_a
     s.files += %w{ README MIT-LICENSE Rakefile resources/bbcstyle.qss }
     s.executables = [ 'irecorder.rb' ]
@@ -19,7 +19,7 @@ spec = Gem::Specification.new do |s|
     s.requirements = %w{ korundum4 qtwebkit kio ktexteditor }
     s.add_runtime_dependency( 'nokogiri', '>= 1.4.0' )
     s.description = <<-EOF
-BBC iPlayer like audio recorder with KDE GUI.
+iRecorder is Audio recorder which has KDE GUI looks like BBC iPlayer.
 You can browse BBC Radio programmes and click to download stream file.
 files will be converted to mp3 files automatically.
 irecorder allow to play without any other browser or play on your prefered browser.

@@ -2,7 +2,7 @@
 #
 #    2010 by ruby.twiddler@gmail.com
 #
-#     iPlayer like stream recorder
+#     KDE GUI Audio recorder which has similar interface to BBC iPlayer.
 #      record real/wma (rtsp/mms) audio stream
 #
 
@@ -13,7 +13,7 @@ APP_FILE = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
 APP_NAME = File.basename(APP_FILE).sub(/\.rb/, '')
 APP_DIR = File::dirname(File.expand_path(File.dirname(APP_FILE)))
 LIB_DIR = File::join(APP_DIR, "lib")
-APP_VERSION = "0.0.7"
+APP_VERSION = "0.0.8"
 
 # standard libs
 require 'rubygems'
