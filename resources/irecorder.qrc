@@ -3,5 +3,9 @@
      <file>images/irecorder-22.png</file>
      <file>images/download-22.png</file>
      <file>images/play-22.png</file>
+     <file>images/checkbox-checked-16.png</file>
+     <file>images/checkbox-unchecked-16.png</file>
+     <file>images/radiobutton-checked-16.png</file>
+     <file>images/radiobutton-unchecked-16.png</file>
  </qresource>
  </RCC>

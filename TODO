@@ -1,23 +1,20 @@
 TODO - irecorder
+ *stylesheet -menu colour
+ *theme in settings. BUG can't read menu text with default black theme .
+ *no more beta player site.
  *error handling
    -error auto retry.
-   - http 404 and no rawfile.
- *error dialog for misc errors. download/convert error. and retry.
  *bug passivePopup wordwraped message is invisible.
  *solve conflict of generated file names.
    *crime catch up : same title name. need special treatment.
- *check download same file.
- *no more beta player site.
  *use Qt::Desktop::OpenUrl insted of original routine.
- *theme in settings. style sheet color is bad.
- *change install directory for menu, when you install with --user-install option.
+ *upload to kde-apps.org
 
  *auto download subscription tags
  *auto start program, in system tray, auto restart download.
  *mencoder for dump
  *play/download from proxy (mplayer)
  *status bar for processing.
- *stylesheet -menu colour
  *log message level.
  *log limit line number
  *resume task
@@ -26,3 +23,5 @@ TODO - irecorder
  *hide log window.
  *multilanguage?
  *install application icon image
+
+ x(impossible) change install directory for menu, when you install with --user-install option.

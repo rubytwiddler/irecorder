@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="16"
+   height="16"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.47pre3 r22311"
+   sodipodi:docname="radiobutton-v0.svg"
+   inkscape:export-filename="/home/r.t/dev/projects/ruby/irecorder/resources/images/radiobutton-unchecked-16.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient4490">
+      <stop
+         style="stop-color:#1385cf;stop-opacity:1;"
+         offset="0"
+         id="stop4492" />
+      <stop
+         style="stop-color:#71ebe9;stop-opacity:1;"
+         offset="1"
+         id="stop4494" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3740">
+      <stop
+         style="stop-color:#f3f4f5;stop-opacity:1;"
+         offset="0"
+         id="stop3742" />
+      <stop
+         style="stop-color:#c2d2e3;stop-opacity:1;"
+         offset="1"
+         id="stop3744" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3740"
+       id="linearGradient4486"
+       x1="9.5577135"
+       y1="12.750539"
+       x2="1.3090169"
+       y2="0.28453752"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4490"
+       id="linearGradient4496"
+       x1="6.3914967"
+       y1="6.8581595"
+       x2="9.0916824"
+       y2="11.668705"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="45.505059"
+     inkscape:cx="3.8356279"
+     inkscape:cy="7.6319498"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1225"
+     inkscape:window-height="986"
+     inkscape:window-x="208"
+     inkscape:window-y="32"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-1036.3622)"
+     style="display:inline">
+    <path
+       sodipodi:type="arc"
+       style="fill:url(#linearGradient4486);stroke:#8d8db4;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;fill-opacity:1"
+       id="path4478"
+       sodipodi:cx="5.7356257"
+       sodipodi:cy="6.5175381"
+       sodipodi:rx="5.5378456"
+       sodipodi:ry="5.724638"
+       d="m 11.273471,6.5175381 c 0,3.1616302 -2.4793776,5.7246379 -5.5378453,5.7246379 -3.0584676,0 -5.53784557,-2.5630077 -5.53784557,-5.7246379 0,-3.1616303 2.47937797,-5.72463801 5.53784557,-5.72463801 3.0584677,0 5.5378453,2.56300771 5.5378453,5.72463801 z"
+       transform="matrix(1.0542108,0,0,1.0198125,1.4800764,1038.2108)" />
+    <path
+       sodipodi:type="arc"
+       style="fill:url(#linearGradient4496);fill-opacity:1;stroke:none"
+       id="path4488"
+       sodipodi:cx="7.60355"
+       sodipodi:cy="8.8139858"
+       sodipodi:rx="2.0437288"
+       sodipodi:ry="1.9558265"
+       d="m 9.6472788,8.8139858 a 2.0437288,1.9558265 0 1 1 -4.0874577,0 2.0437288,1.9558265 0 1 1 4.0874577,0 z"
+       transform="matrix(1.3531803,0,0,1.3690536,-2.7183876,1032.7468)"
+       inkscape:export-filename="/home/r.t/dev/projects/ruby/irecorder/resources/images/radiobutton-unchecked-16.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+  </g>
+</svg>
