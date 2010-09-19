@@ -66,7 +66,14 @@ end
 resouce_files = [ 'resources/irecorder.qrc' ] + FileList['resources/images/*.png']
 desc "package resources"
 file 'lib/irecorder_resource.rb' => resouce_files  do
-    %x{ rbrcc resources/irecorder.qrc >lib/irecorder_resource.rb }
+    open("lib/irecorder_resource.rb", 'w') do |w|
+        open("|rbrcc resources/irecorder.qrc") do |f|
+            f.each_line do |l|
+                l.sub!(/^(\s*#).*?\/home\/.*?\/irecorder/, "\\1 irecorder")
+                w.write(l)
+            end
+        end
+    end
 end
 
 task :resource => 'lib/irecorder_resource.rb'
