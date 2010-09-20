@@ -125,9 +125,6 @@ class IRecSettings < SettingsBase
         addBoolItem(:leaveRawFile, false)
 
         # player
-        addBoolItem(:playerTypeSmall, false)
-        addBoolItem(:playerTypeBeta, true)
-
         addBoolItem(:useInnerPlayer, true)
         addBoolItem(:useWebPlayer, false)
         addStringItem(:webPlayerName, 'Konqueror')
@@ -307,9 +304,6 @@ class PlayerSettingsPage < Qt::Widget
         @SelectDirectPlayerDlg = SelectDirectPlayerDlg.new(self, IRecSettings.directPlayerName)
         IRecSettings.instance.regConverter(@SelectWebPlayerDlg, @SelectDirectPlayerDlg)
 
-        @playerTypeSmall = Qt::RadioButton.new(i18n('small iplayer'))
-        @playerTypeBeta = Qt::RadioButton.new(i18n('beta iplayer'))
-
         @innerPlayer = Qt::RadioButton.new(i18n('inner Player'))
         @webPlayer = Qt::RadioButton.new(i18n('Web Player'))
         @directPlayer = Qt::RadioButton.new(i18n('Direnct Stream Player'))
@@ -338,8 +332,6 @@ class PlayerSettingsPage < Qt::Widget
 
         # set objectNames
         #  'kcfg_' + class Settings's instance name.
-        @playerTypeSmall.objectName = 'kcfg_playerTypeSmall'
-        @playerTypeBeta.objectName = 'kcfg_playerTypeBeta'
         @innerPlayer.objectName = 'kcfg_useInnerPlayer'
         @webPlayer.objectName = 'kcfg_useWebPlayer'
         @directPlayer.objectName = 'kcfg_useDirectPlayer'
@@ -349,10 +341,6 @@ class PlayerSettingsPage < Qt::Widget
 
         # layout
         lo = Qt::VBoxLayout.new do |l|
-            l.addGroup(i18n('iPlayer Type')) do |g|
-                g.addWidget(@playerTypeSmall)
-                g.addWidget(@playerTypeBeta)
-            end
             l.addGroup(i18n('Player')) do |g|
                 g.addWidget(@innerPlayer)
                 g.addWidget(@webPlayer)

@@ -562,11 +562,6 @@ class MainWindow < KDE::MainWindow
             $log.info { "episode Url : #{url}" }
             url = BBCNet.getPlayerConsoleUrl(url)
             $log.info { "old console Url : #{url}" }
-
-            if IRecSettings.playerTypeBeta then
-                url.sub!(%r{www}, 'beta')
-                $log.info { "new console Url : #{url}" }
-            end
             url
         end
 
