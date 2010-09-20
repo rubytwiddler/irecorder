@@ -47,6 +47,10 @@ class MyLogger
     end
 
     public
+    def setLogDevice(dev)
+        @logdev = dev
+    end
+
     def misc(msg = nil, &block)
         add(MISC, msg, &block)
     end

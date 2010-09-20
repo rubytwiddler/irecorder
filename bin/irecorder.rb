@@ -58,8 +58,11 @@ class MainWindow < KDE::MainWindow
         super(nil)
         setCaption(APP_NAME)
 
+        $log = MyLogger.new(STDOUT)
+        $log.level = MyLogger::DEBUG
+        $log.info { 'Initializing.' }
 
-#         $app.styleSheet = IO.read(APP_DIR + '/resources/bbcstyle.qss')
+        applyTheme
         @actions = KDE::ActionCollection.new(self)
 
         createWidgets
@@ -69,13 +72,11 @@ class MainWindow < KDE::MainWindow
         # default values
 #         BBCNet.setProxy('http://194.36.10.154:3127')
         # initialize values
-        $log = MyLogger.new(@logWin)
-        $log.level = MyLogger::DEBUG
+        $log.setLogDevice(@logWin)
         $log.info { 'Log Start.' }
 
         # assign from config file.
         readSettings
-        applyTheme
         @actions.readSettings
         setAutoSaveSettings(GroupName)
 
@@ -497,7 +498,7 @@ class MainWindow < KDE::MainWindow
     end
 
     def getStyleSheetFileName
-        if IRecSettings.systemDefaultTheme then
+        if IRecSettings.instance.systemDefaultTheme then
             themeFile = nil
         elsif IRecSettings.bbcTheme then
             themeFile = APP_DIR + '/resources/bbcstyle.qss'
