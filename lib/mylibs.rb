@@ -44,6 +44,15 @@ class Qt::VBoxLayout
         w.push(nil)
         addWidgetWithNilStretch(*w)
     end
+
+    def addGroup(name)
+        g = Qt::GroupBox.new(name)
+        vbx = Qt::VBoxLayout.new do |vb|
+            yield(vb)
+        end
+        g.setLayout(vbx)
+        addWidget(g)
+    end
 end
 
 
@@ -153,17 +162,39 @@ class FolderSelectorLineEdit < Qt::Widget
     end
 
     def folder
-        @LineEdit.text
+        @lineEdit.text
     end
     # compatibility for UrlRequester
     alias text folder
 
     def folder=(dir)
-        @LineEdit.text = dir
+        @lineEdit.text = dir
     end
 end
 
+class FileSelectorLineEdit < FolderSelectorLineEdit
+    def initialize(filter="", file=nil, parent=nil)
+        super(file,parent)
 
+        @filter = filter
+        @dirSelectBtn.setIcon(KDE::Icon.new('document-open'))
+    end
+
+    def openSelectDlg
+        path = Qt::FileDialog::getOpenFileName(self,'select file', @lineEdit.text, @filter)
+        unless !path || path.empty?
+            @lineEdit.text = path
+        end
+    end
+
+    def fileName
+        @lineEdit.text
+    end
+
+    def fileName=(file)
+        @lineEdit.text = file
+    end
+end
 
 
 #--------------------------------------------------------------------------

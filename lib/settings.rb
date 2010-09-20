@@ -1,8 +1,4 @@
-#
-#    2007 by ruby.twiddler@gmail.com
-#
 require "mylibs.rb"
-
 
 #--------------------------------------------------------------------------
 #
@@ -169,6 +165,7 @@ class SettingsDlg < KDE::ConfigDialog
         super(parent, "Settings", IRecSettings.instance)
         addPage(FolderSettingsPage.new, i18n("Folder"), 'folder', i18n('Folder and File Name'))
         addPage(PlayerSettingsPage.new, i18n("Player"), 'internet-web-browser', i18n('Player and web Browser'))
+        addPage(ThemeSettingsPage.new, i18n("Theme"), 'view-media-visualization', i18n('Theme'))
     end
 end
 
@@ -373,3 +370,35 @@ class PlayerSettingsPage < Qt::Widget
         setLayout(lo)
     end
 end
+
+#--------------------------------------------------------------------------
+#
+#
+class ThemeSettingsPage < Qt::Widget
+    def initialize(parent=nil)
+        super(parent)
+        createWidget
+    end
+
+    protected
+
+    def createWidget
+        @systemDefaultTheme = Qt::RadioButton.new(i18n('System default theme color'))
+        @bbcTheme = Qt::RadioButton.new(i18n('BBC iPlayer theme'))
+        @loadTheme = Qt::RadioButton.new(i18n('Other theme file'))
+        @themeFile = FileSelectorLineEdit.new('Qt Style Sheet (*.qss)')
+
+        # layout
+        lo = Qt::VBoxLayout.new do |l|
+            l.addGroup(i18n('Theme')) do |gl|
+                gl.addWidget(@systemDefaultTheme)
+                gl.addWidget(@bbcTheme)
+                gl.addWidget(@loadTheme)
+                gl.addWidgets('  ',@themeFile)
+            end
+            l.addStretch
+        end
+        setLayout(lo)
+    end
+end
+
