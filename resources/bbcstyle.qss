@@ -58,7 +58,10 @@ QRadioButton::indicator:unchecked {
 */
 
 QComboBox::drop-down {
-    background: black;
+    background: green;
+}
+QComboBox {
+    background: green;
 }
 
 /*
