@@ -418,7 +418,6 @@ class MainWindow < KDE::MainWindow
     #
     def createDlg
         @settingsDlg = SettingsDlg.new(self)
-        connect(@settingsDlg, SIGNAL(:updated), self, SLOT(:updateSettings))
     end
 
 
@@ -426,13 +425,11 @@ class MainWindow < KDE::MainWindow
     # slot
     def configureApp
         @settingsDlg.exec
-        updateSettings
+        if themeUpdated? then
+            Qt::Timer::singleShot(0, self, SLOT(:reloadStyleSheet))
+        end
     end
 
-    slots :updateSettings
-    def updateSettings
-        applyTheme
-    end
 
     #-------------------------------------------------------------
     #
@@ -474,18 +471,25 @@ class MainWindow < KDE::MainWindow
         end
     end
 
+
     # -----------------------------------------------------------------------
+    def themeUpdated?
+        @styleSheetFile != getStyleSheetFileName
+    end
+
     def applyTheme
+        $log.info { "apply theme" }
         ssfile = getStyleSheetFileName
         if ssfile then
             if @styleSheetFile and @styleSheetFile != ssfile then
                 KDE::MessageBox.information(self, i18n("You changed theme. Please restart this application"))
             else
                 @styleSheetFile = ssfile
+                $log.info { "load theme file '#{@styleSheetFile}'" }
                 styleStr = IO.read(ssfile)
                 $app.styleSheet = styleStr
                 $app.styleSheet = styleStr
-                $log.info { "load theme file '#{@styleSheetFile}'" }
+                $log.info { "loaded theme file '#{@styleSheetFile}'" }
             end
         else
             clearStyleSheet

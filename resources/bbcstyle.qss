@@ -54,6 +54,14 @@ QRadioButton::indicator:unchecked {
 }
 
 /*
+    ComboBox
+*/
+
+QComboBox::drop-down {
+    background: black;
+}
+
+/*
     Popup & Menu
 */
 
