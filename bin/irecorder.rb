@@ -59,7 +59,7 @@ class MainWindow < KDE::MainWindow
         setCaption(APP_NAME)
 
 
-        $app.styleSheet = IO.read(APP_DIR + '/resources/bbcstyle.qss')
+#         $app.styleSheet = IO.read(APP_DIR + '/resources/bbcstyle.qss')
         @actions = KDE::ActionCollection.new(self)
 
         createWidgets
@@ -75,6 +75,7 @@ class MainWindow < KDE::MainWindow
 
         # assign from config file.
         readSettings
+        applyTheme
         @actions.readSettings
         setAutoSaveSettings(GroupName)
 
@@ -424,6 +425,7 @@ class MainWindow < KDE::MainWindow
     # slot
     def configureApp
         @settingsDlg.exec
+        applyTheme
     end
 
 
@@ -467,12 +469,27 @@ class MainWindow < KDE::MainWindow
         end
     end
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+    def applyTheme
+        if IRecSettings.systemDefaultTheme then
+            clearStyleSheet
+        else
+            themeFile = IRecSettings.bbcTheme ? APP_DIR + '/resources/bbcstyle.qss' : nil
+            if IRecSettings.loadTheme and File.readable?(IRecSettings.themeFile) then
+                themeFile = IRecSettings.themeFile
+            end
+            styleStr = IO.read(themeFile)
+            $app.styleSheet = styleStr
+            $app.styleSheet = styleStr
+        end
+    end
+
     slots  :reloadStyleSheet
     def reloadStyleSheet
-        styleStr = IO.read(APP_DIR + '/resources/bbcstyle.qss')
-        $app.styleSheet = styleStr
-        $app.styleSheet = styleStr
+        applyTheme
+#         styleStr = IO.read(APP_DIR + '/resources/bbcstyle.qss')
+#         $app.styleSheet = styleStr
+#         $app.styleSheet = styleStr
         $log.info { 'Reloaded StyleSheet.' }
     end
 

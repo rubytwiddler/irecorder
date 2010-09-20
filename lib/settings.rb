@@ -112,7 +112,7 @@ class IRecSettings < SettingsBase
 
         setCurrentGroup("Preferences")
 
-        # meta programed version.
+        # download folder and file names.
         addStringItem(:rawDownloadDir, Qt::Dir::tempPath + '/RadioRaw')
         addStringItem(:downloadDir, KDE::GlobalSettings.musicPath)
         addBoolItem(:dirAddMediaName, true)
@@ -124,6 +124,7 @@ class IRecSettings < SettingsBase
         addBoolItem(:fileAddGenreName, true)
         addBoolItem(:leaveRawFile, false)
 
+        # player
         addBoolItem(:playerTypeSmall, false)
         addBoolItem(:playerTypeBeta, true)
 
@@ -132,6 +133,12 @@ class IRecSettings < SettingsBase
         addStringItem(:webPlayerName, 'Konqueror')
         addBoolItem(:useDirectPlayer, false)
         addStringItem(:directPlayerName, 'KMPlayer')
+
+        # theme
+        addBoolItem(:systemDefaultTheme, false)
+        addBoolItem(:bbcTheme, true)
+        addBoolItem(:loadTheme, false)
+        addStringItem(:themeFile, '')
     end
 
     def webPlayerCommand
@@ -226,27 +233,19 @@ class FolderSettingsPage < Qt::Widget
             l.addWidgets('  ', @downloadDirLine)
             l.addWidget(Qt::Label.new(i18n('Temporary Raw File Download Directory')))
             l.addWidgets('  ', @rawFileDirLine)
-            l.addWidget(Qt::GroupBox.new(i18n('Generating directory')) do |g|
-                            vbx = Qt::VBoxLayout.new do |vb|
-                                vb.addWidget(@dirSampleLabel)
-                                vb.addWidget(@dirAddMediaName)
-#                                 vb.addWidget(@dirAddChannelName)
-                                vb.addWidget(@dirAddGenreName)
-                            end
-                            g.setLayout(vbx)
-                        end
-                        )
-            l.addWidget(Qt::GroupBox.new(i18n('Generating file name')) do |g|
-                            vbx = Qt::VBoxLayout.new do |vb|
-                                vb.addWidget(@fileSampleLabel)
-                                vb.addWidgets(i18n('Head Text'), @fileAddHeadStr)
-                                vb.addWidget(@fileAddMediaName)
-#                                 vb.addWidget(@fileAddChannelName)
-                                vb.addWidget(@fileAddGenreName)
-                            end
-                            g.setLayout(vbx)
-                        end
-                        )
+            l.addGroup(i18n('Generating directory')) do |g|
+                g.addWidget(@dirSampleLabel)
+                g.addWidget(@dirAddMediaName)
+#                 g.addWidget(@dirAddChannelName)
+                g.addWidget(@dirAddGenreName)
+            end
+            l.addGroup(i18n('Generating file name')) do |g|
+                g.addWidget(@fileSampleLabel)
+                g.addWidgets(i18n('Head Text'), @fileAddHeadStr)
+                g.addWidget(@fileAddMediaName)
+#                 g.addWidget(@fileAddChannelName)
+                g.addWidget(@fileAddGenreName)
+            end
             l.addWidget(@leaveRawFile)
             l.addStretch
         end
@@ -345,25 +344,17 @@ class PlayerSettingsPage < Qt::Widget
 
         # layout
         lo = Qt::VBoxLayout.new do |l|
-            l.addWidget(Qt::GroupBox.new(i18n('iPlayer Type')) do |g|
-                            vbx = Qt::VBoxLayout.new do |vb|
-                                vb.addWidget(@playerTypeSmall)
-                                vb.addWidget(@playerTypeBeta)
-                            end
-                            g.setLayout(vbx)
-                        end
-                        )
-            l.addWidget(Qt::GroupBox.new(i18n('Player')) do |g|
-                            vbx = Qt::VBoxLayout.new do |vb|
-                                vb.addWidget(@innerPlayer)
-                                vb.addWidget(@webPlayer)
-                                vb.addWidgets('  ', @webPlayerName, nil)
-                                vb.addWidget(@directPlayer)
-                                vb.addWidgets('  ', @directPlayerName, nil)
-                            end
-                            g.setLayout(vbx)
-                       end
-                       )
+            l.addGroup(i18n('iPlayer Type')) do |g|
+                g.addWidget(@playerTypeSmall)
+                g.addWidget(@playerTypeBeta)
+            end
+            l.addGroup(i18n('Player')) do |g|
+                g.addWidget(@innerPlayer)
+                g.addWidget(@webPlayer)
+                g.addWidgets('  ', @webPlayerName, nil)
+                g.addWidget(@directPlayer)
+                g.addWidgets('  ', @directPlayerName, nil)
+            end
             l.addStretch
         end
 
@@ -387,14 +378,29 @@ class ThemeSettingsPage < Qt::Widget
         @bbcTheme = Qt::RadioButton.new(i18n('BBC iPlayer theme'))
         @loadTheme = Qt::RadioButton.new(i18n('Other theme file'))
         @themeFile = FileSelectorLineEdit.new('Qt Style Sheet (*.qss)')
+        # default values
+        @bbcTheme.checked = true
+        @themeFile.enabled = false
+
+        # connect
+        @loadTheme.connect(SIGNAL('toggled(bool)')) do |f|
+            @themeFile.enabled = f
+        end
+
+        # set objectNames
+        #  'kcfg_' + class Settings's instance name.
+        @systemDefaultTheme.objectName = 'kcfg_systemDefaultTheme'
+        @bbcTheme.objectName = 'kcfg_bbcTheme'
+        @loadTheme.objectName = 'kcfg_loadTheme'
+        @themeFile.objectName = 'kcfg_themeFile'
 
         # layout
         lo = Qt::VBoxLayout.new do |l|
-            l.addGroup(i18n('Theme')) do |gl|
-                gl.addWidget(@systemDefaultTheme)
-                gl.addWidget(@bbcTheme)
-                gl.addWidget(@loadTheme)
-                gl.addWidgets('  ',@themeFile)
+            l.addGroup(i18n('Theme')) do |g|
+                g.addWidget(@systemDefaultTheme)
+                g.addWidget(@bbcTheme)
+                g.addWidget(@loadTheme)
+                g.addWidgets('  ',@themeFile)
             end
             l.addStretch
         end
