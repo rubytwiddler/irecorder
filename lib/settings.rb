@@ -174,6 +174,11 @@ class SettingsDlg < KDE::ConfigDialog
         addPage(PlayerSettingsPage.new, i18n("Player"), 'internet-web-browser', i18n('Player and web Browser'))
         addPage(ThemeSettingsPage.new, i18n("Theme"), 'view-media-visualization', i18n('Theme'))
     end
+
+    signals :updated
+    def updateSettings
+        emit updated
+    end
 end
 
 

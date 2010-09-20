@@ -418,6 +418,7 @@ class MainWindow < KDE::MainWindow
     #
     def createDlg
         @settingsDlg = SettingsDlg.new(self)
+        connect(@settingsDlg, SIGNAL(:updated), self, SLOT(:updateSettings))
     end
 
 
@@ -425,9 +426,13 @@ class MainWindow < KDE::MainWindow
     # slot
     def configureApp
         @settingsDlg.exec
-        applyTheme
+        updateSettings
     end
 
+    slots :updateSettings
+    def updateSettings
+        applyTheme
+    end
 
     #-------------------------------------------------------------
     #
@@ -471,25 +476,38 @@ class MainWindow < KDE::MainWindow
 
     # -----------------------------------------------------------------------
     def applyTheme
-        if IRecSettings.systemDefaultTheme then
-            clearStyleSheet
-        else
-            themeFile = IRecSettings.bbcTheme ? APP_DIR + '/resources/bbcstyle.qss' : nil
-            if IRecSettings.loadTheme and File.readable?(IRecSettings.themeFile) then
-                themeFile = IRecSettings.themeFile
+        ssfile = getStyleSheetFileName
+        if ssfile then
+            if @styleSheetFile and @styleSheetFile != ssfile then
+                KDE::MessageBox.information(self, i18n("You changed theme. Please restart this application"))
+            else
+                @styleSheetFile = ssfile
+                styleStr = IO.read(ssfile)
+                $app.styleSheet = styleStr
+                $app.styleSheet = styleStr
+                $log.info { "load theme file '#{@styleSheetFile}'" }
             end
-            styleStr = IO.read(themeFile)
-            $app.styleSheet = styleStr
-            $app.styleSheet = styleStr
+        else
+            clearStyleSheet
         end
+    end
+
+    def getStyleSheetFileName
+        if IRecSettings.systemDefaultTheme then
+            themeFile = nil
+        elsif IRecSettings.bbcTheme then
+            themeFile = APP_DIR + '/resources/bbcstyle.qss'
+        elsif IRecSettings.loadTheme and File.readable?(IRecSettings.themeFile) then
+            themeFile = IRecSettings.themeFile
+        else
+            themeFile = nil
+        end
+        themeFile
     end
 
     slots  :reloadStyleSheet
     def reloadStyleSheet
         applyTheme
-#         styleStr = IO.read(APP_DIR + '/resources/bbcstyle.qss')
-#         $app.styleSheet = styleStr
-#         $app.styleSheet = styleStr
         $log.info { 'Reloaded StyleSheet.' }
     end
 
