@@ -436,12 +436,14 @@ end
 #
 #
 def openDirectory(dir)
+    return if !dir or dir.empty?
     cmd = KDE::MimeTypeTrader.self.query('inode/directory').first.exec[/\w+/]
     cmd += " " + dir
     fork do exec(cmd) end
 end
 
 def openUrlDocument(url)
+    return if !url or url.empty?
     cmd = Mime::services('.html').first.exec
     cmd.gsub!(/%\w+/, url)
     fork do exec(cmd) end
@@ -453,7 +455,7 @@ end
 #
 module Enumerable
     class Proxy
-        instance_methods.each { |m| undef_method(m) unless m.match(/^__/) }
+        instance_methods.each { |m| undef_method(m) unless m.match(/^(__|object_id$)/)  }
         def initialize(enum, method=:map)
             @enum, @method = enum, method
         end
@@ -464,6 +466,42 @@ module Enumerable
 
     def every
         Proxy.new(self)
+    end
+end
+
+
+#
+#  meta programming support methods.
+#   ref. http://http://dannytatom.github.com/metaid/
+#
+class Object
+    # The hidden singleton lurks behind everyone
+    def metaclass; class << self; self; end; end
+    def meta_eval &blk; metaclass.instance_eval &blk; end
+
+    # Adds methods to a metaclass
+    def meta_def name, &blk
+        meta_eval { define_method name, &blk }
+    end
+
+    # Defines an instance method within a class
+    def class_def name, &blk
+        class_eval { define_method name, &blk }
+    end
+end
+#
+#
+#
+class Dir
+    def self.allDirs(path)
+        dirs = []
+        Dir.foreach(path) do |f|
+            fullPath = File.join(path, f)
+            if File.directory?(fullPath) and f !~ /^\.\.?$/ then
+                dirs << f
+            end
+        end
+        dirs
     end
 end
 

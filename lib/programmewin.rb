@@ -111,7 +111,9 @@ class ProgrammeTableWidget < Qt::TableWidget
 
     protected
     def contextMenuEvent(e)
-        prog = self[itemAt(e.pos).row]
+        item = itemAt(e.pos)
+        return unless item
+        prog = self[item.row]
         menu = createPopup
         action = menu.exec(e.globalPos)
         action and execPopup(action, prog)
@@ -124,6 +126,8 @@ class ProgrammeTableWidget < Qt::TableWidget
         a.setVData('searchSame@')
         a = menu.addAction(KDE::Icon.new('search'), i18n('Search Same Category tags'))
         a.setVData('searchSameTags@')
+        menu.addSeparator
+        insertSchedule(menu)
         menu.addSeparator
         insertPlayerActions(menu)
         menu
@@ -140,6 +144,11 @@ class ProgrammeTableWidget < Qt::TableWidget
         else
             $log.warn { "No method #{cmd} in contextmenu." }
         end
+    end
+
+    def insertSchedule(menu)
+        a = menu.addAction('Schedule This Title Programme')
+        a.setVData('schedule@')
     end
 
     def insertPlayerActions(menu)
@@ -179,6 +188,11 @@ class ProgrammeTableWidget < Qt::TableWidget
 
     def searchSameTags(prog)
         emit filterRequest( prog.categories )
+    end
+
+    signals 'scheduleRequest(const QString &, const QString &)'
+    def schedule(prog)
+        emit scheduleRequest( prog.title, prog.categories )
     end
 end
 

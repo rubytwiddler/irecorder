@@ -1,13 +1,12 @@
-#!/usr/bin/ruby
-#
+#!/usr/bin/ruby -Ku
+# encoding: UTF-8
 #    2010 by ruby.twiddler@gmail.com
 #
-#     KDE GUI Audio recorder which has similar interface to BBC iPlayer.
+#     iRecorder is BBC radio recorder with KDE GUI like iPlayer.
 #      record real/wma (rtsp/mms) audio stream
 #
 
-$KCODE = 'UTF8'
-require 'ftools'
+require 'fileutils'
 
 APP_FILE = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
 APP_NAME = File.basename(APP_FILE).sub(/\.rb/, '')
@@ -21,7 +20,6 @@ require 'uri'
 require 'net/http'
 require 'open-uri'
 require 'shellwords'
-require 'fileutils'
 require 'singleton'
 
 # additional libs
@@ -37,6 +35,7 @@ require "bbcnet"
 require "mylibs"
 require "logwin"
 require "taskwin"
+require "schedulewin"
 require "download"
 require "programmewin"
 require "settings"
@@ -64,10 +63,12 @@ class MainWindow < KDE::MainWindow
 
         applyTheme
         @actions = KDE::ActionCollection.new(self)
+        @downloader = Downloader.new(self)
 
         createWidgets
-        createMenu
         createDlg
+        createMenu
+        connectSlots
 
         # default values
 #         BBCNet.setProxy('http://194.36.10.154:3127')
@@ -93,6 +94,13 @@ class MainWindow < KDE::MainWindow
         @timer.start(1000)          # 1000 msec = 1 sec
     end
 
+    #
+    #
+    #
+    def connectSlots
+        connect(@programmeTable, SIGNAL('scheduleRequest(const QString &, const QString &)'),
+                @scheduleWin, SLOT('addProgrammeFilter(const QString &, const QString &)'))
+    end
 
     #
     # make menus for MainWindow
@@ -109,10 +117,14 @@ class MainWindow < KDE::MainWindow
         quitAction = @actions.addNew(i18n('&Quit'), self, \
             { :icon => 'application-exit', :shortCut => 'Ctrl+Q', :triggered => :close })
 
+        updateScheduleAction = @actions.addNew(i18n('Update Schedule'), @scheduleWin, \
+            { :shortCut => 'Ctrl+U', :triggered => :updateFilteredProgrammes })
+
         fileMenu = KDE::Menu.new('&File', self)
         fileMenu.addAction(recordAction)
         fileMenu.addAction(reloadStyleAction)
         fileMenu.addAction(clearStyleAction)
+        fileMenu.addAction(updateScheduleAction)
         fileMenu.addAction(quitAction)
 
 
@@ -129,7 +141,7 @@ class MainWindow < KDE::MainWindow
 
 
         # Help menu
-        aboutDlg = KDE::AboutApplicationDialog.new($about)
+        aboutDlg = KDE::AboutApplicationDialog.new(KDE::CmdLineArgs.aboutData)
         openAboutAction = @actions.addNew(i18n('About %s') % APP_NAME, self, \
             { :icon => 'irecorder', :triggered =>[aboutDlg, :exec] })
         openDocUrlAction = @actions.addNew(i18n('Open Document Wiki'), self, \
@@ -192,6 +204,10 @@ class MainWindow < KDE::MainWindow
         @taskWin = TaskWindow.new
         @topTab.addTab(@taskWin, 'Task')
 
+        #  Top Tab - Schedule Page
+        @scheduleWin = ScheduleWindow.new(@downloader)
+        @topTab.addTab(@scheduleWin, 'Schedule')
+
         #  Top Tab - Log Page
         @logWin = LogWindow.new
         @topTab.addTab(@logWin, 'Log')
@@ -205,58 +221,8 @@ class MainWindow < KDE::MainWindow
     #-------------------------------------------------------------
     #
     TvType, RadioType, RadioCategoryType = [-1,0,1]    # TvType = -1 (hide)
-    TVChannelRssTbl = [
-        ['BBC One', 'bbc_one' ],
-        ['BBC Two', 'bbc_two' ],
-        ['BBC Three', 'bbc_three' ],
-        ['BBC Four', 'bbc_four' ],
-        ['CBBC', 'cbbc'],
-        ['CBeebies', 'cbeebies'],
-        ['BBC News Channel', 'bbc_news24'],
-        ['BBC Parliament', 'bbc_parliament'],
-        ['BBC HD', 'bbc_hd'],
-        ['BBC ALBA', 'bbc_alba'] ]
 
-    RadioChannelRssTbl = [
-        ['BBC Radio 1', 'bbc_radio_one'],
-        ['BBC 1Xtra', 'bbc_1xtra'],
-        ['BBC Radio 2', 'bbc_radio_two'],
-        ['BBC Radio 3', 'bbc_radio_three'],
-        ['BBC Radio 4', 'bbc_radio_four'],
-        ['BBC Radio 5 live', 'bbc_radio_five_live'],
-        ['BBC Radio 5 live sports extra', 'bbc_radio_five_live_sports_extra'],
-        ['BBC 6 Music', 'bbc_6music'],
-        ['BBC Radio 7', 'bbc_7'],
-        ['BBC Asian Network', 'bbc_asian_network'],
-        ['BBC World service', 'bbc_world_service'],
-        ['BBC Radio Scotland', 'bbc_alba/scotland'],
-        ['BBC Radio Nan Gàidheal', 'bbc_radio_nan_gaidheal'],
-        ['BBC Radio Ulster', 'bbc_radio_ulster'],
-        ['BBC Radio Foyle', 'bbc_radio_foyle'],
-        ['BBC Radio Wales', 'bbc_radio_wales'],
-        ['BBC Radio Cymru', 'bbc_radio_cymru'] ]
 
-    CategoryRssTbl = [
-        ['Children\'s', 'childrens'],
-        ['Comedy', 'comedy'],
-        ['Drama', 'drama'],
-        ['Entertainment', 'entertainment'],
-        ['Factual', 'factual'],
-        ['Films', 'films'],
-        ['Music', 'music'],
-        ['News', 'news'],
-        ['Learning', 'learning'],
-        ['Religion & Ethics', 'religion_and_ethics'],
-        ['Sport', 'sport'],
-        ['Sign Zone', 'signed'],
-        ['Audio Described', 'audiodescribed'],
-        ['Northern Ireland', 'northern_ireland'],
-        ['Scotland', 'scotland'],
-        ['Wales', 'wales'] ]
-
-    CategoryNameTbl = CategoryRssTbl.map do |c|
-            c[0][/[\w\s\'&]+/].gsub(/\'/, '').gsub(/&/, ' and ')
-        end
     #
     def createChannelListToolBox
         toolBox = Qt::ToolBox.new do |w|
@@ -269,18 +235,18 @@ class MainWindow < KDE::MainWindow
         # TV & Radio Channels selector
 #         @tvChannelListBox = KDE::ListWidget.new
 #         # TV Channels
-#         @tvChannelListBox.addItems( TVChannelRssTbl.map do |w| w[0] end )
+#         @tvChannelListBox.addItems( BBCNet::TVChannelRssTbl.map do |w| w[0] end )
 #         toolBox.addItem( @tvChannelListBox, 'TV Channels' )
 
 
         # Radio Channels
         @radioChannelListBox = KDE::ListWidget.new
-        @radioChannelListBox.addItems( RadioChannelRssTbl.map do |w| w[0] end )
+        @radioChannelListBox.addItems( BBCNet::RadioChannelRssTbl.map do |w| w[0] end )
         toolBox.addItem( @radioChannelListBox, 'Radio Channels' )
 
         # Category selector
         @categoryListBox = KDE::ListWidget.new
-        @categoryListBox.addItems( CategoryRssTbl.map do |w| w[0] end )
+        @categoryListBox.addItems( BBCNet::CategoryRssTbl.map do |w| w[0] end )
         toolBox.addItem( @categoryListBox, 'Radio Categories' )
 
         toolBox
@@ -400,7 +366,7 @@ class MainWindow < KDE::MainWindow
             w.floating = true
             w.hide
         end
-        @playerWevView = Qt::WebView.new do |w|
+        @playerWebView = Qt::WebView.new do |w|
             w.page.linkDelegationPolicy = Qt::WebPage::DelegateAllLinks
         end
 
@@ -408,7 +374,7 @@ class MainWindow < KDE::MainWindow
         webSettings.setAttribute(Qt::WebSettings::PluginsEnabled, true)
 
 
-        @playerDock.setWidget(@playerWevView)
+        @playerDock.setWidget(@playerWebView)
         self.addDockWidget(Qt::RightDockWidgetArea, @playerDock)
 
         @playerDock
@@ -579,7 +545,7 @@ class MainWindow < KDE::MainWindow
                 url = getIplayerUrl(prog)
 
                 @playerDock.show
-                @playerWevView.setUrl(Qt::Url.new(url))
+                @playerWebView.setUrl(Qt::Url.new(url))
             elsif IRecSettings.useWebPlayer and webPlayerCommand then
                 $log.info { "Play on web browser" }
                 url = getIplayerUrl(prog)
@@ -673,10 +639,11 @@ class MainWindow < KDE::MainWindow
     end
 
 
+    protected
+
     #
     # get feed address
     #
-    protected
     def getFeedAdr
         @channelType = @channelTypeToolBox.currentIndex
 
@@ -685,15 +652,15 @@ class MainWindow < KDE::MainWindow
         when TvType
             # get TV channel
             @channelIndex = @tvChannelListBox.currentRow
-            channelStr = TVChannelRssTbl[ @channelIndex ][1]
+            channelStr = BBCNet::TVChannelRssTbl[ @channelIndex ][1]
         when RadioType
             # get Radio channel
             @channelIndex = @radioChannelListBox.currentRow
-            channelStr = RadioChannelRssTbl[ @channelIndex ][1]
+            channelStr = BBCNet::RadioChannelRssTbl[ @channelIndex ][1]
         when RadioCategoryType
             # get Category
             @channelIndex = @categoryListBox.currentRow
-            channelStr = 'categories/' + CategoryRssTbl[ @channelIndex ][1] + '/radio'
+            channelStr = 'categories/' + BBCNet::CategoryRssTbl[ @channelIndex ][1] + '/radio'
         end
 
         return nil  if channelStr.nil?
@@ -706,7 +673,7 @@ class MainWindow < KDE::MainWindow
 
 
     def getCategoryTitle
-        CategoryRssTbl[ @channelIndex ][0]
+        BBCNet::CategoryRssTbl[ @channelIndex ][0]
     end
 
     def setListTitle
@@ -714,7 +681,7 @@ class MainWindow < KDE::MainWindow
         if getChannelTitle
             names << getChannelTitle
         else
-            names << CategoryRssTbl[ @channelIndex ][0]
+            names << BBCNet::CategoryRssTbl[ @channelIndex ][0]
         end
         names << %w[ All Highlights Popular ][@listType]
         @listTitleLabel.text = names.join(' / ')
@@ -734,15 +701,15 @@ class MainWindow < KDE::MainWindow
         @programmeTable.rowCount = entries.size
 
         # ['Title', 'Category', 'Updated' ]
-        entries.each_with_index do |i, r|
-            title = i.at_css('title').content
-            updated = i.at_css('updated').content
-            contents = i.at_css('content').content
-            linkItem = i.css('link').find do |l| l['rel'] == 'self' end
+        entries.each_with_index do |e, row|
+            title = e.at_css('title').content
+            updated = e.at_css('updated').content
+            content = e.at_css('content').content
+            linkItem = e.css('link').find do |l| l['rel'] == 'self' end
             link = linkItem ? linkItem['href'] : nil
-            categories = i.css('category').map do |c| c['term'] end.join(',')
+            categories = e.css('category').map do |c| c['term'] end.join(',')
             $log.misc { title }
-            @programmeTable.addEntry( r, title, categories, updated, contents, link )
+            @programmeTable.addEntry( row, title, categories, updated, content, link )
         end
 
         @programmeTable.sortingEnabled = sortFlag
@@ -794,7 +761,22 @@ class MainWindow < KDE::MainWindow
         end
     end
 
+    #----------------------------------------
+    #
+    #
+    class Downloader
+        def initialize(parent)
+            @downloader = parent
+        end
 
+        def getSaveFolder(categories)
+            @downloader.getSaveSubDirName(tags)
+        end
+    end
+
+
+    #
+    #
     protected
     #
     def getSaveName(prog, ext='wma')
@@ -816,6 +798,7 @@ class MainWindow < KDE::MainWindow
         baseName.gsub(%r{[\/]}, '-')
     end
 
+    public
     #
     def getSaveSubDirName(tags)
         s = IRecSettings
@@ -826,6 +809,7 @@ class MainWindow < KDE::MainWindow
         File.join(dir.compact)
     end
 
+    protected
     # media [TV,Radio,iPod]
     def getMediaName(tags)
         tags.find do |t|
@@ -842,10 +826,10 @@ class MainWindow < KDE::MainWindow
         case  @channelType
         when TvType
         # get TV channel
-            TVChannelRssTbl[ @channelIndex ][0]
+            BBCNet::TVChannelRssTbl[ @channelIndex ][0]
         when RadioType
         # get Radio channel
-            RadioChannelRssTbl[ @channelIndex ][0]
+            BBCNet::RadioChannelRssTbl[ @channelIndex ][0]
         else
             nil
         end
@@ -853,7 +837,7 @@ class MainWindow < KDE::MainWindow
 
     # Main Genre [Drama, Comedy, ..]
     def getGenreName(tags)
-        CategoryNameTbl.find do |cat|
+        BBCNet::CategoryNameTbl.find do |cat|
             tags.find do |t|
                 cat =~ /#{t}/i
             end
@@ -902,12 +886,12 @@ end
 #    main start
 #
 
-$about = KDE::AboutData.new(APP_NAME, APP_NAME, KDE::ki18n(APP_NAME), APP_VERSION,
+about = KDE::AboutData.new(APP_NAME, APP_NAME, KDE::ki18n(APP_NAME), APP_VERSION,
                             KDE::ki18n('BBC iRecorder KDE')
                            )
-$about.setProgramIconName(':images/irecorder-22.png')
-$about.addLicenseTextFile(APP_DIR + '/MIT-LICENSE')
-KDE::CmdLineArgs.init(ARGV, $about)
+about.setProgramIconName(':images/irecorder-22.png')
+about.addLicenseTextFile(APP_DIR + '/MIT-LICENSE')
+KDE::CmdLineArgs.init(ARGV, about)
 # options = KDE::CmdLineOptions.new()
 # options.add( "+url", KDE::ki18n( "The url to record)" ),"")
 

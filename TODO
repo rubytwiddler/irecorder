@@ -1,4 +1,6 @@
 TODO - irecorder
+ *install nokogiri for ruby1.9
+
  *error handling
    -error auto retry.
  *bug passivePopup wordwraped message is invisible.
@@ -23,3 +25,7 @@ TODO - irecorder
  *install application icon image
 
  x(impossible) change install directory for menu, when you install by gem with --user-install option.
+
+
+Knowing issue :
+ *64bit latest flash plugin crush webview on the bbc iplayer site.

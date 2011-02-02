@@ -221,11 +221,112 @@ class BBCNet
         'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50<RAND>; .NET CLR 3.5.30<RAND>; .NET CLR 3.0.30<RAND>; Media Center PC 6.0; InfoPath.2; MS-RTC LM 8)',
         'Mozilla/6.0 (Windows; U; Windows NT 7.0; en-US; rv:1.9.0.8) Gecko/2009032609 Firefox/3.0.9 (.NET CLR 3.5.30<RAND>)',
         ]
+
+    public
     def self.randomUserAgent
         ua = UserAgentList[ rand UserAgentList.length ]
         ua.gsub(/<RAND>/, "%03d" % rand(1000))
     end
 
+
+    TVChannelRssTbl = [
+        ['BBC One', 'bbc_one' ],
+        ['BBC Two', 'bbc_two' ],
+        ['BBC Three', 'bbc_three' ],
+        ['BBC Four', 'bbc_four' ],
+        ['CBBC', 'cbbc'],
+        ['CBeebies', 'cbeebies'],
+        ['BBC News Channel', 'bbc_news24'],
+        ['BBC Parliament', 'bbc_parliament'],
+        ['BBC HD', 'bbc_hd'],
+        ['BBC ALBA', 'bbc_alba'] ]
+
+    RadioChannelRssTbl = [
+        ['BBC Radio 1', 'bbc_radio_one'],
+        ['BBC 1Xtra', 'bbc_1xtra'],
+        ['BBC Radio 2', 'bbc_radio_two'],
+        ['BBC Radio 3', 'bbc_radio_three'],
+        ['BBC Radio 4', 'bbc_radio_four'],
+        ['BBC Radio 5 live', 'bbc_radio_five_live'],
+        ['BBC Radio 5 live sports extra', 'bbc_radio_five_live_sports_extra'],
+        ['BBC 6 Music', 'bbc_6music'],
+        ['BBC Radio 7', 'bbc_7'],
+        ['BBC Asian Network', 'bbc_asian_network'],
+        ['BBC World service', 'bbc_world_service'],
+        ['BBC Radio Scotland', 'bbc_alba/scotland'],
+        ['BBC Radio Nan Gàidheal', 'bbc_radio_nan_gaidheal'],
+        ['BBC Radio Ulster', 'bbc_radio_ulster'],
+        ['BBC Radio Foyle', 'bbc_radio_foyle'],
+        ['BBC Radio Wales', 'bbc_radio_wales'],
+        ['BBC Radio Cymru', 'bbc_radio_cymru'] ]
+
+    CategoryRssTbl = [
+        ['Children\'s', 'childrens'],
+        ['Comedy', 'comedy'],
+        ['Drama', 'drama'],
+        ['Entertainment', 'entertainment'],
+        ['Factual', 'factual'],
+        ['Films', 'films'],
+        ['Music', 'music'],
+        ['News', 'news'],
+        ['Learning', 'learning'],
+        ['Religion & Ethics', 'religion_and_ethics'],
+        ['Sport', 'sport'],
+        ['Sign Zone', 'signed'],
+        ['Audio Described', 'audiodescribed'],
+        ['Northern Ireland', 'northern_ireland'],
+        ['Scotland', 'scotland'],
+        ['Wales', 'wales'] ]
+
+    CategoryNameTbl = CategoryRssTbl.map do |c|
+            c[0][/[\w\s\'&]+/].gsub(/\'/, '').gsub(/&/, ' and ')
+        end
+
+    CategoryRegexpTbl = CategoryRssTbl.map do |c|
+        Regexp.new(c[0][/^[\w]+/])
+    end
+
+
+    #
+    # get category index for feed
+    #
+    def self.getCategoryIndex(categories)
+        cats = categories.split(/,/)
+        index = 0
+        cats.find do |ca|
+            CategoryRegexpTbl.find do |c|
+                c =~ ca
+            end
+            index += 1
+        end or return -1
+        index
+    end
+
+    #
+    # get feed address by category index
+    #
+    def self.getFeedAdrByCategoryIndex(catIndex)
+        categoryStr = 'categories/' + BBCNet::CategoryRssTbl[ catIndex ][1] + '/radio'
+        "http://feeds.bbc.co.uk/iplayer/#{categoryStr}/list"
+    end
+
+    #
+    #
+    #
+    def self.getRssByCategoryIndex(catIndex)
+        feedAdr = getFeedAdrByCategoryIndex(catIndex)
+        return nil if feedAdr.nil?
+
+        $log.info{ "feeding from '#{feedAdr}'" }
+
+        begin
+            rss = CacheRssDevice.read(feedAdr)
+        rescue  => e
+            $log.error { e }
+            return nil
+        end
+        return rss
+    end
 end
 
 module AudioFile

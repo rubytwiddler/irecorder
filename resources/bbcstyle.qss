@@ -38,20 +38,14 @@ QCheckBox, QRadioButton {
 }
 
 
-QCheckBox::indicator:checked {
+QCheckBox::indicator:checked, QMenu::indicator:checked, QRadioButton::indicator:checked  {
     image: url(:images/checkbox-checked-16.png);
 }
 
-QCheckBox::indicator:unchecked {
+QCheckBox::indicator:unchecked, QMenu::indicator:unchecked, QRadioButton::indicator:unchecked {
     image: url(:images/checkbox-unchecked-16.png);
 }
 
-QRadioButton::indicator:checked {
-    image: url(:images/radiobutton-checked-16.png);
-}
-QRadioButton::indicator:unchecked {
-    image: url(:images/radiobutton-unchecked-16.png);
-}
 
 /*
     ComboBox
@@ -84,21 +78,22 @@ QMenuBar::Item:hover, QMenuBar::Item:selected {
 }
 
 QMenu {
-    border: 1px solid rgb(124,124,124);
-    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+     border: 1px solid rgb(124,124,124);
+/*
+     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                                        stop:0 rgb(80,80,80), stop:1 black);
+*/
 }
 
+/*
 QMenu::item {
-/*     border: 1px solid red; */
-/*     background: rgb(60,60,60); */
+     border: 1px solid red;
+     background: rgb(60,60,60);
 }
 
 QMenu::item:selected {
-    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0,
-        stop:0 rgb(148, 0, 84), stop:0.48 rgb(148, 0, 84),
-        stop:0.5 rgb(167, 46, 114), stop:1 rgb(195, 113, 155));
 }
+*/
 
 QMenu::separator {
     height: 1px;
@@ -106,23 +101,6 @@ QMenu::separator {
     margin: 1px 15px;
 }
 
-QMenu::icon {
-    border: 4px solid red;
-    selection-background-color: yellow;
-    selection-color: yellow;
-    background: green;
-}
-/*
-QMenu::icon:pressed
-QMenu::icon:selected
-QMenu::icon:focus
-*/
-QMenu::icon:checked {
-    border: 4px solid red;
-    selection-background-color: yellow;
-    selection-color: yellow;
-    background: green;
-}
 
 /*
     TextEdit
