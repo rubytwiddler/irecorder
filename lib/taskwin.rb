@@ -359,5 +359,12 @@ class TaskWindow < Qt::Widget
     def each(&block)
         @table.each(&block)
     end
+
+    def exist?(metaInfo)
+        @table.each do |taskItem|
+            return true if taskItem.process.metaInfo == metaInfo
+        end
+        false
+    end
 end
 

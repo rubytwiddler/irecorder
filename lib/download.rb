@@ -95,6 +95,7 @@ class DownloadProcess < Qt::Process
 
     attr_reader :sourceUrl, :rawFileName
     attr_reader :rawFilePath, :outFilePath
+    attr_reader :metaInfo
 
     def initialize(parent, metaInfo, fName)
         super(parent)
@@ -170,6 +171,12 @@ class DownloadProcess < Qt::Process
         end
     end
 
+    #
+    #
+    def checkNeedless
+        decideStartTask == FINISHED
+    end
+
 
     def retryTask
         $log.debug { "retry." }
@@ -212,8 +219,8 @@ class DownloadProcess < Qt::Process
     def removeData
         cancelTask
         begin
-            File.delete(@rawFilePath)
-            File.delete(@outFilePath)
+            File.delete(@rawFilePath) if File.exist?(@rawFilePath)
+            File.delete(@outFilePath) if File.exist?(@outFilePath)
         rescue => e
             $log.info { e }
         end

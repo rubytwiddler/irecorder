@@ -1,6 +1,6 @@
 #!/usr/bin/ruby -Ku
 # encoding: UTF-8
-#    2010 by ruby.twiddler@gmail.com
+#    2010-2011 by ruby.twiddler@gmail.com
 #
 #     iRecorder is BBC radio recorder with KDE GUI like iPlayer.
 #      record real/wma (rtsp/mms) audio stream
@@ -63,7 +63,6 @@ class MainWindow < KDE::MainWindow
 
         applyTheme
         @actions = KDE::ActionCollection.new(self)
-        @downloader = Downloader.new(self)
 
         createWidgets
         createDlg
@@ -75,6 +74,9 @@ class MainWindow < KDE::MainWindow
         # initialize values
         $log.setLogDevice(@logWin)
         $log.info { 'Log Start.' }
+
+        #
+        $downloader = Downloader.new(self, @taskWin)
 
         # assign from config file.
         readSettings
@@ -205,7 +207,7 @@ class MainWindow < KDE::MainWindow
         @topTab.addTab(@taskWin, 'Task')
 
         #  Top Tab - Schedule Page
-        @scheduleWin = ScheduleWindow.new(@downloader)
+        @scheduleWin = ScheduleWindow.new
         @topTab.addTab(@scheduleWin, 'Schedule')
 
         #  Top Tab - Log Page
@@ -416,6 +418,8 @@ class MainWindow < KDE::MainWindow
 
         @programmeTable.readSettings
         @taskWin.readSettings
+
+        @scheduleWin.loadFilters
     end
 
     def writeSettings
@@ -427,6 +431,8 @@ class MainWindow < KDE::MainWindow
         @programmeTable.writeSettings
         @taskWin.writeSettings
 #         dumpConfig(GroupName)
+
+        @scheduleWin.saveFilters
     end
 
     def dumpConfig(group)
@@ -756,7 +762,7 @@ class MainWindow < KDE::MainWindow
                 else
                     $log.error { e }
                 end
-                passiveMessage(i18n("There is no direct stream for this programme.\n%s" %[prog.title]))
+                passiveMessage(i18n("There is no direct stream for this programme.\n%s") %[prog.title])
             end
         end
     end
@@ -765,13 +771,56 @@ class MainWindow < KDE::MainWindow
     #
     #
     class Downloader
-        def initialize(parent)
+        def initialize(parent, taskWin)
+            @main = parent
             @downloader = parent
+            @taskWin = taskWin
         end
 
         def getSaveFolder(categories)
+            tags = categories.split(/,/)
             @downloader.getSaveSubDirName(tags)
         end
+
+        def download( title, categories, episodeUrl, folder, checkNeedless=true )
+            begin
+                tags = categories.split(/,/)
+
+                $log.info { "episode Url : #{episodeUrl}" }
+                minfo = BBCNet::CacheMetaInfoDevice.read(episodeUrl)
+                url = minfo.wma.url
+
+                fName = folder + '/' + @downloader.getSaveBaseName(title, tags, 'wma')
+                $log.info { "save name : #{fName}" }
+
+                if downloadOne(minfo, fName, checkNeedless) then
+                    passiveMessage(KDE::i18n("Start Download programme '%s'") % [title])
+                else
+                    $log.debug { "cancel duplicated download '#{title}'" }
+                end
+
+            rescue Timeout::Error, StandardError => e
+                if e.kind_of? RuntimeError
+                    $log.info { e.message }
+                else
+                    $log.error { e }
+                end
+                passiveMessage(KDE::i18n("There is no direct stream for this programme.\n%s") %[title])
+            end
+
+        end
+
+        def downloadOne(metaInfo, fName, checkNeedless=true)
+            return false if @taskWin.exist?(metaInfo)
+
+            process = DownloadProcess.new(@main, metaInfo, fName)
+            return false if checkNeedless && process.checkNeedless
+
+            process.taskItem = @taskWin.addTask(process)
+            process.beginTask
+            true
+        end
+
     end
 
 
@@ -787,6 +836,8 @@ class MainWindow < KDE::MainWindow
         dir + '/' + getSaveBaseName(prog.title, tags, ext)
     end
 
+    public
+    #
     def getSaveBaseName(title, tags, ext)
         s = IRecSettings
         head = s.fileAddHeadStr
@@ -798,7 +849,6 @@ class MainWindow < KDE::MainWindow
         baseName.gsub(%r{[\/]}, '-')
     end
 
-    public
     #
     def getSaveSubDirName(tags)
         s = IRecSettings
@@ -859,7 +909,7 @@ class MainWindow < KDE::MainWindow
     #  fName : save file name.
     #
     # start Dwnload One file.
-    protected
+    public
     def startDownOneFile(metaInfo, fName)
         process = DownloadProcess.new(self, metaInfo, fName)
         process.taskItem = @taskWin.addTask(process)

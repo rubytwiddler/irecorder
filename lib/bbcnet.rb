@@ -292,14 +292,12 @@ class BBCNet
     #
     def self.getCategoryIndex(categories)
         cats = categories.split(/,/)
-        index = 0
         cats.find do |ca|
-            CategoryRegexpTbl.find do |c|
-                c =~ ca
+            CategoryRegexpTbl.each_with_index do |c, i|
+                return i if c =~ ca
             end
-            index += 1
-        end or return -1
-        index
+        end
+        -1
     end
 
     #

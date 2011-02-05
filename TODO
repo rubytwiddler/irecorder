@@ -1,4 +1,13 @@
 TODO - irecorder
+ *schedule download
+   -check already downloading files.
+   -schedule download, in system tray, auto restart download.
+   -save schedule filters
+   -auto start in back ground
+   -test filter
+
+ *multi-select task and do operations.
+
  *install nokogiri for ruby1.9
 
  *error handling
@@ -7,11 +16,8 @@ TODO - irecorder
  *solve conflict of generated file names.
    *crime catch up : same title name. need special treatment.
  *use Qt::Desktop::OpenUrl insted of original routine.
- *upload to kde-apps.org
  *file dialog combobox text is invisible.
 
- *auto download subscription tags
- *auto start program, in system tray, auto restart download.
  *mencoder for dump
  *play/download from proxy (mplayer)
  *status bar for processing.
