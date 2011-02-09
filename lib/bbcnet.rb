@@ -3,8 +3,8 @@
 #
 require 'rubygems'
 require 'uri'
-require 'net/http'
-require 'open-uri'
+# require 'net/http'
+# require 'open-uri'
 require 'nokogiri'
 require 'shellwords'
 require 'fileutils'
@@ -20,33 +20,40 @@ UrlRegexp = URI.regexp(['rtsp','http'])
 
 #
 #
-class BBCNet
+class BBCNet < Qt::Object
+    include Singleton
+
     RtspRegexp = URI.regexp(['rtsp'])
     MmsRegexp = URI.regexp(['mms'])
     DirectStreamRegexp = URI.regexp(['mms', 'rtsp', 'rtmp', 'rtmpt'])
 
-    class CacheMetaInfoDevice < CasheDevice::CacheDeviceBase
+
+    class CachedMetaInfoIO < CachedIO::CachedIOBase
         def initialize(cacheDuration = 40*60, cacheMax=200)
             super(cacheDuration, cacheMax)
         end
 
-        # @return : [ data, key ]
-        #  key : key to restore data.
-        def directRead(pid)
-            data = BBCNet::MetaInfo.new(pid).update
-            [ data, data ]
+        # method finished(reply) will be called when read is finished.
+        def directRead(pid, onRead)
+            reply = CachedIO::CacheReply.new(pid, onRead)
+            BBCNet::MetaInfo.new(pid).update(reply.finishedMethod(self.method(:finished)))
         end
 
-        def self.read(url)
+
+        def self.read(url, onRead)
             pid = BBCNet.extractPid(url)
-            self.instance.read(pid)
+            self.instance.read(pid, onRead)
         end
     end
+
 
     #------------------------------------------------------------------------
     # get stream metadata
     # episode url => pid => xml playlist => version pid (vpid aka. identifier)
     #   => xml stream metadata => wma
+
+    #
+    # MetaInfo class
     #
     class MetaInfo
         def self.get(url)
@@ -72,15 +79,23 @@ class BBCNet
         end
 
 
+        protected
         #
         # read duration, vpid, group, media, onAirDate, channel
         #   from XmlPlaylist
-        def readXmlPlaylist
-            return self if @vpid
+        def readXmlPlaylist(onReadXmlPlaylist)
+            if @vpid then
+                onReadXmlPlaylist.call(self)
+                return
+            end
 
-            res = BBCNet.read("http://www.bbc.co.uk/iplayer/playlist/#{@pid}")
-#             res = IO.read("../tmp/iplayer-playlist-me.xml")
+            @onReadXmlPlaylist = onReadXmlPlaylist
+            BBCNet.read("http://www.bbc.co.uk/iplayer/playlist/#{@pid}", \
+                              self.method(:onReadXmlPlaylist))
+#             onReadXmlPlaylist(IO.read("../tmp/iplayer-playlist-me.xml"))
+        end
 
+        def onReadXmlPlaylist(res)
             doc = Nokogiri::XML(res)
             item = doc.at_css("noItems")
             raise "No Playlist " + item[:reason] if item
@@ -94,28 +109,70 @@ class BBCNet
             @channel = item.at_css("service").content.to_s
             @title = item.at_css("title").content.to_s
             @summary = doc.at_css("summary").content.to_s
-            self
+            @onReadXmlPlaylist.call(self)
         end
 
-
+        #
+        #   class StreamInfo
+        #
+        public
         class StreamInfo
             #  example)    48, wma, time, audio, http://..
             attr_accessor :bitrate, :encoding, :expires, :type, :indirectUrl
             alias       :kind :type
 
-            def url
-                @url ||= BBCNet.getDirectStreamUrl(@indirectUrl)
+            attr_reader :url
+            def update(onUpdated)
+                return if @url
+
+                @onUpdated = onUpdated
+                BBCNet.getDirectStreamUrl(@indirectUrl, self.method(:onRead))
+            end
+
+            protected
+            def onRead(url)
+                @url = url
+                @onUpdated.call(url)
             end
         end
 
-        def readXmlStreamMeta
-            readXmlPlaylist unless @vpid
+        def readXmlStreamMeta(onRead)
+            @onRead = onRead
+            if @vpid then
+                readXml_1
+            else
+                readXmlPlaylist(self.method(:readXml_1))
+            end
+        end
+        alias :update :readXmlStreamMeta
 
-            res = BBCNet.read("http://www.bbc.co.uk/mediaselector/4/mtis/stream/#{vpid}")
-#             res = IO.read("../tmp/iplayer-stream-meta-me.xml")
+        def streamInfo(prefered=%w{wma real})
+            prefered.each do |name|
+                case name.to_s.downcase.to_sym
+                when :wma
+                    return @wma if @wma
+                when :aac
+                    return @aacStd if @aacStd
+                when :real
+                    return @real if @real
+                when :aaclow
+                    return @aacLow if @aacLow
+                end
+            end
+            nil
+        end
 
+        protected
+        def readXml_1(dummy)
+            BBCNet.read("http://www.bbc.co.uk/mediaselector/4/mtis/stream/#{vpid}", \
+                              self.method(:onReadXmlStreamMeta))
+#             onReadXmlStreamMeta(IO.read("../tmp/iplayer-stream-meta-me.xml"))
+        end
+
+        def onReadXmlStreamMeta(res)
             doc = Nokogiri::XML(res)
             me = doc.css("media")
+            @updateCount = 0
             me.each do |m|
                 stmInf = StreamInfo.new
                 stmInf.encoding = m[:encoding]  # wma
@@ -140,12 +197,17 @@ class BBCNet
                 when /\breal\b/i
                     @real = stmInf
                 end
+                @updateCount += 1
+                stmInf.update(self.method(:onReadXmlInfUpdated))
             end
-            self
         end
 
-        alias :update :readXmlStreamMeta
+        def onReadXmlInfUpdated(url)
+            @updateCount -= 1
+            return unless @updateCount == 0
 
+            @onRead.call(self)
+        end
     end
 
 
@@ -181,40 +243,103 @@ class BBCNet
     end
 
 
-    # .asf/.ram => .wma/.ra
-    def self.getDirectStreamUrl(url)
-        old = ''
-        while url != old and not url[DirectStreamRegexp] do
-            old = url
-            res = BBCNet.read(url)
-            url = res[ DirectStreamRegexp ] || res[ UrlRegexp ] || old
-            $log.debug { "new url:#{url},  old url:#{old}" }
+    protected
+    class RetrievingDirectStreamUrl
+        def initialize(url, onRead)
+            if url and not url[DirectStreamRegexp] then
+                @old = url
+                @onRead = onRead
+                BBCNet.read(url, self.method(:onReadSearching))
+            else
+                onRead.call(url)
+            end
+        end
+
+        def onReadSearching(res)
+            url = res[ DirectStreamRegexp ] || res[ UrlRegexp ] || @old
+            $log.debug { "new url:#{url},  old url:#{@old}" }
             $log.debug { "no url in response '#{res}'" } if url[ UrlRegexp ]
+            if url != @old and not url[DirectStreamRegexp] then
+                @old = url
+                BBCNet.read(url, self.method(:onReadSearching))
+            else
+                @onRead.call(url)
+            end
         end
-        url
+
+        def self.get(url, onRead)
+            RetrievingDirectStreamUrl.new(url, onRead)
+        end
+    end
+
+    public
+    # .asf/.ram => .wma/.ra
+    def self.getDirectStreamUrl(url, onRead)
+        RetrievingDirectStreamUrl::get(url, onRead)
     end
 
 
-    def self.read(url)
-        header = { "User-Agent" => self.randomUserAgent }
-        if defined? @@proxy
-            header[:proxy] = @@proxy
+
+
+    #
+    #
+    #
+    protected
+    class MethodObj < Qt::Object
+        def initialize(method, orgObj)
+            super()
+            @method = method
+            @orgObj = orgObj
         end
 
-        uri = URI.parse(url)
-        res = Net::HTTP.start(uri.host, uri.port) do |http|
-            http.get(uri.request_uri, header)
+        def call(data)
+            if @orgObj then
+                @method.call(data, orgObj)
+            else
+                @method.call(data)
+            end
         end
-        res.body
     end
 
+    #-------------------------------
+    #
+    #  BBCNet class
+    #
+    public
+    def initialize()
+        super
+        @manager = Qt::NetworkAccessManager.new(self)
+        connect(@manager, SIGNAL('finished(QNetworkReply*)'), self, \
+                SLOT('finished(QNetworkReply*)'))
+    end
+
+
+    def read(url, onRead, orgObj=nil)
+        request = Qt::NetworkRequest.new(Qt::Url.new(url))
+        request.setRawHeader(Qt::ByteArray.new("User-Agent"), Qt::ByteArray.new(BBCNet::randomUserAgent))
+        request.setOriginatingObject(MethodObj.new(onRead, orgObj))
+        @manager.get(request)
+    end
+
+    slots 'finished(QNetworkReply*)'
+    def finished(reply)
+        $log.misc { "read : url:#{reply.url.toString}, error:#{reply.error.inspect}" }
+        data = reply.readAll
+        reply.request.originatingObject.call(data.data)
+    end
+
+
+    def self.read(url, onRead, orgObj=nil)
+        self.instance.read(url, onRead, orgObj)
+    end
 
     def self.setProxy(url)
         @@proxy = url
     end
 
-    private
+    protected
     UserAgentList = [
+        'Mozilla/5.0 (X11; U; Linux x86_64; en-US) AppleWebKit/<RAND>.13 (KHTML, like Gecko) Chrome/9.0.<RAND> Safari/<RAND>.1',
         'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/<RAND>.8 (KHTML, like Gecko) Chrome/2.0.178.0 Safari/<RAND>.8',
         'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; YPC 3.2.0; SLCC1; .NET CLR 2.0.50<RAND>; .NET CLR 3.0.04<RAND>)',
         'Mozilla/5.0 (Macintosh; U; PPC Mac OS X 10_4_11; tr) AppleWebKit/<RAND>.4+ (KHTML, like Gecko) Version/4.0dp1 Safari/<RAND>.11.2',
@@ -311,19 +436,12 @@ class BBCNet
     #
     #
     #
-    def self.getRssByCategoryIndex(catIndex)
+    def self.getRssByCategoryIndex(catIndex, onRead)
         feedAdr = getFeedAdrByCategoryIndex(catIndex)
-        return nil if feedAdr.nil?
+        return if feedAdr.nil?
 
         $log.info{ "feeding from '#{feedAdr}'" }
-
-        begin
-            rss = CacheRssDevice.read(feedAdr)
-        rescue  => e
-            $log.error { e }
-            return nil
-        end
-        return rss
+        CachedRssIO.read(feedAdr, onRead)
     end
 end
 
@@ -355,16 +473,29 @@ if __FILE__ == $0 then
 #     puts AudioFile::getDuration(ARGV.shift)
 #     exit 0
 
-    $log = MyLogger.new(STDOUT)
-    pid = "b00mzvfq"
+    class LogOut
+        def write(msg)
+            puts msg
+        end
+    end
+    $app = Qt::CoreApplication.new(ARGV)
+
+    def onReadMetaInfo(minfo)
+        puts minfo.title
+
+        minfo.streams.each do |s|
+            puts "url : " + s.url
+        end
+        exit
+    end
+
+    $log = MyLogger.new(LogOut.new)
+    pid = "b00y2x2f"
     if ARGV.size > 0 then
         pid = ARGV.shift
     end
     minfo = BBCNet::MetaInfo.new(pid)
-    minfo.readXmlStreamMeta
-    puts minfo.inspect
+    minfo.update(self.method(:onReadMetaInfo))
 
-    minfo.streams.each do |s|
-        puts "url : " + s.url
-    end
+    $app.exec
 end

@@ -32,6 +32,8 @@ TODO - irecorder
 
  x(impossible) change install directory for menu, when you install by gem with --user-install option.
 
+BUG
+ *crash on pushing button in settings
 
 Knowing issue :
  *64bit latest flash plugin crush webview on the bbc iplayer site.

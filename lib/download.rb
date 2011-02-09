@@ -103,7 +103,7 @@ class DownloadProcess < Qt::Process
         @parent = parent
         @taskItem = nil
         @startTime = Time.new
-        @sourceUrl = @metaInfo.wma.url
+        @sourceUrl = @metaInfo.streamInfo.url
         @rawFileName = fName
         @rawFilePath = File.join(IRecSettings.rawDownloadDir, fName)
         mkdirSavePath(@rawFilePath)
