@@ -160,25 +160,29 @@ class ProgrammeTableWidget < Qt::TableWidget
     end
 
     def playMedia(exe, prog)
-        begin
-            url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
+        url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
 
-            $log.info { "episode Url : #{url}" }
-            minfo = BBCNet::MetaInfo.get(url).update
-            url = minfo.wma.url
+        $log.info { "playMedia episode Url:#{url}, exe:#{exe}" }
+        reply = CachedIO::CacheReply.new(url, nil)
+        reply.obj = exe
+        BBCNet::CachedMetaInfoIO.read(url, \
+                reply.finishedMethod(self.method(:playMediaAtReadInfo)))
+    end
 
-            cmd, args = exe.split(/\s+/, 2)
-            args = args.split(/\s+/).map do |a|
-                a.gsub(/%\w/, url)
-            end
-            $log.debug { "execute cmd '#{cmd}', args '#{args.inspect}'" }
-            proc = Qt::Process.new(self)
-            proc.start(cmd, args)
+    def playMediaAtReadInfo(reply)
+        minfo = reply.data
+        exe = reply.obj
+        streamInfo = minfo.streamInfo
+        return unless streamInfo
+        url = streamInfo.url
 
-        rescue => e
-            $log.error { e }
-            KDE::MessageBox::information(self, i18n("There is not direct stream for this programme."))
+        cmd, args = exe.split(/\s+/, 2)
+        args = args.split(/\s+/).map do |a|
+            a.gsub(/%\w/, url)
         end
+        $log.debug { "execute cmd '#{cmd}', args '#{args.inspect}'" }
+        proc = Qt::Process.new(self)
+        proc.start(cmd, args)
     end
 
     signals  'filterRequest(const QString &)'

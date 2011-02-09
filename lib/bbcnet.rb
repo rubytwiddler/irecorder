@@ -3,8 +3,6 @@
 #
 require 'rubygems'
 require 'uri'
-# require 'net/http'
-# require 'open-uri'
 require 'nokogiri'
 require 'shellwords'
 require 'fileutils'
@@ -38,7 +36,6 @@ class BBCNet < Qt::Object
             reply = CachedIO::CacheReply.new(pid, onRead)
             BBCNet::MetaInfo.new(pid).update(reply.finishedMethod(self.method(:finished)))
         end
-
 
         def self.read(url, onRead)
             pid = BBCNet.extractPid(url)
@@ -88,7 +85,6 @@ class BBCNet < Qt::Object
                 onReadXmlPlaylist.call(self)
                 return
             end
-
             @onReadXmlPlaylist = onReadXmlPlaylist
             BBCNet.read("http://www.bbc.co.uk/iplayer/playlist/#{@pid}", \
                               self.method(:onReadXmlPlaylist))
@@ -164,7 +160,7 @@ class BBCNet < Qt::Object
 
         protected
         def readXml_1(dummy)
-            BBCNet.read("http://www.bbc.co.uk/mediaselector/4/mtis/stream/#{vpid}", \
+            BBCNet.read("http://www.bbc.co.uk/mediaselector/4/mtis/stream/#{@vpid}", \
                               self.method(:onReadXmlStreamMeta))
 #             onReadXmlStreamMeta(IO.read("../tmp/iplayer-stream-meta-me.xml"))
         end
@@ -281,26 +277,6 @@ class BBCNet < Qt::Object
 
 
 
-    #
-    #
-    #
-    protected
-    class MethodObj < Qt::Object
-        def initialize(method, orgObj)
-            super()
-            @method = method
-            @orgObj = orgObj
-        end
-
-        def call(data)
-            if @orgObj then
-                @method.call(data, orgObj)
-            else
-                @method.call(data)
-            end
-        end
-    end
-
     #-------------------------------
     #
     #  BBCNet class
@@ -313,29 +289,36 @@ class BBCNet < Qt::Object
                 SLOT('finished(QNetworkReply*)'))
     end
 
+    class MethodObject < Qt::Object
+        def initialize(method)
+            super()
+            @method = method
+        end
+        def call(data)
+            @method.call(data)
+        end
+    end
 
-    def read(url, onRead, orgObj=nil)
+    def read(url, onRead)
         request = Qt::NetworkRequest.new(Qt::Url.new(url))
-        request.setRawHeader(Qt::ByteArray.new("User-Agent"), Qt::ByteArray.new(BBCNet::randomUserAgent))
-        request.setOriginatingObject(MethodObj.new(onRead, orgObj))
+        request.setRawHeader(Qt::ByteArray.new("User-Agent"), \
+                             Qt::ByteArray.new(BBCNet::randomUserAgent))
+        request.setOriginatingObject(MethodObject.new(onRead))
         @manager.get(request)
     end
 
     slots 'finished(QNetworkReply*)'
     def finished(reply)
-        $log.misc { "read : url:#{reply.url.toString}, error:#{reply.error.inspect}" }
-        data = reply.readAll
-        reply.request.originatingObject.call(data.data)
+        $log.misc { "BBCNet::read : url:#{reply.url.toString}, error:#{reply.error.inspect}" }
+        data = reply.readAll.data
+        reply.request.originatingObject.call(data)
     end
 
 
-    def self.read(url, onRead, orgObj=nil)
-        self.instance.read(url, onRead, orgObj)
+    def self.read(url, onRead)
+        self.instance.read(url, onRead)
     end
 
-    def self.setProxy(url)
-        @@proxy = url
-    end
 
     protected
     UserAgentList = [
@@ -490,7 +473,7 @@ if __FILE__ == $0 then
     end
 
     $log = MyLogger.new(LogOut.new)
-    pid = "b00y2x2f"
+    pid = "b007jynb"
     if ARGV.size > 0 then
         pid = ARGV.shift
     end

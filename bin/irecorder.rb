@@ -71,7 +71,6 @@ class MainWindow < KDE::MainWindow
         connectSlots
 
         # default values
-#         BBCNet.setProxy('http://194.36.10.154:3127')
         # initialize values
         $log.setLogDevice(@logWin)
         $log.info { 'Log Start.' }
@@ -121,7 +120,7 @@ class MainWindow < KDE::MainWindow
             { :icon => 'application-exit', :shortCut => 'Ctrl+Q', :triggered => :close })
 
         updateScheduleAction = @actions.addNew(i18n('Update Schedule'), @scheduleWin, \
-            { :shortCut => 'Ctrl+U', :triggered => :updateFilteredProgrammes })
+            { :shortCut => 'Ctrl+U', :triggered => :updateAllFilters })
 
         fileMenu = KDE::Menu.new('&File', self)
         fileMenu.addAction(recordAction)
@@ -763,7 +762,11 @@ class MainWindow < KDE::MainWindow
     def startDownloadAtReadInfo(reply)
         minfo = reply.data
         prog = reply.obj
-        $log.debug { " minfo of download file : #{minfo.inspect}" }
+        $log.misc { " minfo of download file : #{minfo.inspect}" }
+        unless minfo.streamInfo then
+            passiveMessage(i18n("'%s' don't have downloadable stream.") % [prog.title])
+            return
+        end
 
         fName = getSaveName(prog, 'wma')
         $log.info { "save name : #{fName}" }
@@ -789,30 +792,27 @@ class MainWindow < KDE::MainWindow
         end
 
         def download( title, categories, episodeUrl, folder, checkNeedless=true )
-            begin
-                tags = categories.split(/,/)
+            tags = categories.split(/,/)
 
-                $log.info { "episode Url : #{episodeUrl}" }
-                minfo = BBCNet::CacheMetaInfoDevice.read(episodeUrl)
+            $log.info { "episode Url : #{episodeUrl}" }
+            reply = CachedIO::CacheReply.new(episodeUrl, nil)
+            reply.obj = [ title, tags, folder, checkNeedless ]
+            BBCNet::CachedMetaInfoIO.read(episodeUrl, \
+                    reply.finishedMethod(self.method(:downloadAtReadInfo)))
+        end
 
-                fName = folder + '/' + @downloader.getSaveBaseName(title, tags, 'wma')
-                $log.info { "save name : #{fName}" }
+        protected
+        def downloadAtReadInfo(reply)
+            title, tags, folder, checkNeedless = reply.obj
+            minfo = reply.data
+            fName = folder + '/' + @downloader.getSaveBaseName(title, tags, 'wma')
+            $log.info { "save name : #{fName}" }
 
-                if downloadOne(minfo, fName, checkNeedless) then
-                    passiveMessage(KDE::i18n("Start Download programme '%s'") % [title])
-                else
-                    $log.debug { "cancel duplicated download '#{title}'" }
-                end
-
-            rescue Timeout::Error, StandardError => e
-                if e.kind_of? RuntimeError
-                    $log.info { e.message }
-                else
-                    $log.error { e }
-                end
-                passiveMessage(KDE::i18n("There is no direct stream for this programme.\n%s") %[title])
+            if downloadOne(minfo, fName, checkNeedless) then
+                passiveMessage(KDE::i18n("Start Download programme '%s'") % [title])
+            else
+                $log.debug { "cancel duplicated download '#{title}'" }
             end
-
         end
 
         def downloadOne(metaInfo, fName, checkNeedless=true)
@@ -825,7 +825,6 @@ class MainWindow < KDE::MainWindow
             process.beginTask
             true
         end
-
     end
 
 

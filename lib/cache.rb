@@ -54,7 +54,7 @@ module CachedIO
         #
         class CachedData
             # id is raw data or id to restore data.
-            attr_accessor :expireTime, :url, :id
+            attr_accessor :expireTime, :id
         end
 
         #---------------------------------------
@@ -109,7 +109,7 @@ module CachedIO
         # @param onRead : method called when all process is finished.
         # method finished(reply) will be called when read is finished.
         def directRead(url, onRead)
-            raise "Implement directRead method."
+            raise "Not Implemented directRead method."
             reply = CacheReply.new(url, onRead)
             reply.data = reply.id = "data"
             finished(reply)
@@ -118,9 +118,9 @@ module CachedIO
         def finished(reply)
             startTime = reply.startTime
             cachedt = CachedData.new
-            cachedt.url = url = reply.url
             cachedt.id = reply.id
             cachedt.expireTime = startTime + @cacheDuration
+            url = reply.url
 
             @cache[url] = cachedt
             @cacheLRU.push(cachedt)
@@ -147,9 +147,9 @@ class CachedHttpDiskIO < CachedIO::CachedIOBase
 
 
     # @return : data
-    #   restore data from key.
-    def restoreCache(key)
-        IO.read(key)
+    #   restore data from id.
+    def restoreCache(id)
+        IO.read(id)
     end
 
     # method finished(reply) will be called when read is finished.
@@ -171,6 +171,8 @@ class CachedHttpDiskIO < CachedIO::CachedIOBase
             data = IO.read(tmpfname)
         else
             request = Qt::NetworkRequest.new(Qt::Url.new(url))
+            request.setRawHeader(Qt::ByteArray.new("User-Agent"), \
+                             Qt::ByteArray.new(BBCNet::randomUserAgent))
             request.setOriginatingObject(reply)
             @manager.get(request)
             return
@@ -205,7 +207,7 @@ class CachedRssIO < CachedIO::CachedIOBase
 
     def rawFinished(reply)
         data = Nokogiri::XML(reply.data)
-        reply.data = data
+        reply.data = reply.id = data
         finished(reply)
     end
 end

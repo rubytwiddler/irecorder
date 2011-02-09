@@ -135,10 +135,29 @@ class ScheduleWindow < Qt::Widget
         end
 
         def deleteSelected
-            itemRow = selectedRanges[0].topRow
+            itemRow = selectedIndexes[0].row
             i = item(itemRow, 0)
             @table.delete(i)
             removeRow(itemRow)
+        end
+
+        def selectedFilter
+            itemRow = selectedIndexes[0].row
+            i = item(itemRow, 0)
+            @table[i]
+        end
+
+        def selectedFilters
+            rows = {}
+            selectedIndexes.each do |index|
+                rows[index.row] = true
+            end
+            $log.debug { "selectedFilters: rows:#{rows}, selectedIndexes:#{selectedIndexes}" }
+
+            rows.keys.map do |row|
+                i = item(row, 0)
+                @table[i]
+            end
         end
 
         def addFilterByTitle( title, categories, folder )
@@ -179,20 +198,22 @@ class ScheduleWindow < Qt::Widget
     def createWidget
         # create widgets
         @programmeFilterTable = ProgrammeFilterTable.new
-        updateScheduleBtn = Qt::PushButton.new("Update Schedule")
-        testFilterBtn = Qt::PushButton.new("Test")
-        editBtn = Qt::PushButton.new("Edit")
-        deleteBtn = Qt::PushButton.new("Delete")
+        updateAllBtn = Qt::PushButton.new(i18n("Update All"))
+        editBtn = Qt::PushButton.new(i18n("Edit"))
+        updateBtn = Qt::PushButton.new(i18n("Update"))
+        testFilterBtn = Qt::PushButton.new(i18n("Test"))
+        deleteBtn = Qt::PushButton.new(i18n("Delete"))
 
         #
-        connect(updateScheduleBtn, SIGNAL(:clicked), self, SLOT(:updateFilteredProgrammes))
+        connect(updateAllBtn, SIGNAL(:clicked), self, SLOT(:updateAllFilters))
+        connect(updateBtn, SIGNAL(:clicked), self, SLOT(:updateSelectedFilters))
         connect(deleteBtn, SIGNAL(:clicked)) do
             @programmeFilterTable.deleteSelected
         end
 
         # layout
         vLayout = Qt::VBoxLayout.new
-        vLayout.addWidgets(updateScheduleBtn, nil, editBtn, testFilterBtn, deleteBtn, nil)
+        vLayout.addWidgets(updateAllBtn, nil, editBtn, updateBtn, testFilterBtn, deleteBtn, nil)
         vLayout.addWidget(@programmeFilterTable)
 
         setLayout(vLayout)
@@ -206,10 +227,22 @@ class ScheduleWindow < Qt::Widget
         @programmeFilterTable.readSettings
     end
 
-    slots :updateFilteredProgrammes
-    def updateFilteredProgrammes
+    slots :updateAllFilters
+    def updateAllFilters
+        updateFilters( @programmeFilterTable.filters )
+    end
+
+    slots :updateSelectedFilters
+    def updateSelectedFilters
+        filters = @programmeFilterTable.selectedFilters
+        return unless filters
+        $log.debug { "updateSelectedFilters: filters:#{filters}" }
+        updateFilters( @programmeFilterTable.selectedFilters )
+    end
+
+    def updateFilters(filters)
         catIndices = {}
-        @programmeFilterTable.filters.each do |f|
+        filters.each do |f|
             if catIndices[f.catIndex] then
                 catIndices[f.catIndex].push(f)
             else
@@ -219,22 +252,48 @@ class ScheduleWindow < Qt::Widget
         catIndices.delete(-1)
 
         catIndices.each do |catIndex, filters|
-            rss = BBCNet::getRssByCategoryIndex(catIndex)
-            entries = rss.css('entry')
-            if rss and entries and entries.size then
-                filters.each do |filter|
-                    entries.each do |e|
-                        title = e.at_css('title').content
-                        if filter.titleFilter.match(title) then
-                            content = e.at_css('content').content
-                            episodeUrl = content[UrlRegexp]       # String[] method extract only 1st one.
-                            downloadProgramme( filter, title, episodeUrl )
-                        end
+            reply = CachedIO::CacheReply.new(catIndex, nil)
+            reply.obj = filters
+            BBCNet::getRssByCategoryIndex(catIndex, \
+                    reply.finishedMethod(self.method(:updateFiltersAtReadRss)))
+        end
+
+#         catIndices.each do |catIndex, filters|
+#             rss = BBCNet::getRssByCategoryIndex(catIndex)
+#             entries = rss.css('entry')
+#             if rss and entries and entries.size then
+#                 filters.each do |filter|
+#                     entries.each do |e|
+#                         title = e.at_css('title').content
+#                         if filter.titleFilter.match(title) then
+#                             content = e.at_css('content').content
+#                             episodeUrl = content[UrlRegexp]       # String[] method extract only 1st one.
+#                             downloadProgramme( filter, title, episodeUrl )
+#                         end
+#                     end
+#                 end
+#             end
+#         end
+    end
+
+    def updateFiltersAtReadRss(reply)
+        rss = reply.data
+        filters = reply.obj
+        entries = rss.css('entry')
+        if rss and entries and entries.size then
+            filters.each do |filter|
+                entries.each do |e|
+                    title = e.at_css('title').content
+                    if filter.titleFilter.match(title) then
+                        content = e.at_css('content').content
+                        episodeUrl = content[UrlRegexp]       # String[] method extract only 1st one.
+                        downloadProgramme( filter, title, episodeUrl )
                     end
                 end
             end
         end
     end
+
 
     slots 'addProgrammeFilter(const QString &, const QString &)'
     def addProgrammeFilter(title, categories)
