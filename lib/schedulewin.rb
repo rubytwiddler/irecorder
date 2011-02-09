@@ -54,7 +54,7 @@ class ScheduleWindow < Qt::Widget
             attr_reader :title, :categories, :catIndex, :titleFilter, :time, :interval, :folder
             attr_reader :categoriesItem, :titleFilterItem, :timeItem, :intervalItem, :folderItem
 
-            def initByCategory(title, categories, folder)
+            def initByTitle(title, categories, folder)
                 $log.debug { "title:#{title}, categories:#{categories}, folder:#{folder}" }
 
                 @title = title
@@ -88,9 +88,9 @@ class ScheduleWindow < Qt::Widget
                 SaveEntry.new(self)
             end
 
-            def self.makeObjByCategory(title, categories, folder)
+            def self.makeObjByTitle(title, categories, folder)
                 obj = self.new
-                obj.initByCategory(title, categories, folder)
+                obj.initByTitle(title, categories, folder)
                 obj
             end
 
@@ -119,12 +119,30 @@ class ScheduleWindow < Qt::Widget
             @table = Hash.new
         end
 
+        GroupName = "ScheduleFilter"
+        def writeSettings
+            config = $config.group(GroupName)
+            config.writeEntry('Header', horizontalHeader.saveState)
+        end
+
+        def readSettings
+            config = $config.group(GroupName)
+            horizontalHeader.restoreState(config.readEntry('Header', horizontalHeader.saveState))
+        end
+
         def filters
             @table.values
         end
 
+        def deleteSelected
+            itemRow = selectedRanges[0].topRow
+            i = item(itemRow, 0)
+            @table.delete(i)
+            removeRow(itemRow)
+        end
+
         def addFilterByTitle( title, categories, folder )
-            filter = ProgrammeFilter::makeObjByCategory(title, categories, folder)
+            filter = ProgrammeFilter::makeObjByTitle(title, categories, folder)
             addFilter( filter )
         end
 
@@ -143,7 +161,7 @@ class ScheduleWindow < Qt::Widget
             setItem( row, TIME_COL, filter.timeItem )
             setItem( row, INTERVAL_COL, filter.intervalItem )
             setItem( row, FOLDER_COL, filter.folderItem )
-            @table[filter.categoriesItem] = filter
+            @table[filter.categoriesItem] = filter  # colum_0 for ID
         end
     end
 
@@ -161,14 +179,32 @@ class ScheduleWindow < Qt::Widget
     def createWidget
         # create widgets
         @programmeFilterTable = ProgrammeFilterTable.new
+        updateScheduleBtn = Qt::PushButton.new("Update Schedule")
+        testFilterBtn = Qt::PushButton.new("Test")
+        editBtn = Qt::PushButton.new("Edit")
+        deleteBtn = Qt::PushButton.new("Delete")
+
+        #
+        connect(updateScheduleBtn, SIGNAL(:clicked), self, SLOT(:updateFilteredProgrammes))
+        connect(deleteBtn, SIGNAL(:clicked)) do
+            @programmeFilterTable.deleteSelected
+        end
 
         # layout
         vLayout = Qt::VBoxLayout.new
+        vLayout.addWidgets(updateScheduleBtn, nil, editBtn, testFilterBtn, deleteBtn, nil)
         vLayout.addWidget(@programmeFilterTable)
 
         setLayout(vLayout)
     end
 
+    def writeSettings
+        @programmeFilterTable.writeSettings
+    end
+
+    def readSettings
+        @programmeFilterTable.readSettings
+    end
 
     slots :updateFilteredProgrammes
     def updateFilteredProgrammes

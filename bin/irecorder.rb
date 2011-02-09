@@ -418,6 +418,7 @@ class MainWindow < KDE::MainWindow
 
         @programmeTable.readSettings
         @taskWin.readSettings
+        @scheduleWin.readSettings
 
         @scheduleWin.loadFilters
     end
@@ -430,6 +431,7 @@ class MainWindow < KDE::MainWindow
 
         @programmeTable.writeSettings
         @taskWin.writeSettings
+        @scheduleWin.writeSettings
 #         dumpConfig(GroupName)
 
         @scheduleWin.saveFilters

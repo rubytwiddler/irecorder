@@ -5,14 +5,19 @@
 
 require 'singleton'
 require 'korundum4'
+require 'shellwords'
 
 #
 class Qt::HBoxLayout
     def addWidgets(*w)
         w.each do |i|
             if i then
-                e = i.kind_of?(String) ? Qt::Label.new(i) : i
-                addWidget(e)
+                if i.kind_of?(Integer) then
+                    addSpacing(i)
+                else
+                    e = i.kind_of?(String) ? Qt::Label.new(i) : i
+                    addWidget(e)
+                end
             else
                 addStretch
             end
@@ -531,7 +536,7 @@ class String
 
     def sql_escape
         str = _chomp_null
-        str.gsub(/\\/, '\&\&').gsub(/'/, "''")    #'
+        str.gsub(/\\/, '\&\&').gsub(/'/, "''")    #') #
     end
 end
 
