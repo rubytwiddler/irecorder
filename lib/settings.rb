@@ -52,7 +52,6 @@ class SelectServiceDlg < KDE::Dialog
     end
 
     def setSelected(name)
-        $log.debug { "setSelected class:#{self.class.name}, @services:#{@services}" }
         return unless name
         name.gsub!(/&/, '')
         return if @services.size == 0

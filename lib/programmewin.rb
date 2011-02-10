@@ -62,7 +62,7 @@ class ProgrammeTableWidget < Qt::TableWidget
 
     def clearEntries
         clearContents
-        rowCount = 0
+        self.rowCount = 0
         @table = Hash.new
     end
 

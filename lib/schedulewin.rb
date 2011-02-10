@@ -5,39 +5,108 @@ require 'yaml'
 #
 class TestResultDialog < KDE::Dialog
 
-    class Entry
-        attr_reader :titleItem, :categoryItem, :durationItem, :dateItem, :urlItem
-        def initialize(entry)
+
+    #
+    #
+    #
+    class ResultTable < Qt::TableWidget
+        TITLE_COL, CATEGORIES_COL, DURATION_COL, DATE_COL, URL_COL = (0..4).to_a
+
+        #
+        #
+        class Item < Qt::TableWidgetItem
+            def initialize(text)
+                super(text)
+                self.flags = Qt::ItemIsSelectable | Qt::ItemIsEnabled
+                self.toolTip = text
+            end
+        end
+
+        #
+        #
+        class ResultEntry
+            attr_reader :titleItem, :categoriesItem, :durationItem, :dateItem, :urlItem
+            def initialize(title, categories, url)
+                $log.debug { "ResultEntry: title:#{title}, categories:#{categories}, url:#{url}" }
+                @titleItem = Item.new(title)
+                @categoriesItem = Item.new(categories)
+                @durationItem = Item.new('')
+                @dateItem = Item.new('')
+                @urlItem = Item.new(url)
+            end
+
+            def title
+                @titleItem.text
+            end
+
+            def categories
+                @categoriesItem.text
+            end
+
+            def url
+                @updatedItem.text
+            end
+        end
+
+
+        #
+        # ResultTable class
+        #
+        def initialize
+            super(0,5)
+            setHorizontalHeaderLabels(%w{Title Category Duration Date Url})
+            horizontalHeader.stretchLastSection = true
+            self.selectionBehavior = Qt::AbstractItemView::SelectRows
+#             self.selectionMode = Qt::AbstractItemView::SingleSelection
+            self.alternatingRowColors = true
+
+            @rowTable = {}
+        end
+
+        def addResult( title, categories, url )
+            entry = ResultEntry.new( title, categories, url )
+            row = rowCount
+            self.rowCount = row + 1
+            setItem( row, TITLE_COL, entry.titleItem )
+            setItem( row, CATEGORIES_COL, entry.categoriesItem )
+            setItem( row, DURATION_COL, entry.durationItem )
+            setItem( row, DATE_COL, entry.dateItem )
+            setItem( row, URL_COL, entry.urlItem )
+            @rowTable[entry.titleItem] = entry    # colum_0 for ID
+        end
+
+        def clearEntries
+            clearContents
+            self.rowCount = 0
+            @rowTable = Hash.new
+        end
+
+        # return ResultEntry object.
+        def [](row)
+            @rowTable[item(row,0)]
         end
     end
+
+
 
     #
     # TestResultDialog class
     #
-    TITLE_COL, CATEGORY_COL, DURATION_COL, DATE_COL, URL_COL = (0..4).to_a
     def initialize(parent)
         super(parent)
+
+
+        createWidget
+    end
+
+    def createWidget
         # create widgets
-        @resultList = Qt::TableWidget.new(0, 3) do |w|
-            w.setHorizontalHeaderLabels(%w{Title Category Duration Date Url})
-            w.horizontalHeader.stretchLastSection = true
-            w.selectionBehavior = Qt::AbstractItemView::SelectRows
-#             w.selectionMode = Qt::AbstractItemView::SingleSelection
-            w.alternatingRowColors = true
-        end
-        setMainWidget(@resultList)
+        @resultTable = ResultTable.new
+        setMainWidget(@resultTable)
     end
 
-    def showEvent(event)
-
-        super(event)
-    end
-
-    def addEntry( entry )
-        row = rowCount
-        self.rowCount = row + 1
-        setItem( row, TITLE_COL, entry.titleItem )
-        @table[entry.categoriesItem] = entry    # colum_0 for ID
+    def table
+        @resultTable
     end
 end
 
@@ -233,11 +302,15 @@ class ScheduleWindow < Qt::Widget
 
     #--------------------------------------------
     #
+    #  ScheduleWindow class
     #
     def initialize
         super()
 
         createWidget
+
+        #
+        @testResultDlg = TestResultDialog.new(self)
     end
 
 
@@ -332,8 +405,11 @@ class ScheduleWindow < Qt::Widget
     def testSelectedFilters
         filters = @programmeFilterTable.selectedFilters
         return unless filters
+
+        @testResultDlg.table.clearEntries
         $log.debug { "testSelectedFilters: filters:#{filters}" }
         applyToSelectedFilters( filters, self.method(:testFiltersAtReadRss) )
+        @testResultDlg.exec
     end
 
     def testFiltersAtReadRss(reply)
@@ -346,7 +422,9 @@ class ScheduleWindow < Qt::Widget
                     title = e.at_css('title').content
                     if filter.titleFilter.match(title) then
                         content = e.at_css('content').content
+                        categories = e.css('category').map do |c| c['term'] end.join(',')
                         episodeUrl = content[UrlRegexp]       # String[] method extract only 1st one.
+                        @testResultDlg.table.addResult( title, categories, episodeUrl )
                     end
                 end
             end
