@@ -12,6 +12,7 @@ class OkCancelDialog < KDE::Dialog
         @textEdit = Qt::Label.new do |w|
             w.wordWrap= true
         end
+
         setMainWidget(@textEdit)
     end
 

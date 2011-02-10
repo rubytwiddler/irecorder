@@ -32,8 +32,8 @@ require 'qtwebkit'
 #
 $:.unshift(LIB_DIR)
 require "irecorder_resource"
-require "bbcnet"
 require "mylibs"
+require "bbcnet"
 require "logwin"
 require "taskwin"
 require "schedulewin"

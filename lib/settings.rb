@@ -8,10 +8,16 @@ class SelectServiceDlg < KDE::Dialog
     def initialize(parent, defaultName=nil)
         super(parent)
         @message = i18n('Select Application')
+
+        #
         userInitialize
+
         self.windowTitle = @message
         @selectedName = @services[0].name
+
+        #
         createWidget
+
         connect(self, SIGNAL(:accepted), self, SLOT(:selected))
         setSelected(defaultName)
     end
@@ -46,16 +52,13 @@ class SelectServiceDlg < KDE::Dialog
     end
 
     def setSelected(name)
+        $log.debug { "setSelected class:#{self.class.name}, @services:#{@services}" }
         return unless name
         name.gsub!(/&/, '')
         return if @services.size == 0
-        unless name then
-            @serviceList.takeItem(0).setSelected(true)
-        else
-            items = @serviceList.findItems(name, Qt::MatchExactly)
-            if items.size > 0 then
-                items[0].setSelected(true)
-            end
+        items = @serviceList.findItems(name, Qt::MatchExactly)
+        if items.size > 0 then
+            items[0].setSelected(true)
         end
     end
 
@@ -66,16 +69,16 @@ class SelectServiceDlg < KDE::Dialog
 
     protected
     def createWidget
-        mainWidget = VBoxLayoutWidget.new
-        mainWidget.addWidget(Qt::Label.new(@message))
         @serviceList = KDE::ListWidget.new
         @services.each do |s|
             iconName = SelectServiceDlg.exeName2IconName(s.exec)
             @serviceList.addItem( Qt::ListWidgetItem.new(KDE::Icon.new(iconName), s.name) )
         end
-        mainWidget.addWidget(@serviceList)
 
-        setMainWidget(mainWidget)
+        @lw = VBoxLayoutWidget.new
+        @lw.addWidget(Qt::Label.new(@message))
+        @lw.addWidget(@serviceList)
+        setMainWidget(@lw)
     end
 end
 
@@ -330,6 +333,7 @@ class PlayerSettingsPage < Qt::Widget
         end
         @directPlayerName.setProperty("kcfg_property", Qt::Variant.new("text"))
 
+
         # set objectNames
         #  'kcfg_' + class Settings's instance name.
         @innerPlayer.objectName = 'kcfg_useInnerPlayer'
@@ -344,9 +348,9 @@ class PlayerSettingsPage < Qt::Widget
             l.addGroup(i18n('Player')) do |g|
                 g.addWidget(@innerPlayer)
                 g.addWidget(@webPlayer)
-                g.addWidgets('  ', @webPlayerName, nil)
+                g.addWidgets(15, @webPlayerName, nil)
                 g.addWidget(@directPlayer)
-                g.addWidgets('  ', @directPlayerName, nil)
+                g.addWidgets(15, @directPlayerName, nil)
             end
             l.addStretch
         end
