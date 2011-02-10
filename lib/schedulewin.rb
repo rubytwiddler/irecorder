@@ -152,7 +152,7 @@ class ScheduleWindow < Qt::Widget
             selectedIndexes.each do |index|
                 rows[index.row] = true
             end
-            $log.debug { "selectedFilters: rows:#{rows}, selectedIndexes:#{selectedIndexes}" }
+#             $log.debug { "selectedFilters: rows:#{rows.inspect}, selectedIndexes:#{selectedIndexes}" }
 
             rows.keys.map do |row|
                 i = item(row, 0)

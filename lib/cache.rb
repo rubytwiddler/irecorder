@@ -140,9 +140,6 @@ class CachedHttpDiskIO < CachedIO::CachedIOBase
         super(cacheDuration, cacheMax)
         @tmpdir = Dir.tmpdir + '/bbc_cache'
         FileUtils.mkdir_p(@tmpdir)
-        @manager = Qt::NetworkAccessManager.new(self)
-        connect(@manager, SIGNAL('finished(QNetworkReply*)'), self, \
-                SLOT('rawFinished(QNetworkReply*)'))
     end
 
 
@@ -170,21 +167,15 @@ class CachedHttpDiskIO < CachedIO::CachedIOBase
                 File.ctime(tmpfname) + @cacheDuration > Time.now then
             data = IO.read(tmpfname)
         else
-            request = Qt::NetworkRequest.new(Qt::Url.new(url))
-            request.setRawHeader(Qt::ByteArray.new("User-Agent"), \
-                             Qt::ByteArray.new(BBCNet::randomUserAgent))
-            request.setOriginatingObject(reply)
-            @manager.get(request)
+            BBCNet.read(url, self.method(:rawFinished), reply)
             return
         end
         reply.data = data
         finished(reply)
     end
 
-    slots 'rawFinished(QNetworkReply*)'
-    def rawFinished(netReply)
-        reply = netReply.request.originatingObject
-        reply.data = netReply.readAll.data
+    def rawFinished(data, reply)
+        reply.data = data
         open(reply.id, "w") do |f| f.write(reply.data) end
         finished(reply)
     end

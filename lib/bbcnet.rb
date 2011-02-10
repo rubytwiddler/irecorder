@@ -287,36 +287,55 @@ class BBCNet < Qt::Object
         @manager = Qt::NetworkAccessManager.new(self)
         connect(@manager, SIGNAL('finished(QNetworkReply*)'), self, \
                 SLOT('finished(QNetworkReply*)'))
+        @methods = {}
     end
 
     class MethodObject < Qt::Object
-        def initialize(method)
+        def initialize(method, obj=nil)
             super()
             @method = method
+            @obj = obj
         end
         def call(data)
-            @method.call(data)
+            if @obj then
+                @method.call(data, @obj)
+            else
+                @method.call(data)
+            end
         end
     end
 
-    def read(url, onRead)
+
+    def read(url, onRead, obj=nil)
         request = Qt::NetworkRequest.new(Qt::Url.new(url))
         request.setRawHeader(Qt::ByteArray.new("User-Agent"), \
                              Qt::ByteArray.new(BBCNet::randomUserAgent))
-        request.setOriginatingObject(MethodObject.new(onRead))
+        methodObj = MethodObject.new(onRead, obj)
+        request.setOriginatingObject(methodObj)
+        @methods[url] = methodObj
+#         $log.misc { "BBCNet::read.request : request:#{request}, orgObj:#{request.originatingObject}, url:#{url}" }
         @manager.get(request)
     end
 
     slots 'finished(QNetworkReply*)'
     def finished(reply)
-        $log.misc { "BBCNet::read : url:#{reply.url.toString}, error:#{reply.error.inspect}" }
         data = reply.readAll.data
-        reply.request.originatingObject.call(data)
+        request = reply.request
+        methodObj = request.originatingObject
+        url = reply.url.toString
+#         $log.misc { "BBCNet::read.finished : url:#{reply.url.toString} methodObj:#{methodObj}, request:#{request}" }
+#         reply.request.originatingObject.call(data)
+        unless methodObj then
+            $log.warn { "internal failure. lost method object of request url:#{url}" }
+            methodObj = @methods[url]       # avoid bug that qt drop originatingObject sometime.
+        end
+        @methods.delete(url)
+        methodObj.call(data)
     end
 
 
-    def self.read(url, onRead)
-        self.instance.read(url, onRead)
+    def self.read(url, onRead, obj=nil)
+        self.instance.read(url, onRead, obj)
     end
 
 

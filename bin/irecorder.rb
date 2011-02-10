@@ -817,6 +817,7 @@ class MainWindow < KDE::MainWindow
 
         def downloadOne(metaInfo, fName, checkNeedless=true)
             return false if @taskWin.exist?(metaInfo)
+            return false unless metaInfo.streamInfo
 
             process = DownloadProcess.new(@main, metaInfo, fName)
             return false if checkNeedless && process.checkNeedless

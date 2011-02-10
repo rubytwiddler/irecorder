@@ -6,6 +6,7 @@ TODO - irecorder
    -auto start in back ground
    -test filter
 
+ *check duration of file after download.
  *multi-select task and do operations.
 
  *install nokogiri for ruby1.9
