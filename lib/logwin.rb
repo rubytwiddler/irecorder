@@ -30,14 +30,7 @@ class LogWindow < Qt::Widget
 end
 
 class MyLogger
-    MISC = 0
-    CODE = 1
-    DEBUG = 2
-    INFO = 3
-    WARN = 4
-    ERROR = 5
-    FATAL = 6
-    UNKNOWN = 7
+    MISC, CODE, DEBUG, INFO, WARN, ERROR, FATAL, UNKNOWN = (0..7).to_a
 
     attr_accessor   :level
 

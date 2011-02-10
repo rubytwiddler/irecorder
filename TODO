@@ -6,6 +6,7 @@ TODO - irecorder
    -auto start in back ground
    -test filter
 
+ *check duration of file after download.
  *multi-select task and do operations.
 
  *install nokogiri for ruby1.9
@@ -32,6 +33,8 @@ TODO - irecorder
 
  x(impossible) change install directory for menu, when you install by gem with --user-install option.
 
+BUG
+ *crash on pushing button in settings
 
 Knowing issue :
  *64bit latest flash plugin crush webview on the bbc iplayer site.

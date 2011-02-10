@@ -21,6 +21,7 @@ require 'net/http'
 require 'open-uri'
 require 'shellwords'
 require 'singleton'
+require 'pp'
 
 # additional libs
 require 'korundum4'
@@ -70,7 +71,6 @@ class MainWindow < KDE::MainWindow
         connectSlots
 
         # default values
-#         BBCNet.setProxy('http://194.36.10.154:3127')
         # initialize values
         $log.setLogDevice(@logWin)
         $log.info { 'Log Start.' }
@@ -120,7 +120,7 @@ class MainWindow < KDE::MainWindow
             { :icon => 'application-exit', :shortCut => 'Ctrl+Q', :triggered => :close })
 
         updateScheduleAction = @actions.addNew(i18n('Update Schedule'), @scheduleWin, \
-            { :shortCut => 'Ctrl+U', :triggered => :updateFilteredProgrammes })
+            { :shortCut => 'Ctrl+U', :triggered => :updateAllFilters })
 
         fileMenu = KDE::Menu.new('&File', self)
         fileMenu.addAction(recordAction)
@@ -567,16 +567,7 @@ class MainWindow < KDE::MainWindow
                 url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
 
                 $log.info { "episode Url : #{url}" }
-                minfo = BBCNet::CacheMetaInfoDevice.read(url)
-                $log.debug { "#{minfo.inspect}" }
-                raise "No stream Url" unless minfo.wma
-                url = minfo.wma.url
-
-                cmd, args = makeProcCommand(directPlayerCommand, url)
-
-                $log.debug { "execute cmd '#{cmd}', args '#{args.inspect}'" }
-                proc = Qt::Process.new(self)
-                proc.start(cmd, args)
+                BBCNet::CachedMetaInfoIO.read(url, self.method(:playDirectAtReadInfo))
             end
         rescue => e
             if e.kind_of? RuntimeError
@@ -592,6 +583,22 @@ class MainWindow < KDE::MainWindow
         end
     end
 
+    protected
+    def playDirectAtReadInfo(minfo)
+        $log.debug { "#{minfo.inspect}" }
+#         raise "No stream Url" unless minfo.wma
+        return unless minfo.wma
+        url = minfo.wma.url
+
+        directPlayerCommand = IRecSettings.directPlayerCommand
+        cmd, args = makeProcCommand(directPlayerCommand, url)
+
+        $log.debug { "execute cmd '#{cmd}', args '#{args.inspect}'" }
+        proc = Qt::Process.new(self)
+        proc.start(cmd, args)
+    end
+
+    public
     slots :openDocUrl
     def openDocUrl
         openUrlDocument('http://github.com/rubytwiddler/irecorder/wiki')
@@ -638,16 +645,15 @@ class MainWindow < KDE::MainWindow
 
         $log.info{ "feeding from '#{feedAdr}'" }
 
-        begin
-            makeTablefromRss( CacheRssDevice.read(feedAdr) )
-        rescue  => e
-            $log.error { e }
-        end
-        setListTitle
+        CachedRssIO.read(feedAdr, self.method(:getListAtReadRss))
     end
 
 
     protected
+    def getListAtReadRss(rss)
+        makeTablefromRss( rss )
+        setListTitle
+    end
 
     #
     # get feed address
@@ -744,30 +750,31 @@ class MainWindow < KDE::MainWindow
         end .each do |p| titles[p.title] = p end
 
         titles.each_value do |prog|
-            begin
-                url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
-
-                $log.info { "episode Url : #{url}" }
-                minfo = BBCNet::CacheMetaInfoDevice.read(url)
-                url = minfo.wma.url
-
-                fName = getSaveName(prog, 'wma')
-                $log.info { "save name : #{fName}" }
-
-                startDownOneFile(minfo, fName)
-
-                passiveMessage(i18n("Start Download programme '%s'") % [prog.title])
-
-            rescue Timeout::Error, StandardError => e
-                if e.kind_of? RuntimeError
-                    $log.info { e.message }
-                else
-                    $log.error { e }
-                end
-                passiveMessage(i18n("There is no direct stream for this programme.\n%s") %[prog.title])
-            end
+            url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
+            $log.info { "episode Url : #{url}" }
+            reply = CachedIO::CacheReply.new(url, nil)
+            reply.obj = prog
+            BBCNet::CachedMetaInfoIO.read(url, \
+                    reply.finishedMethod(self.method(:startDownloadAtReadInfo)))
         end
     end
+
+    def startDownloadAtReadInfo(reply)
+        minfo = reply.data
+        prog = reply.obj
+        $log.misc { " minfo of download file : #{minfo.inspect}" }
+        unless minfo.streamInfo then
+            passiveMessage(i18n("'%s' don't have downloadable stream.") % [prog.title])
+            return
+        end
+
+        fName = getSaveName(prog, 'wma')
+        $log.info { "save name : #{fName}" }
+
+        startDownOneFile(minfo, fName)
+
+        passiveMessage(i18n("Start Download programme '%s'") % [prog.title])
+     end
 
     #----------------------------------------
     #
@@ -785,35 +792,32 @@ class MainWindow < KDE::MainWindow
         end
 
         def download( title, categories, episodeUrl, folder, checkNeedless=true )
-            begin
-                tags = categories.split(/,/)
+            tags = categories.split(/,/)
 
-                $log.info { "episode Url : #{episodeUrl}" }
-                minfo = BBCNet::CacheMetaInfoDevice.read(episodeUrl)
-                url = minfo.wma.url
+            $log.info { "episode Url : #{episodeUrl}" }
+            reply = CachedIO::CacheReply.new(episodeUrl, nil)
+            reply.obj = [ title, tags, folder, checkNeedless ]
+            BBCNet::CachedMetaInfoIO.read(episodeUrl, \
+                    reply.finishedMethod(self.method(:downloadAtReadInfo)))
+        end
 
-                fName = folder + '/' + @downloader.getSaveBaseName(title, tags, 'wma')
-                $log.info { "save name : #{fName}" }
+        protected
+        def downloadAtReadInfo(reply)
+            title, tags, folder, checkNeedless = reply.obj
+            minfo = reply.data
+            fName = folder + '/' + @downloader.getSaveBaseName(title, tags, 'wma')
+            $log.info { "save name : #{fName}" }
 
-                if downloadOne(minfo, fName, checkNeedless) then
-                    passiveMessage(KDE::i18n("Start Download programme '%s'") % [title])
-                else
-                    $log.debug { "cancel duplicated download '#{title}'" }
-                end
-
-            rescue Timeout::Error, StandardError => e
-                if e.kind_of? RuntimeError
-                    $log.info { e.message }
-                else
-                    $log.error { e }
-                end
-                passiveMessage(KDE::i18n("There is no direct stream for this programme.\n%s") %[title])
+            if downloadOne(minfo, fName, checkNeedless) then
+                passiveMessage(KDE::i18n("Start Download programme '%s'") % [title])
+            else
+                $log.debug { "cancel duplicated download '#{title}'" }
             end
-
         end
 
         def downloadOne(metaInfo, fName, checkNeedless=true)
             return false if @taskWin.exist?(metaInfo)
+            return false unless metaInfo.streamInfo
 
             process = DownloadProcess.new(@main, metaInfo, fName)
             return false if checkNeedless && process.checkNeedless
@@ -822,7 +826,6 @@ class MainWindow < KDE::MainWindow
             process.beginTask
             true
         end
-
     end
 
 
@@ -913,6 +916,7 @@ class MainWindow < KDE::MainWindow
     # start Dwnload One file.
     public
     def startDownOneFile(metaInfo, fName)
+        return unless metaInfo.streamInfo
         process = DownloadProcess.new(self, metaInfo, fName)
         process.taskItem = @taskWin.addTask(process)
         process.beginTask
