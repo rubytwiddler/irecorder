@@ -1,8 +1,6 @@
 TODO - irecorder
  *schedule download
-   -check already downloading files.
    -schedule download, in system tray, auto restart download.
-   -save schedule filters
    -auto start in back ground
    -test filter
 

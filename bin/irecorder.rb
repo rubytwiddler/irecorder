@@ -703,32 +703,10 @@ class MainWindow < KDE::MainWindow
 
     protected
     def makeTablefromRss(rss)
-        @programmeTable.clearContents
-        @programmeTable.rowCount = 0
         @filterLineEdit.clear
-        entries = rss.css('entry')
-        return unless rss and entries and entries.size
-
-        sortFlag = @programmeTable.sortingEnabled
-        @programmeTable.sortingEnabled = false
-        @programmeTable.hide
-        @programmeTable.rowCount = entries.size
-
-        # ['Title', 'Category', 'Updated' ]
-        entries.each_with_index do |e, row|
-            title = e.at_css('title').content
-            updated = e.at_css('updated').content
-            content = e.at_css('content').content
-            linkItem = e.css('link').find do |l| l['rel'] == 'self' end
-            link = linkItem ? linkItem['href'] : nil
-            categories = e.css('category').map do |c| c['term'] end.join(',')
-            $log.misc { title }
-            @programmeTable.addEntry( row, title, categories, updated, content, link )
-        end
-
-        @programmeTable.sortingEnabled = sortFlag
-        @programmeTable.show
+        @programmeTable.addEntriesFromRss(rss)
     end
+
 
 
 

@@ -60,12 +60,44 @@ class ProgrammeTableWidget < Qt::TableWidget
         @table = Hash.new
     end
 
+    def clearEntries
+        clearContents
+        rowCount = 0
+        @table = Hash.new
+    end
+
     def addEntry( row, title, categories, updated, content, link )
         entry = Programme.new(title, categories, updated, content, link)
         setItem( row, 0, entry.titleItem )
         setItem( row, 1, entry.categoriesItem )
         setItem( row, 2, entry.updatedItem )
         @table[entry.titleItem] = entry
+    end
+
+    def addEntriesFromRss(rss)
+        entries = rss.css('entry')
+        clearEntries
+        return unless rss and entries and entries.size
+
+        sortFlag = sortingEnabled
+        self.sortingEnabled = false
+        hide
+        self.rowCount = entries.size
+
+        # ['Title', 'Category', 'Updated' ]
+        entries.each_with_index do |e, row|
+            title = e.at_css('title').content
+            updated = e.at_css('updated').content
+            content = e.at_css('content').content
+            linkItem = e.css('link').find do |l| l['rel'] == 'self' end
+            link = linkItem ? linkItem['href'] : nil
+            categories = e.css('category').map do |c| c['term'] end.join(',')
+            $log.misc { title }
+            addEntry( row, title, categories, updated, content, link )
+        end
+
+        self.sortingEnabled = sortFlag
+        show
     end
 
     # return Programme object.

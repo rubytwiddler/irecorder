@@ -1,8 +1,54 @@
 require 'yaml'
+#-------------------------------------------------------------------------------------------
+#
+#
+#
+class TestResultDialog < KDE::Dialog
+
+    class Entry
+        attr_reader :titleItem, :categoryItem, :durationItem, :dateItem, :urlItem
+        def initialize(entry)
+        end
+    end
+
+    #
+    # TestResultDialog class
+    #
+    TITLE_COL, CATEGORY_COL, DURATION_COL, DATE_COL, URL_COL = (0..4).to_a
+    def initialize(parent)
+        super(parent)
+        # create widgets
+        @resultList = Qt::TableWidget.new(0, 3) do |w|
+            w.setHorizontalHeaderLabels(%w{Title Category Duration Date Url})
+            w.horizontalHeader.stretchLastSection = true
+            w.selectionBehavior = Qt::AbstractItemView::SelectRows
+#             w.selectionMode = Qt::AbstractItemView::SingleSelection
+            w.alternatingRowColors = true
+        end
+        setMainWidget(@resultList)
+    end
+
+    def showEvent(event)
+
+        super(event)
+    end
+
+    def addEntry( entry )
+        row = rowCount
+        self.rowCount = row + 1
+        setItem( row, TITLE_COL, entry.titleItem )
+        @table[entry.categoriesItem] = entry    # colum_0 for ID
+    end
+end
+
+
+
+
+
 
 #-------------------------------------------------------------------------------------------
 #
-#  Task Window
+#  Schedule Filter Window
 #
 class ScheduleWindow < Qt::Widget
 
@@ -109,8 +155,8 @@ class ScheduleWindow < Qt::Widget
         def initialize()
             super(0,5)
 
-            self.setHorizontalHeaderLabels(%w{Category Program Time Interval Folder})
-            self.horizontalHeader.stretchLastSection = true
+            setHorizontalHeaderLabels(%w{Category Program Time Interval Folder})
+            horizontalHeader.stretchLastSection = true
             self.selectionBehavior = Qt::AbstractItemView::SelectRows
             self.selectionMode = Qt::AbstractItemView::SingleSelection
             self.alternatingRowColors = true
@@ -207,6 +253,7 @@ class ScheduleWindow < Qt::Widget
         #
         connect(updateAllBtn, SIGNAL(:clicked), self, SLOT(:updateAllFilters))
         connect(updateBtn, SIGNAL(:clicked), self, SLOT(:updateSelectedFilters))
+        connect(testFilterBtn, SIGNAL(:clicked), self, SLOT(:testSelectedFilters))
         connect(deleteBtn, SIGNAL(:clicked)) do
             @programmeFilterTable.deleteSelected
         end
@@ -237,10 +284,14 @@ class ScheduleWindow < Qt::Widget
         filters = @programmeFilterTable.selectedFilters
         return unless filters
         $log.debug { "updateSelectedFilters: filters:#{filters}" }
-        updateFilters( @programmeFilterTable.selectedFilters )
+        updateFilters( filters )
     end
 
     def updateFilters(filters)
+        applyToSelectedFilters( filters, self.method(:updateFiltersAtReadRss) )
+    end
+
+    def applyToSelectedFilters( filters, method )
         catIndices = {}
         filters.each do |f|
             if catIndices[f.catIndex] then
@@ -255,25 +306,8 @@ class ScheduleWindow < Qt::Widget
             reply = CachedIO::CacheReply.new(catIndex, nil)
             reply.obj = filters
             BBCNet::getRssByCategoryIndex(catIndex, \
-                    reply.finishedMethod(self.method(:updateFiltersAtReadRss)))
+                    reply.finishedMethod(method))
         end
-
-#         catIndices.each do |catIndex, filters|
-#             rss = BBCNet::getRssByCategoryIndex(catIndex)
-#             entries = rss.css('entry')
-#             if rss and entries and entries.size then
-#                 filters.each do |filter|
-#                     entries.each do |e|
-#                         title = e.at_css('title').content
-#                         if filter.titleFilter.match(title) then
-#                             content = e.at_css('content').content
-#                             episodeUrl = content[UrlRegexp]       # String[] method extract only 1st one.
-#                             downloadProgramme( filter, title, episodeUrl )
-#                         end
-#                     end
-#                 end
-#             end
-#         end
     end
 
     def updateFiltersAtReadRss(reply)
@@ -293,6 +327,32 @@ class ScheduleWindow < Qt::Widget
             end
         end
     end
+
+    slots :testSelectedFilters
+    def testSelectedFilters
+        filters = @programmeFilterTable.selectedFilters
+        return unless filters
+        $log.debug { "testSelectedFilters: filters:#{filters}" }
+        applyToSelectedFilters( filters, self.method(:testFiltersAtReadRss) )
+    end
+
+    def testFiltersAtReadRss(reply)
+        rss = reply.data
+        filters = reply.obj
+        entries = rss.css('entry')
+        if rss and entries and entries.size then
+            filters.each do |filter|
+                entries.each do |e|
+                    title = e.at_css('title').content
+                    if filter.titleFilter.match(title) then
+                        content = e.at_css('content').content
+                        episodeUrl = content[UrlRegexp]       # String[] method extract only 1st one.
+                    end
+                end
+            end
+        end
+    end
+
 
 
     slots 'addProgrammeFilter(const QString &, const QString &)'
