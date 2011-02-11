@@ -3,7 +3,7 @@ require 'yaml'
 #
 #
 #
-class TestResultDialog < KDE::Dialog
+class TestResultDialog < Qt::Dialog
 
 
     #
@@ -95,18 +95,38 @@ class TestResultDialog < KDE::Dialog
     def initialize(parent)
         super(parent)
 
-
         createWidget
     end
 
     def createWidget
         # create widgets
         @resultTable = ResultTable.new
-        setMainWidget(@resultTable)
+        closeBtn = KDE::PushButton.new(KDE::Icon.new('dialog-close'), i18n('Close'))
+
+        # connect
+        connect(closeBtn, SIGNAL(:clicked), self, SLOT(:accept))
+
+        #layout
+        l = Qt::VBoxLayout.new
+        l.addWidget(@resultTable)
+        l.addWidgets(nil, closeBtn)
+        setLayout(l)
     end
 
     def table
         @resultTable
+    end
+
+    def hideEvent(event)
+        @size= size
+        @headerState = @resultTable.horizontalHeader.saveState
+    end
+
+    def showEvent(event)
+        if @size then
+            self.size = @size
+            @resultTable.horizontalHeader.restoreState(@headerState)
+        end
     end
 end
 
