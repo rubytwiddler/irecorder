@@ -41,7 +41,6 @@ require "download"
 require "programmewin"
 require "settings"
 
-
 #---------------------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------------
 #
@@ -183,20 +182,20 @@ class MainWindow < KDE::MainWindow
     def createWidgets
         @topTab = KDE::TabWidget.new
 
-        @mainTabPage = Qt::Splitter.new
-        @topTab.addTab(@mainTabPage, 'Channels')
+        @mainTabPageHSplitter = Qt::Splitter.new
+        @topTab.addTab(@mainTabPageHSplitter, 'Channels')
 
-        @mainTabPage.addWidget(createChannelAreaWidget)
+        @mainTabPageHSplitter.addWidget(createChannelAreaWidget)
 
         # Main Tab page. programme table area
         @progTableFrame = Qt::Splitter.new(Qt::Vertical)
         @progTableFrame.addWidget(createProgrammeAreaWidget)
         @progTableFrame.addWidget(createProgrammeSummaryWidget)
-        @mainTabPage.addWidget(@progTableFrame)
+        @mainTabPageHSplitter.addWidget(@progTableFrame)
 
         # parameter : Qt::Splitter.setStretchFactor( int index, int stretch )
-        @mainTabPage.setStretchFactor( 0, 0 )
-        @mainTabPage.setStretchFactor( 1, 1 )
+        @mainTabPageHSplitter.setStretchFactor( 0, 0 )
+        @mainTabPageHSplitter.setStretchFactor( 1, 1 )
 
         # dock
         createPlayerDock
@@ -328,7 +327,9 @@ class MainWindow < KDE::MainWindow
                     )
                 end
             )
-            vbxw.addWidget( @listTitleLabel = Qt::Label.new('') )
+            @listTitleLabel = ClickableLabel.new('')
+            connect(@listTitleLabel , SIGNAL(:clicked), self, SLOT(:channelViewToggle))
+            vbxw.addWidget( @listTitleLabel )
             vbxw.addWidget(@programmeTable)
 
             playIcon = KDE::Icon.new(':images/play-22.png')
@@ -411,7 +412,7 @@ class MainWindow < KDE::MainWindow
 
     def readSettings
         config = $config.group(GroupName)
-        @mainTabPage.restoreState(config.readEntry('MainTabPageState', @mainTabPage.saveState))
+        @mainTabPageHSplitter.restoreState(config.readEntry('MainTabPageState', @mainTabPageHSplitter.saveState))
         @progTableFrame.restoreState(config.readEntry('ProgTableFrame',
                                                       @progTableFrame.saveState))
         @channelTypeToolBox.currentIndex = config.readEntry('ChannelType', @channelTypeToolBox.currentIndex)
@@ -425,7 +426,7 @@ class MainWindow < KDE::MainWindow
 
     def writeSettings
         config = $config.group(GroupName)
-        config.writeEntry('MainTabPageState', @mainTabPage.saveState)
+        config.writeEntry('MainTabPageState', @mainTabPageHSplitter.saveState)
         config.writeEntry('ProgTableFrame', @progTableFrame.saveState)
         config.writeEntry('ChannelType', @channelTypeToolBox.currentIndex)
 
@@ -516,6 +517,18 @@ class MainWindow < KDE::MainWindow
     end
 
 
+    slots :channelViewToggle
+    def channelViewToggle
+        sizes = @mainTabPageHSplitter.sizes
+        if sizes[0] == 0 then
+            sizes[0] = @channelViewSize || 140
+            @mainTabPageHSplitter.setSizes(sizes)
+        else
+            @channelViewSize = sizes[0]
+            sizes[0] = 0
+            @mainTabPageHSplitter.setSizes(sizes)
+        end
+    end
 
     def makeProcCommand(command, url)
         cmd, args = command.split(/\s+/, 2)

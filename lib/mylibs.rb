@@ -120,6 +120,26 @@ class HBoxLayoutWidget < Qt::Widget
 end
 
 
+class ClickableLabel < Qt::Label
+    signals :clicked
+    def mouseReleaseEvent(e)
+        p "e.button:" + e.button.inspect
+        if e.button != Qt::LeftButton then
+            e.ignore
+            return
+        end
+
+        if rect.contains(e.pos) then
+            emit clicked
+            e.accept
+        else
+            e.ignore
+        end
+    end
+end
+
+
+
 #--------------------------------------------------------------------------
 #
 #
