@@ -68,6 +68,7 @@ module CachedIO
             @cache = Hash.new
             @cacheLRU = []          # Least Recently Used
             @cacheMax = cacheMax
+            @debugOut = true
         end
 
         #
@@ -86,7 +87,7 @@ module CachedIO
                 @cacheLRU.delete(cachedt)
                 @cacheLRU.push(cachedt)
                 data = restoreCache(cachedt.id)
-                $log.debug { "cache %s: Time %f sec" %
+                @debugOut && $log.debug { "cache %s: Time %f sec" %
                             [self.class.name, (Time.now - startTime).to_f] }
                 onRead.call(data)
                 return
@@ -124,7 +125,7 @@ module CachedIO
 
             @cache[url] = cachedt
             @cacheLRU.push(cachedt)
-            $log.debug {"direct read %s: Time %f sec" %
+            @debugOut && $log.debug {"direct read %s: Time %f sec" %
                         [self.class.name, (Time.now - startTime).to_f] }
             reply.call(reply.data)
         end

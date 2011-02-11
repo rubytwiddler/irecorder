@@ -15,7 +15,7 @@ require 'Qt'
 require "cache"
 require "logwin"
 
-UrlRegexp = URI.regexp(['rtsp','http'])
+UrlRegexp = URI.regexp(['rtsp','http', 'mms'])
 
 #
 #
@@ -30,6 +30,7 @@ class BBCNet < Qt::Object
     class CachedRawXMLIO < CachedHttpDiskIO
         def initialize(cacheDuration = 25*60, cacheMax=1)
             super
+            @debugOut = false
             @tmpdir = File.join(@tmpdir, 'meta_xml')
             FileUtils.mkdir_p(@tmpdir)
         end
