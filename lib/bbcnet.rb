@@ -265,6 +265,7 @@ class BBCNet < Qt::Object
 
     def self.getTime(str)
         tm = str.match(/(\d{4})-(\d\d)-(\d\d)\w(\d\d):(\d\d):(\d\d)/)
+        return Time.at(0) unless tm
         par = ((1..6).inject([]) do |a, n| a << tm[n].to_i end)
         Time.gm( *par )
     end
