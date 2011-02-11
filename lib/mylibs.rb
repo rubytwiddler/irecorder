@@ -123,7 +123,6 @@ end
 class ClickableLabel < Qt::Label
     signals :clicked
     def mouseReleaseEvent(e)
-        p "e.button:" + e.button.inspect
         if e.button != Qt::LeftButton then
             e.ignore
             return

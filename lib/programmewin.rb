@@ -5,16 +5,30 @@
 class ProgrammeTableWidget < Qt::TableWidget
     #
     #
+    TITLE_COL, CATEGORIES_COL, UPDATED_COL, DATE_COL, DURATION_COL, SAVED_COL = (0..5).to_a
+    LABELS = %w{Title Categories Updated Date Duration Saved}
     class Programme
-        attr_reader :titleItem, :categoriesItem, :updatedItem
+        attr_reader :titleItem, :categoriesItem, :updatedItem, :dateItem, \
+                :durationItem, :savedItem
         attr_reader :content, :link
 
         def initialize(title, categories, updated, content, link)
             @titleItem = Item.new(title)
             @categoriesItem = Item.new(categories)
             @updatedItem = Item.new(updated)
+            @dateItem = Item.new
+            @durationItem = Item.new
+            @savedItem = Item.new
             @content = content
             @link = link
+
+            BBCNet::CachedMetaInfoIO.read(link, self.method(:onReadInfo))
+        end
+
+        def onReadInfo(minfo)
+            @minfo = minfo
+            @dateItem.text = minfo.onAirDate.to_s
+            @durationItem.text = minfo.duration.to_s
         end
 
         def title
@@ -28,12 +42,24 @@ class ProgrammeTableWidget < Qt::TableWidget
         def updated
             @updatedItem.text
         end
+
+        def date
+            @dateItem.text
+        end
+
+        def duration
+            @durationItem.text
+        end
+
+        def saved
+            @savedItem.text
+        end
     end
 
     #
     #
     class Item < Qt::TableWidgetItem
-        def initialize(text)
+        def initialize(text='')
             super(text)
             self.flags = Qt::ItemIsSelectable | Qt::ItemIsEnabled
             self.toolTip = text
@@ -46,9 +72,9 @@ class ProgrammeTableWidget < Qt::TableWidget
     #
 
     def initialize()
-        super(0, 3)
+        super(0, 6)
 
-        setHorizontalHeaderLabels(['Title', 'Category', 'Updated'])
+        setHorizontalHeaderLabels(LABELS)
         self.horizontalHeader.stretchLastSection = true
         self.selectionBehavior = Qt::AbstractItemView::SelectRows
         self.alternatingRowColors = true
@@ -68,9 +94,12 @@ class ProgrammeTableWidget < Qt::TableWidget
 
     def addEntry( row, title, categories, updated, content, link )
         entry = Programme.new(title, categories, updated, content, link)
-        setItem( row, 0, entry.titleItem )
-        setItem( row, 1, entry.categoriesItem )
-        setItem( row, 2, entry.updatedItem )
+        setItem( row, TITLE_COL, entry.titleItem )
+        setItem( row, CATEGORIES_COL, entry.categoriesItem )
+        setItem( row, UPDATED_COL, entry.updatedItem )
+        setItem( row, DATE_COL, entry.dateItem )
+        setItem( row, DURATION_COL, entry.durationItem )
+        setItem( row, SAVED_COL, entry.savedItem )
         @table[entry.titleItem] = entry
     end
 

@@ -26,6 +26,18 @@ class BBCNet < Qt::Object
     DirectStreamRegexp = URI.regexp(['mms', 'rtsp', 'rtmp', 'rtmpt'])
 
 
+    class CachedRawXMLIO < CachedHttpDiskIO
+        def initialize(cacheDuration = 25*60, cacheMax=1)
+            super
+            @tmpdir = File.join(@tmpdir, 'meta_info')
+            FileUtils.mkdir_p(@tmpdir)
+        end
+
+        def tempFileName(url)
+            File.join(@tmpdir, url.scan(%r{[^/]+$}).first.gsub!(%r/^[\w]/, '_'))
+        end
+    end
+
     class CachedMetaInfoIO < CachedIO::CachedIOBase
         def initialize(cacheDuration = 40*60, cacheMax=200)
             super(cacheDuration, cacheMax)
@@ -60,6 +72,8 @@ class BBCNet < Qt::Object
 
         attr_reader :pid
         Keys = [ :duration, :vpid, :group, :media, :onAirDate, :channel, :title, :summary, :aacLow, :aacStd, :real, :wma, :streams ]
+        # date format : '2010-08-05T22:00:00Z'
+
         def initialize(pid)
             @pid = pid
             Keys.each do |k|
@@ -86,7 +100,9 @@ class BBCNet < Qt::Object
                 return
             end
             @onReadXmlPlaylist = onReadXmlPlaylist
-            BBCNet.read("http://www.bbc.co.uk/iplayer/playlist/#{@pid}", \
+#             BBCNet.read("http://www.bbc.co.uk/iplayer/playlist/#{@pid}", \
+#                               self.method(:onReadXmlPlaylist))
+            CachedRawXMLIO.read("http://www.bbc.co.uk/iplayer/playlist/#{@pid}", \
                               self.method(:onReadXmlPlaylist))
 #             onReadXmlPlaylist(IO.read("../tmp/iplayer-playlist-me.xml"))
         end
@@ -94,17 +110,27 @@ class BBCNet < Qt::Object
         def onReadXmlPlaylist(res)
             doc = Nokogiri::XML(res)
             item = doc.at_css("noItems")
-            raise "No Playlist " + item[:reason] if item
+            #raise "No Playlist " + item[:reason] if item
+            return if item      # error!!!
 
             item = doc.at_css("item")
             @media = item[:kind].gsub(/programme/i, '')
             @duration = item[:duration].to_i
             @vpid = item[:identifier]
+            return unless @vpid
+
             @group = item[:group]
-            @onAirDate = BBCNet.getTime(item.at_css("broadcast").content.to_s)
-            @channel = item.at_css("service").content.to_s
-            @title = item.at_css("title").content.to_s
-            @summary = doc.at_css("summary").content.to_s
+            title = item.at_css("title")
+            if title then
+                @title = title.content.to_s
+                @summary = doc.at_css("summary").content.to_s
+                onAirDate = item.at_css("broadcast")
+                @onAirDate =  onAirDate ? BBCNet.getTime(onAirDate.content.to_s) : ''
+                channel = item.at_css("service")
+                @channel = channel ? channel.content.to_s : ''
+            else
+                @title = @summary = @onAirDate = @channel = ''
+            end
             @onReadXmlPlaylist.call(self)
         end
 
@@ -160,7 +186,9 @@ class BBCNet < Qt::Object
 
         protected
         def readXml_1(dummy)
-            BBCNet.read("http://www.bbc.co.uk/mediaselector/4/mtis/stream/#{@vpid}", \
+#             BBCNet.read("http://www.bbc.co.uk/mediaselector/4/mtis/stream/#{@vpid}", \
+#                               self.method(:onReadXmlStreamMeta))
+            CachedRawXMLIO.read("http://www.bbc.co.uk/mediaselector/4/mtis/stream/#{@vpid}", \
                               self.method(:onReadXmlStreamMeta))
 #             onReadXmlStreamMeta(IO.read("../tmp/iplayer-stream-meta-me.xml"))
         end

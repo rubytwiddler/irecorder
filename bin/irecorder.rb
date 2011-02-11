@@ -416,6 +416,7 @@ class MainWindow < KDE::MainWindow
         @progTableFrame.restoreState(config.readEntry('ProgTableFrame',
                                                       @progTableFrame.saveState))
         @channelTypeToolBox.currentIndex = config.readEntry('ChannelType', @channelTypeToolBox.currentIndex)
+        @channelViewWidth = config.readEntry('ChannelViewWidth', 150)
 
         @programmeTable.readSettings
         @taskWin.readSettings
@@ -429,6 +430,7 @@ class MainWindow < KDE::MainWindow
         config.writeEntry('MainTabPageState', @mainTabPageHSplitter.saveState)
         config.writeEntry('ProgTableFrame', @progTableFrame.saveState)
         config.writeEntry('ChannelType', @channelTypeToolBox.currentIndex)
+        config.writeEntry('ChannelViewWidth', @channelViewWidth)
 
         @programmeTable.writeSettings
         @taskWin.writeSettings
@@ -521,10 +523,10 @@ class MainWindow < KDE::MainWindow
     def channelViewToggle
         sizes = @mainTabPageHSplitter.sizes
         if sizes[0] == 0 then
-            sizes[0] = @channelViewSize || 140
+            sizes[0] = @channelViewWidth || 140
             @mainTabPageHSplitter.setSizes(sizes)
         else
-            @channelViewSize = sizes[0]
+            @channelViewWidth = sizes[0]
             sizes[0] = 0
             @mainTabPageHSplitter.setSizes(sizes)
         end
