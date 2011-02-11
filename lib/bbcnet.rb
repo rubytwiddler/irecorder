@@ -8,6 +8,7 @@ require 'shellwords'
 require 'fileutils'
 require 'tmpdir'
 require 'singleton'
+require 'yaml'
 require 'Qt'
 
 # my libs
@@ -29,24 +30,31 @@ class BBCNet < Qt::Object
     class CachedRawXMLIO < CachedHttpDiskIO
         def initialize(cacheDuration = 25*60, cacheMax=1)
             super
-            @tmpdir = File.join(@tmpdir, 'meta_info')
+            @tmpdir = File.join(@tmpdir, 'meta_xml')
             FileUtils.mkdir_p(@tmpdir)
         end
 
         def tempFileName(url)
-            File.join(@tmpdir, url.scan(%r{[^/]+$}).first.gsub!(%r/^[\w]/, '_'))
+            File.join(@tmpdir, url.scan(%r{[^/]+$}).first.gsub(%r/[^\w]/, '_'))
         end
     end
 
-    class CachedMetaInfoIO < CachedIO::CachedIOBase
+    class CachedMetaInfoIO < CachedObjectDiskIO
         def initialize(cacheDuration = 40*60, cacheMax=200)
             super(cacheDuration, cacheMax)
+            @tmpdir = File.join(@tmpdir, 'meta_info')
+            FileUtils.mkdir_p(@tmpdir)
         end
 
         # method finished(reply) will be called when read is finished.
-        def directRead(pid, onRead)
-            reply = CachedIO::CacheReply.new(pid, onRead)
-            BBCNet::MetaInfo.new(pid).update(reply.finishedMethod(self.method(:finished)))
+        def directRawRead(pid, method, reply)
+            BBCNet::MetaInfo.new(pid).update(method, reply)
+        end
+
+        def saveCache(id, data)
+            open(id, "w") do |f|
+                f.write(Marshal.dump(data.dup.cleanData))
+            end
         end
 
         def self.read(url, onRead)
@@ -71,26 +79,35 @@ class BBCNet < Qt::Object
         end
 
         attr_reader :pid
-        Keys = [ :duration, :vpid, :group, :media, :onAirDate, :channel, :title, :summary, :aacLow, :aacStd, :real, :wma, :streams ]
-        # date format : '2010-08-05T22:00:00Z'
+        Keys = [ :duration, :vpid, :group, :media, :onAirDate, :channel, :title, :summary, \
+                 :aacLow, :aacStd, :real, :wma, :streams ]
+        # onAirDate format : '2010-08-05T22:00:00Z'
+        attr_reader *Keys
 
         def initialize(pid)
             @pid = pid
             Keys.each do |k|
                 s = ('@' + k.to_s).to_sym
                 self.instance_variable_set(s, nil)
-                self.class.class_eval %Q{
-                    def #{k}
-                        #{s}
-                    end
-                }
             end
 
             @streams = []
         end
 
+        def cleanData
+            remove_instance_variable :@onRead
+            remove_instance_variable :@reply
+            remove_instance_variable :@onReadXmlPlaylist
+            @aacLow = @aacLow.dup.cleanData if @aacLow
+            @aacStd = @aacStd.dup.cleanData if @aacStd
+            @real = @real.dup.cleanData if @real
+            @wma = @wma.dup.cleanData if @wma
+            @streams = @streams.map do |s| s.dup.cleanData end
+            self
+        end
 
         protected
+
         #
         # read duration, vpid, group, media, onAirDate, channel
         #   from XmlPlaylist
@@ -151,6 +168,11 @@ class BBCNet < Qt::Object
                 BBCNet.getDirectStreamUrl(@indirectUrl, self.method(:onRead))
             end
 
+            def cleanData
+                remove_instance_variable :@onUpdated
+                self
+            end
+
             protected
             def onRead(url)
                 @url = url
@@ -158,8 +180,9 @@ class BBCNet < Qt::Object
             end
         end
 
-        def readXmlStreamMeta(onRead)
+        def readXmlStreamMeta(onRead, reply=nil)
             @onRead = onRead
+            @reply = reply
             if @vpid then
                 readXml_1
             else
@@ -230,7 +253,11 @@ class BBCNet < Qt::Object
             @updateCount -= 1
             return unless @updateCount == 0
 
-            @onRead.call(self)
+            if @reply then
+                @onRead.call(self, @reply)
+            else
+                @onRead.call(self)
+            end
         end
     end
 
@@ -282,7 +309,7 @@ class BBCNet < Qt::Object
         def onReadSearching(res)
             url = res[ DirectStreamRegexp ] || res[ UrlRegexp ] || @old
             $log.debug { "new url:#{url},  old url:#{@old}" }
-            $log.debug { "no url in response '#{res}'" } if url[ UrlRegexp ]
+            $log.debug { "no url in response '#{res}'" } unless url[ UrlRegexp ]
             if url != @old and not url[DirectStreamRegexp] then
                 @old = url
                 BBCNet.read(url, self.method(:onReadSearching))

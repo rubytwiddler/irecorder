@@ -149,7 +149,7 @@ class CachedHttpDiskIO < CachedIO::CachedIOBase
         IO.read(id)
     end
 
-    # method finished(reply) will be called when read is finished.
+    # method finished(reply) will be called when reading is finished.
     def directRead(url, onRead)
         $log.misc { "directRead(): " + self.class.name }
         tmpfname = tempFileName(url)
@@ -165,7 +165,7 @@ class CachedHttpDiskIO < CachedIO::CachedIOBase
         reply.url = url
         if File.exist?(tmpfname) and
                 File.ctime(tmpfname) + @cacheDuration > Time.now then
-            data = IO.read(tmpfname)
+            data = restoreCache(tmpfname)
         else
             BBCNet.read(url, self.method(:rawFinished), reply)
             return
@@ -184,6 +184,70 @@ class CachedHttpDiskIO < CachedIO::CachedIOBase
         File.join(@tmpdir, url.scan(%r{(?:iplayer/)[\w\/]+$}).first.gsub!(/iplayer\//,'').gsub!(%r|/|, '_'))
     end
 end
+
+class CachedObjectDiskIO < CachedIO::CachedIOBase
+    def initialize(cacheDuration = 12*60, cacheMax=50)
+        super(cacheDuration, cacheMax)
+        @tmpdir = Dir.tmpdir + '/bbc_cache'
+        FileUtils.mkdir_p(@tmpdir)
+    end
+
+
+    # @return : data
+    #   restore data from id.
+    def restoreCache(id)
+        Marshal.load(IO.read(id))
+    end
+
+    def saveCache(id, data)
+        open(id, "w") do |f|
+            f.write(Marshal.dump(data))
+        end
+    end
+
+    # method finished(reply) will be called when read is finished.
+    def directRead(url, onRead)
+        $log.misc { "directRead(): " + self.class.name }
+        tmpfname = tempFileName(url)
+
+        if File.exist?(tmpfname) then
+            $log.misc { "File ctime  : " + File.ctime(tmpfname).to_s}
+            $log.misc { "expire time : " + (File.ctime(tmpfname) + @cacheDuration).to_s }
+            $log.misc { "Now Time    : " + Time.now.to_s }
+        end
+
+        reply = CachedIO::CacheReply.new(tmpfname, onRead)
+        reply.id = tmpfname
+        reply.url = url
+        if File.exist?(tmpfname) and
+                File.ctime(tmpfname) + @cacheDuration > Time.now then
+            data = restoreCache(tmpfname)
+        else
+            directRawRead(url, self.method(:rawFinished), reply)
+            return
+        end
+        reply.data = data
+        finished(reply)
+    end
+
+    def directRawRead(url, method, reply)
+        raise "Not Implemented directRawRead method."
+#         BBCNet.read(url, method, reply)
+    end
+
+
+    def rawFinished(data, reply)
+        reply.data = data
+        saveCache(reply.id, data)
+        finished(reply)
+    end
+
+    def tempFileName(url)
+        $log.misc { "tempFileName : url:#{url}, #{url.gsub(%r|[^\w]|, '_')}" }
+        File.join(@tmpdir, url.gsub(%r|[^\w]|, '_'))
+    end
+end
+
 
 class CachedRssIO < CachedIO::CachedIOBase
     def initialize(cacheDuration = 12*60, cacheMax=6)

@@ -27,8 +27,8 @@ class ProgrammeTableWidget < Qt::TableWidget
 
         def onReadInfo(minfo)
             @minfo = minfo
-            @dateItem.text = minfo.onAirDate.to_s
-            @durationItem.text = minfo.duration.to_s
+            @dateItem.text = minfo.onAirDate.to_s if minfo.onAirDate
+            @durationItem.text = minfo.duration.to_s if minfo.duration
         end
 
         def title

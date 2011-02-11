@@ -27,7 +27,7 @@ class TestResultDialog < Qt::Dialog
         class ResultEntry
             attr_reader :titleItem, :categoriesItem, :durationItem, :dateItem, :urlItem
             def initialize(title, categories, url)
-                $log.debug { "ResultEntry: title:#{title}, categories:#{categories}, url:#{url}" }
+                $log.misc { "ResultEntry: title:#{title}, categories:#{categories}, url:#{url}" }
                 @titleItem = Item.new(title)
                 @categoriesItem = Item.new(categories)
                 @durationItem = Item.new('')
@@ -127,6 +127,19 @@ class TestResultDialog < Qt::Dialog
             self.size = @size
             @resultTable.horizontalHeader.restoreState(@headerState)
         end
+    end
+
+    GroupName = "TestResult"
+    def writeSettings
+        config = $config.group(GroupName)
+        config.writeEntry('Header', @headerState)
+        config.writeEntry('Size', @size)
+    end
+
+    def readSettings
+        config = $config.group(GroupName)
+        @headerState = config.readEntry('Header', @resultTable.horizontalHeader.saveState)
+        @size = config.readEntry('Size', size)
     end
 end
 
@@ -361,10 +374,12 @@ class ScheduleWindow < Qt::Widget
 
     def writeSettings
         @programmeFilterTable.writeSettings
+        @testResultDlg.writeSettings
     end
 
     def readSettings
         @programmeFilterTable.readSettings
+        @testResultDlg.readSettings
     end
 
     slots :updateAllFilters

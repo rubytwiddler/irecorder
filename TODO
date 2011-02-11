@@ -6,6 +6,10 @@ TODO - irecorder
 
  *check duration of file after download.
  *multi-select task and do operations.
+ *BUG: sort duration, date, update
+ *crash & version check of cache
+
+ *delay update StreamInfo
 
  *install nokogiri for ruby1.9
 
