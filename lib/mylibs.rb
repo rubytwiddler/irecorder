@@ -8,6 +8,17 @@ require 'korundum4'
 require 'shellwords'
 
 #
+class Qt::Object
+    def initialize(*args)
+        super(*args)
+        (@@reg ||= Hash.new) [self] = true
+    end
+
+    def destroyed(obj)
+        @@reg.delete(obj)
+    end
+end
+
 class Qt::HBoxLayout
     def addWidgets(*w)
         w.each do |i|

@@ -74,10 +74,10 @@ class SelectServiceDlg < KDE::Dialog
             @serviceList.addItem( Qt::ListWidgetItem.new(KDE::Icon.new(iconName), s.name) )
         end
 
-        @lw = VBoxLayoutWidget.new
-        @lw.addWidget(Qt::Label.new(@message))
-        @lw.addWidget(@serviceList)
-        setMainWidget(@lw)
+        lw = VBoxLayoutWidget.new
+        lw.addWidget(Qt::Label.new(@message))
+        lw.addWidget(@serviceList)
+        setMainWidget(lw)
     end
 end
 

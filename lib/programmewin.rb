@@ -5,10 +5,10 @@
 class ProgrammeTableWidget < Qt::TableWidget
     #
     #
-    TITLE_COL, CATEGORIES_COL, UPDATED_COL, DATE_COL, DURATION_COL, SAVED_COL = (0..5).to_a
-    LABELS = %w{Title Categories Updated Date Duration Saved}
+    TITLE_COL, CATEGORIES_COL, UPDATED_COL, ON_AIR_COL, DURATION_COL, SAVED_COL = (0..5).to_a
+    LABELS = %w{Title Categories Updated On\ Air Duration Saved}
     class Programme
-        attr_reader :titleItem, :categoriesItem, :updatedItem, :dateItem, \
+        attr_reader :titleItem, :categoriesItem, :updatedItem, :onAirItem, \
                 :durationItem, :savedItem
         attr_reader :content, :link
 
@@ -16,7 +16,7 @@ class ProgrammeTableWidget < Qt::TableWidget
             @titleItem = Item.new(title)
             @categoriesItem = Item.new(categories)
             @updatedItem = Item.new(updated)
-            @dateItem = Item.new
+            @onAirItem = Item.new
             @durationItem = Item.new
             @savedItem = Item.new
             @content = content
@@ -27,7 +27,7 @@ class ProgrammeTableWidget < Qt::TableWidget
 
         def onReadInfo(minfo)
             @minfo = minfo
-            @dateItem.text = minfo.onAirDate.to_s if minfo.onAirDate
+            @onAirItem.text = minfo.onAirDate.to_s if minfo.onAirDate
             @durationItem.text = minfo.duration.to_s if minfo.duration
         end
 
@@ -43,8 +43,8 @@ class ProgrammeTableWidget < Qt::TableWidget
             @updatedItem.text
         end
 
-        def date
-            @dateItem.text
+        def onAirDate
+            @onAirItem.text
         end
 
         def duration
@@ -97,7 +97,7 @@ class ProgrammeTableWidget < Qt::TableWidget
         setItem( row, TITLE_COL, entry.titleItem )
         setItem( row, CATEGORIES_COL, entry.categoriesItem )
         setItem( row, UPDATED_COL, entry.updatedItem )
-        setItem( row, DATE_COL, entry.dateItem )
+        setItem( row, ON_AIR_COL, entry.onAirItem )
         setItem( row, DURATION_COL, entry.durationItem )
         setItem( row, SAVED_COL, entry.savedItem )
         @table[entry.titleItem] = entry

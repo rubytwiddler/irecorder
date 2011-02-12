@@ -314,18 +314,15 @@ class MainWindow < KDE::MainWindow
                 connect(w, SIGNAL('cellClicked(int,int)'),
                         self, SLOT('programmeCellClicked(int,int)'))
             end
-            vbxw.addWidget(HBoxLayoutWidget.new do |hw|
-                    hw.addWidget(Qt::Label.new(i18n('Look for:')))
-                    hw.addWidget(
-                        @filterLineEdit = KDE::LineEdit.new do |w|
-                            connect(w,SIGNAL('textChanged(const QString &)'),
-                                    @programmeTable, SLOT('filterChanged(const QString &)'))
-                            w.setClearButtonShown(true)
-                            connect(@programmeTable, SIGNAL('filterRequest(const QString &)'),
-                                w, SLOT('setText(const QString &)'))
-                        end
-                    )
-                end
+            vbxw.addWidgets(
+                    Qt::Label.new(i18n('Look for:')),
+                    @filterLineEdit = KDE::LineEdit.new do |w|
+                        connect(w,SIGNAL('textChanged(const QString &)'),
+                                @programmeTable, SLOT('filterChanged(const QString &)'))
+                        w.setClearButtonShown(true)
+                        connect(@programmeTable, SIGNAL('filterRequest(const QString &)'),
+                            w, SLOT('setText(const QString &)'))
+                    end
             )
             @listTitleLabel = ClickableLabel.new('')
             connect(@listTitleLabel , SIGNAL(:clicked), self, SLOT(:channelViewToggle))
@@ -417,6 +414,9 @@ class MainWindow < KDE::MainWindow
                                                       @progTableFrame.saveState))
         @channelTypeToolBox.currentIndex = config.readEntry('ChannelType', @channelTypeToolBox.currentIndex)
         @channelViewWidth = config.readEntry('ChannelViewWidth', 150)
+        sizes = @mainTabPageHSplitter.sizes
+        sizes[0] = @channelViewWidth
+        @mainTabPageHSplitter.setSizes(sizes)
 
         @programmeTable.readSettings
         @taskWin.readSettings
