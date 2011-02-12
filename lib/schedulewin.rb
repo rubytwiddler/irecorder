@@ -262,6 +262,7 @@ class ScheduleWindow < Qt::Widget
             self.selectionBehavior = Qt::AbstractItemView::SelectRows
             self.selectionMode = Qt::AbstractItemView::SingleSelection
             self.alternatingRowColors = true
+            self.sortingEnabled = true
 
             # Hash table : key column_0_item  => Programme entry.
             @table = Hash.new

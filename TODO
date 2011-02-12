@@ -8,6 +8,7 @@ TODO - irecorder
  *multi-select task and do operations.
  *BUG: sort duration, date, update
  *crash & version check of cache
+ *display already saved or not.
 
  *delay update StreamInfo
 

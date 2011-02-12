@@ -11,24 +11,32 @@ class ProgrammeTableWidget < Qt::TableWidget
         attr_reader :titleItem, :categoriesItem, :updatedItem, :onAirItem, \
                 :durationItem, :savedItem
         attr_reader :content, :link
+        attr_reader :updated, :onAirDate, :duration
+        DATE_FORMAT = "%Y/%m/%d %a"
 
         def initialize(title, categories, updated, content, link)
+            @content = content
+            @link = link
+            @updated = BBCNet.getTime(updated)
+            @onAirDate = Time.at(0)
+            @duration = 0
+
             @titleItem = Item.new(title)
             @categoriesItem = Item.new(categories)
-            @updatedItem = Item.new(updated)
+            @updatedItem = Item.new(@updated.strftime(DATE_FORMAT))
             @onAirItem = Item.new
             @durationItem = Item.new
             @savedItem = Item.new
-            @content = content
-            @link = link
 
             BBCNet::CachedMetaInfoIO.read(link, self.method(:onReadInfo))
         end
 
         def onReadInfo(minfo)
             @minfo = minfo
-            @onAirItem.text = minfo.onAirDate.to_s if minfo.onAirDate
-            @durationItem.text = minfo.duration.to_s if minfo.duration
+            @onAirDate = minfo.onAirDate
+            @duration = minfo.duration
+            @onAirItem.text = @onAirDate.strftime(DATE_FORMAT) if @onAirDate
+            @durationItem.text = @duration.to_s if @duration
         end
 
         def title
@@ -37,18 +45,6 @@ class ProgrammeTableWidget < Qt::TableWidget
 
         def categories
             @categoriesItem.text
-        end
-
-        def updated
-            @updatedItem.text
-        end
-
-        def onAirDate
-            @onAirItem.text
-        end
-
-        def duration
-            @durationItem.text
         end
 
         def saved

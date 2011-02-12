@@ -309,39 +309,45 @@ class MainWindow < KDE::MainWindow
     #
     #
     def createProgrammeAreaWidget
-        VBoxLayoutWidget.new do |vbxw|
-            @programmeTable = ProgrammeTableWidget.new do |w|
-                connect(w, SIGNAL('cellClicked(int,int)'),
-                        self, SLOT('programmeCellClicked(int,int)'))
+        @programmeTable = ProgrammeTableWidget.new do |w|
+            connect(w, SIGNAL('cellClicked(int,int)'),
+                    self, SLOT('programmeCellClicked(int,int)'))
+        end
+        @filterLineEdit = KDE::LineEdit.new do |w|
+            connect(w,SIGNAL('textChanged(const QString &)'),
+                    @programmeTable, SLOT('filterChanged(const QString &)'))
+            w.setClearButtonShown(true)
+            connect(@programmeTable, SIGNAL('filterRequest(const QString &)'),
+                w, SLOT('setText(const QString &)'))
+        end
+        @tagLabels = %w{Drama SciFi Crime Thriller Science}.map do |l|
+            ClickableLabel.new(l) do |w|
+                w.text = l
+                w.visible = true
+                connect(w, SIGNAL(:clicked), self, SLOT(:tagClicked))
             end
-            vbxw.addWidgets(
-                    Qt::Label.new(i18n('Look for:')),
-                    @filterLineEdit = KDE::LineEdit.new do |w|
-                        connect(w,SIGNAL('textChanged(const QString &)'),
-                                @programmeTable, SLOT('filterChanged(const QString &)'))
-                        w.setClearButtonShown(true)
-                        connect(@programmeTable, SIGNAL('filterRequest(const QString &)'),
-                            w, SLOT('setText(const QString &)'))
-                    end
-            )
-            @listTitleLabel = ClickableLabel.new('')
-            connect(@listTitleLabel , SIGNAL(:clicked), self, SLOT(:channelViewToggle))
+        end
+        playIcon = KDE::Icon.new(':images/play-22.png')
+        playBtn = KDE::PushButton.new( playIcon, i18n("Play")) do |w|
+            w.objectName = 'playButton'
+            connect( w, SIGNAL(:clicked), self, SLOT(:playProgramme) )
+        end
+        @listTitleLabel = ClickableLabel.new('Channel')
+        connect(@listTitleLabel , SIGNAL(:clicked), self, SLOT(:channelViewToggle))
+
+        # 'Start Download' Button
+        downloadIcon = KDE::Icon.new(':images/download-22.png')
+        downloadBtn = KDE::PushButton.new( downloadIcon, i18n("Download")) do |w|
+            w.objectName = 'downloadButton'
+            connect( w, SIGNAL(:clicked), self, SLOT(:startDownload) )
+        end
+
+        # layout
+        VBoxLayoutWidget.new do |vbxw|
+            vbxw.addWidgets( *([Qt::Label.new(i18n('Look for:')),
+                       @filterLineEdit, @tagLabels].flatten))
             vbxw.addWidget( @listTitleLabel )
             vbxw.addWidget(@programmeTable)
-
-            playIcon = KDE::Icon.new(':images/play-22.png')
-            playBtn = KDE::PushButton.new( playIcon, i18n("Play")) do |w|
-                w.objectName = 'playButton'
-                connect( w, SIGNAL(:clicked), self, SLOT(:playProgramme) )
-            end
-
-            # 'Start Download' Button
-            downloadIcon = KDE::Icon.new(':images/download-22.png')
-            downloadBtn = KDE::PushButton.new( downloadIcon, i18n("Download")) do |w|
-                w.objectName = 'downloadButton'
-                connect( w, SIGNAL(:clicked), self, SLOT(:startDownload) )
-            end
-
             vbxw.addWidgets( nil, playBtn, nil, downloadBtn, nil )
         end
     end
@@ -531,6 +537,12 @@ class MainWindow < KDE::MainWindow
             @mainTabPageHSplitter.setSizes(sizes)
         end
     end
+
+    slots :tagClicked
+    def tagClicked
+        @filterLineEdit.setText(sender.text)
+    end
+
 
     def makeProcCommand(command, url)
         cmd, args = command.split(/\s+/, 2)

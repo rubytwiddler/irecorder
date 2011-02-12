@@ -14,17 +14,64 @@ class LogWindow < Qt::Widget
             @textWidget.clear
         end
 
+        level = MyLogger::FATAL
+        @labels = %w{ Fatal Error Warn Info Debug Code Misc }.map do |l|
+            ClickableLabel.new(l) do |w|
+                w.objectName = level.to_s
+                level -= 1
+                connect(w, SIGNAL(:clicked), self, SLOT(:changeLevel))
+            end
+        end
+
         # layout
         layout = Qt::VBoxLayout.new
         layout.addWidget(@textWidget)
-        layout.addWidgetAtLeft(clearBtn)
+        layout.addWidgets(*([clearBtn, nil, @labels, nil].flatten))
         setLayout(layout)
+
+        #
+        @limitLine = 1000
+        @lineCount = 0
+        setLevel($log.level)
     end
+
+    attr_accessor :limitLine
+
+    slots :changeLevel
+    def changeLevel
+        label = sender
+        setLevel(label.objectName.to_i)
+    end
+
+    def setLevel(level)
+        $log.level = level
+        i = MyLogger::FATAL
+        @labels.each do |l|
+            if i >= level then
+                l.text = l.text.upcase
+            else
+                l.text = l.text.downcase
+            end
+            i -= 1
+        end
+    end
+
 
     public
     def write(text)
         puts text
         @textWidget.append(text)
+        @lineCount += 1
+        if @lineCount > @limitLine then
+            cur = @textWidget.textCursor
+            cur.movePosition(Qt::TextCursor::Start)
+            cur.movePosition(Qt::TextCursor::Down, Qt::TextCursor::KeepAnchor, 4)
+            cur.removeSelectedText
+            cur.movePosition(Qt::TextCursor::End)
+
+            @textWidget.setTextCursor(cur)
+            @lineCount -= 4
+        end
     end
 
 end

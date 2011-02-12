@@ -41,7 +41,7 @@ class BBCNet < Qt::Object
     end
 
     class CachedMetaInfoIO < CachedObjectDiskIO
-        def initialize(cacheDuration = 40*60, cacheMax=200)
+        def initialize(cacheDuration = 24*60*60, cacheMax=200)
             super(cacheDuration, cacheMax)
             @tmpdir = File.join(@tmpdir, 'meta_info')
             FileUtils.mkdir_p(@tmpdir)
@@ -125,19 +125,24 @@ class BBCNet < Qt::Object
 #             onReadXmlPlaylist(IO.read("../tmp/iplayer-playlist-me.xml"))
         end
 
+        def errorXml(msg, res)
+            $log.warn { "onReadXmlPlaylist: error XML(#{msg}):#{res}" }
+        end
+
         def onReadXmlPlaylist(res)
             doc = Nokogiri::XML(res)
             item = doc.at_css("noItems")
             #raise "No Playlist " + item[:reason] if item
-            return if item      # error!!!
+            return errorXml("noItems #{item[:reason]}", res) if item      # error!!!
+            item = doc.css("item").find { |i| i[:identifier] }
+            return errorXml('no item', res) unless item
 
-            item = doc.at_css("item")
-            @media = item[:kind].gsub(/programme/i, '')
             @duration = item[:duration].to_i
-            @vpid = item[:identifier]
-            return unless @vpid
-
             @group = item[:group]
+            kind = item[:kind]
+            @media = kind ? kind.gsub(/programme/i, '') : kind
+            @vpid = item[:identifier]
+
             title = item.at_css("title")
             if title then
                 @title = title.content.to_s
@@ -311,10 +316,11 @@ class BBCNet < Qt::Object
         def onReadSearching(res)
             url = res[ DirectStreamRegexp ] || res[ UrlRegexp ] || @old
             $log.debug { "new url:#{url},  old url:#{@old}" }
-            $log.debug { "no url in response '#{res}'" } unless url[ UrlRegexp ]
             if url != @old and not url[DirectStreamRegexp] then
                 @old = url
                 BBCNet.read(url, self.method(:onReadSearching))
+            elsif not url[ UrlRegexp ] then
+                $log.debug { "no url in response '#{res}'" }
             else
                 @onRead.call(url)
             end
@@ -383,7 +389,7 @@ class BBCNet < Qt::Object
 #         $log.misc { "BBCNet::read.finished : url:#{reply.url.toString} methodObj:#{methodObj}, request:#{request}" }
 #         reply.request.originatingObject.call(data)
         unless methodObj then
-            $log.warn { "internal failure. lost method object of request url:#{url}" }
+            $log.error { "internal failure. lost method object of request url:#{url}" }
             methodObj = @methods[url]       # avoid bug that qt drop originatingObject sometime.
         end
         @methods.delete(url)
