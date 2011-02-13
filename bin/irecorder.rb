@@ -74,7 +74,7 @@ class MainWindow < KDE::MainWindow
         $log.info { 'Log Start.' }
 
         #
-        $downloader = Downloader.new(self, @taskWin)
+        Downloader.initializeDependency(self, @taskWin)
 
         # assign from config file.
         readSettings
@@ -559,73 +559,10 @@ class MainWindow < KDE::MainWindow
         items = @programmeTable.selectedItems
         return unless items.size > 0
 
-
-        def getIplayerUrl(prog)
-            # big type console
-            url = prog.link
-            $log.info { "big console Url : #{url}" }
-
-            # old type console
-            url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
-            $log.info { "episode Url : #{url}" }
-            url = BBCNet.getPlayerConsoleUrl(url)
-            $log.info { "old console Url : #{url}" }
-            url
-        end
-
         prog = @programmeTable[items[0].row]
-        webPlayerCommand = IRecSettings.webPlayerCommand
-        directPlayerCommand = IRecSettings.directPlayerCommand
-
-        begin
-            if IRecSettings.useInnerPlayer then
-                url = getIplayerUrl(prog)
-
-                @playerDock.show
-                @playerWebView.setUrl(Qt::Url.new(url))
-            elsif IRecSettings.useWebPlayer and webPlayerCommand then
-                $log.info { "Play on web browser" }
-                url = getIplayerUrl(prog)
-                cmd, args = makeProcCommand(webPlayerCommand, url)
-                $log.debug { "execute cmd '#{cmd}', args '#{args.inspect}'" }
-                proc = Qt::Process.new(self)
-                proc.start(cmd, args)
-
-            elsif IRecSettings.useDirectPlayer and directPlayerCommand then
-                $log.info { "Play direct" }
-                url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
-
-                $log.info { "episode Url : #{url}" }
-                BBCNet::CachedMetaInfoIO.read(url, self.method(:playDirectAtReadInfo))
-            end
-        rescue => e
-            if e.kind_of? RuntimeError
-                $log.info { e.message }
-            else
-                $log.error { e }
-            end
-            # some messages must be treated.
-            # already expired.
-            # some xml error.
-            # no url
-            passiveMessage(i18n("There is no direct stream for this programme.\n %s" %[prog.title]))
-        end
+        Downloader.play(prog.link)
     end
 
-    protected
-    def playDirectAtReadInfo(minfo)
-        $log.debug { "#{minfo.inspect}" }
-#         raise "No stream Url" unless minfo.wma
-        return unless minfo.wma
-        url = minfo.wma.url
-
-        directPlayerCommand = IRecSettings.directPlayerCommand
-        cmd, args = makeProcCommand(directPlayerCommand, url)
-
-        $log.debug { "execute cmd '#{cmd}', args '#{args.inspect}'" }
-        proc = Qt::Process.new(self)
-        proc.start(cmd, args)
-    end
 
     public
     slots :openDocUrl
@@ -758,90 +695,11 @@ class MainWindow < KDE::MainWindow
 
         titles.each_value do |prog|
             url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
-            $log.info { "episode Url : #{url}" }
-            $downloader.download( prog.title, prog.categories, url )
+            $log.info { "download episode Url : #{url}" }
+            Downloader.download( prog.title, prog.categories, url )
         end
     end
 
-    #----------------------------------------
-    #
-    #   Downloader class
-    #
-    class Downloader
-        def initialize(parent, taskWin)
-            @main = parent
-            @taskWin = taskWin
-        end
-
-        def download( title, categories, episodeUrl, folder=nil, skipOverWrite=true )
-            tags = categories.split(/,/)
-
-            $log.info { "episode Url : #{episodeUrl}" }
-            reply = CachedIO::CacheReply.new(episodeUrl, nil)
-            reply.obj = [ title, tags, folder, skipOverWrite ]
-            BBCNet::CachedMetaInfoIO.read(episodeUrl, \
-                    reply.finishedMethod(self.method(:downloadAtReadInfo)))
-        end
-
-        protected
-        def downloadAtReadInfo(reply)
-            title, tags, folder, skipOverWrite = reply.obj
-
-            minfo = reply.data
-
-            fName = getSaveName(minfo, tags, folder, 'wma')
-            $log.info { "save name : #{fName}" }
-
-            if downloadOne(minfo, fName, skipOverWrite) then
-                passiveMessage(KDE::i18n("Start Download programme '%s'") % [title])
-            else
-                $log.debug { "cancel duplicated download '#{title}'" }
-            end
-        end
-
-        def downloadOne(metaInfo, fName, skipOverWrite=true)
-            return false if @taskWin.exist?(metaInfo)
-            return false unless metaInfo.streamInfo
-
-            process = DownloadProcess.new(@main, metaInfo, fName)
-            return false if skipOverWrite && process.overWrite?
-
-            process.taskItem = @taskWin.addTask(process)
-            process.beginTask
-            true
-        end
-
-        public
-        def getSaveName(minfo, tags, folder, ext='wma')
-            dir = folder || getSaveSubDirName(minfo, tags)
-            $log.debug { "save dir : #{dir}" }
-            dir + '/' + getSaveBaseName(minfo, tags, ext)
-        end
-
-
-        #
-        def getSaveBaseName(minfo, tags, ext)
-            s = IRecSettings
-            head = s.fileAddHeadStr
-            head += minfo.mediaName + ' ' if s.fileAddMediaName
-            head += minfo.channelName + ' ' if s.fileAddChannelName and minfo.channelName
-            head += minfo.genreName(tags) + ' ' if s.fileAddGenreName and minfo.genreName(tags)
-            head += "- " unless head.empty?
-            baseName = head  + minfo.title + '.' + ext
-            baseName.gsub(%r{[\/]}, '-')
-        end
-
-        #
-        def getSaveSubDirName(minfo, tags)
-            s = IRecSettings
-            dir = []
-            dir << minfo.mediaName if s.dirAddMediaName
-            dir << minfo.channelName if s.dirAddChannelName and minfo.channelName
-            dir << minfo.genreName(tags) if s.dirAddGenreName and minfo.genreName(tags)
-            File.join(dir.compact)
-        end
-    end
-    # end of Downloader class
 
 
 

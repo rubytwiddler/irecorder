@@ -41,6 +41,7 @@ class BBCNet < Qt::Object
     end
 
     class CachedMetaInfoIO < CachedObjectDiskIO
+        # cacheMax is max of memory size, not max of files.
         def initialize(cacheDuration = 24*60*60, cacheMax=200)
             super(cacheDuration, cacheMax)
             @tmpdir = File.join(@tmpdir, 'meta_info')
@@ -135,8 +136,6 @@ class BBCNet < Qt::Object
                 return
             end
             @onReadXmlPlaylist = onReadXmlPlaylist
-#             BBCNet.read("http://www.bbc.co.uk/iplayer/playlist/#{@pid}", \
-#                               self.method(:onReadXmlPlaylist))
             CachedRawXMLIO.read("http://www.bbc.co.uk/iplayer/playlist/#{@pid}", \
                               self.method(:onReadXmlPlaylist))
 #             onReadXmlPlaylist(IO.read("../tmp/iplayer-playlist-me.xml"))
@@ -232,8 +231,6 @@ class BBCNet < Qt::Object
 
         protected
         def readXml_1(dummy)
-#             BBCNet.read("http://www.bbc.co.uk/mediaselector/4/mtis/stream/#{@vpid}", \
-#                               self.method(:onReadXmlStreamMeta))
             CachedRawXMLIO.read("http://www.bbc.co.uk/mediaselector/4/mtis/stream/#{@vpid}", \
                               self.method(:onReadXmlStreamMeta))
 #             onReadXmlStreamMeta(IO.read("../tmp/iplayer-stream-meta-me.xml"))

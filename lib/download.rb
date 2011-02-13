@@ -447,3 +447,151 @@ class DownloadProcess < Qt::Process
 end
 
 
+#-------------------------------------------------------------------
+#
+#   Downloader class
+#
+class Downloader
+    include Singleton
+
+    # inject dependency
+    def initializeDependency(parent, taskWin)
+        @main = parent
+        @taskWin = taskWin
+    end
+
+    def self.initializeDependency(main, taskWin)
+        self.instance.initializeDependency(main, taskWin)
+    end
+
+    def self.download(*args)
+        self.instance.download(*args)
+    end
+
+    def self.play(*args)
+        self.instance.play(*args)
+    end
+
+    def download( title, categories, episodeUrl, folder=nil, skipOverWrite=false )
+        tags = categories.split(/,/)
+
+        $log.info { "episode Url : #{episodeUrl}" }
+        reply = CachedIO::CacheReply.new(episodeUrl, nil)
+        reply.obj = [ title, tags, folder, skipOverWrite ]
+        BBCNet::CachedMetaInfoIO.read(episodeUrl, \
+                reply.finishedMethod(self.method(:downloadAtReadInfo)))
+    end
+
+    protected
+    def downloadAtReadInfo(reply)
+        title, tags, folder, skipOverWrite = reply.obj
+
+        minfo = reply.data
+
+        fName = getSaveName(minfo, tags, folder, 'wma')
+        $log.info { "save name : #{fName}" }
+
+        if downloadOne(minfo, fName, skipOverWrite) then
+            passiveMessage(KDE::i18n("Start Download programme '%s'") % [title])
+        else
+            $log.info { "cancel duplicated download '#{title}'" }
+        end
+    end
+
+    def downloadOne(metaInfo, fName, skipOverWrite=true)
+        return false if @taskWin.exist?(metaInfo)
+        return false unless metaInfo.streamInfo
+
+        process = DownloadProcess.new(@main, metaInfo, fName)
+        return false if skipOverWrite && process.overWrite?
+
+        process.taskItem = @taskWin.addTask(process)
+        process.beginTask
+        true
+    end
+
+    def getSaveName(minfo, tags, folder, ext='wma')
+        dir = folder || getSaveSubDirName(minfo, tags)
+        $log.debug { "save dir : #{dir}" }
+        dir + '/' + getSaveBaseName(minfo, tags, ext)
+    end
+
+    #
+    def getSaveBaseName(minfo, tags, ext)
+        s = IRecSettings
+        head = s.fileAddHeadStr
+        head += minfo.mediaName + ' ' if s.fileAddMediaName
+        head += minfo.channelName + ' ' if s.fileAddChannelName and minfo.channelName
+        head += minfo.genreName(tags) + ' ' if s.fileAddGenreName and minfo.genreName(tags)
+        head += "- " unless head.empty?
+        baseName = head  + minfo.title + '.' + ext
+        baseName.gsub(%r{[\/]}, '-')
+    end
+
+    #
+    def getSaveSubDirName(minfo, tags)
+        s = IRecSettings
+        dir = []
+        dir << minfo.mediaName if s.dirAddMediaName
+        dir << minfo.channelName if s.dirAddChannelName and minfo.channelName
+        dir << minfo.genreName(tags) if s.dirAddGenreName and minfo.genreName(tags)
+        File.join(dir.compact)
+    end
+
+    public
+    #
+    #
+    #
+    def play(episodeUrl)
+        webPlayerCommand = IRecSettings.webPlayerCommand
+        directPlayerCommand = IRecSettings.directPlayerCommand
+
+        consoleUrl = BBCNet.getPlayerConsoleUrl(episodeUrl)
+        if IRecSettings.useInnerPlayer then
+            @playerDock.show
+            @playerWebView.setUrl(Qt::Url.new(consoleUrl))
+        elsif IRecSettings.useWebPlayer and webPlayerCommand then
+            $log.info { "Play on web browser" }
+            cmd, args = makeProcCommand(webPlayerCommand, consoleUrl)
+            $log.debug { "execute cmd '#{cmd}', args '#{args.inspect}'" }
+            proc = Qt::Process.new(self)
+            proc.start(cmd, args)
+
+        elsif IRecSettings.useDirectPlayer and directPlayerCommand then
+            $log.info { "Play direct" }
+
+            $log.info { "episode Url : #{episodeUrl}" }
+            BBCNet::CachedMetaInfoIO.read(episodeUrl, self.method(:playDirectAtReadInfo))
+        end
+    end
+
+    protected
+    def playDirectAtReadInfo(minfo)
+        stream = minfo.streamInfo
+        unless stream then
+            title = minfo.title
+            passiveMessage(KDE::i18n("No Valid Url to Play Programmme '%s'") % [title])
+            $log.info { "No Valid Url to Play Programmme '#{title}'" }
+            return
+        end
+
+        url = stream.url
+
+        directPlayerCommand = IRecSettings.directPlayerCommand
+        cmd, args = makeProcCommand(directPlayerCommand, url)
+
+        $log.debug { "execute cmd '#{cmd}', args '#{args.inspect}'" }
+        proc = Qt::Process.new(@main)
+        proc.start(cmd, args)
+    end
+
+    def makeProcCommand(command, url)
+        cmd, args = command.split(/\s+/, 2)
+        args = args.split(/\s+/).map do |a|
+            a.gsub(/%\w/, url)
+        end
+        [ cmd, args ]
+    end
+end
+# end of Downloader class
+

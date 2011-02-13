@@ -12,6 +12,7 @@ TODO - irecorder
  *check exiftool installed
  *delay update StreamInfo
  *delete expired cached files.
+ *add channel in filename/directory
 
  *install nokogiri for ruby1.9
 

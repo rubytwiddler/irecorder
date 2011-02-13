@@ -27,13 +27,15 @@ class TestResultDialog < Qt::Dialog
         class ResultEntry
             attr_reader :titleItem, :categoriesItem, :durationItem, :dateItem, :urlItem
             alias :id :titleItem
-            def initialize(title, categories, url)
+            attr_reader :filter
+            def initialize(title, categories, url, filter)
                 $log.misc { "ResultEntry: title:#{title}, categories:#{categories}, url:#{url}" }
                 @titleItem = Item.new(title)
                 @categoriesItem = Item.new(categories)
                 @durationItem = Item.new('')
                 @dateItem = Item.new('')
                 @urlItem = Item.new(url)
+                @filter = filter
             end
 
             def title
@@ -45,7 +47,7 @@ class TestResultDialog < Qt::Dialog
             end
 
             def url
-                @updatedItem.text
+                @urlItem.text
             end
         end
 
@@ -61,11 +63,11 @@ class TestResultDialog < Qt::Dialog
 #             self.selectionMode = Qt::AbstractItemView::SingleSelection
             self.alternatingRowColors = true
 
-            @rowTable = {}
+            @table = {}
         end
 
-        def addResult( title, categories, url )
-            entry = ResultEntry.new( title, categories, url )
+        def addResult( title, categories, url, filter )
+            entry = ResultEntry.new( title, categories, url, filter )
             row = rowCount
             self.rowCount = row + 1
             setItem( row, TITLE_COL, entry.titleItem )
@@ -73,18 +75,33 @@ class TestResultDialog < Qt::Dialog
             setItem( row, DURATION_COL, entry.durationItem )
             setItem( row, DATE_COL, entry.dateItem )
             setItem( row, URL_COL, entry.urlItem )
-            @rowTable[entry.id] = entry    # column_0 for ID
+            @table[entry.id] = entry    # column_0 for ID
         end
 
         def clearEntries
             clearContents
             self.rowCount = 0
-            @rowTable = Hash.new
+            @table = Hash.new
         end
 
         # return ResultEntry object.
         def [](row)
-            @rowTable[item(row,0)]
+            @table[item(row,0)]
+        end
+
+        def selectedEntries
+            rows = {}
+            selectedIndexes.each do |index|
+                rows[index.row] = true
+            end
+
+            rows.keys.map do |row|
+                i = item(row, 0)
+                unless @table[i] then
+                    $log.error { "ResultTable selectedEntries: @table[#{i}] is nil" }
+                end
+                @table[i]
+            end
         end
     end
 
@@ -105,12 +122,12 @@ class TestResultDialog < Qt::Dialog
         playIcon = KDE::Icon.new(':images/play-22.png')
         playBtn = KDE::PushButton.new( playIcon, i18n("Play")) do |w|
             w.objectName = 'playButton'
-#             connect( w, SIGNAL(:clicked), self, SLOT(:playProgramme) )
+            connect( w, SIGNAL(:clicked), self, SLOT(:playProgramme) )
         end
         downloadIcon = KDE::Icon.new(':images/download-22.png')
         downloadBtn = KDE::PushButton.new( downloadIcon, i18n("Download")) do |w|
             w.objectName = 'downloadButton'
-#             connect( w, SIGNAL(:clicked), self, SLOT(:startDownload) )
+            connect( w, SIGNAL(:clicked), self, SLOT(:downloadSelected) )
         end
         closeBtn = KDE::PushButton.new(KDE::Icon.new('dialog-close'), i18n('Close'))
 
@@ -152,8 +169,24 @@ class TestResultDialog < Qt::Dialog
         @headerState = config.readEntry('Header', @resultTable.horizontalHeader.saveState)
         @size = config.readEntry('Size', size)
     end
-end
 
+
+
+    slots :playProgramme
+    def playProgramme
+        entry = @resultTable.selectedEntries[0]
+        Downloader.play(entry.url) if entry
+    end
+
+    slots :downloadSelected
+    def downloadSelected
+        @resultTable.selectedEntries.each do |entry|
+            Downloader.download( entry.title, entry.categories, entry.url, \
+                                 entry.filter.folder, false )
+        end
+    end
+end
+# end of ResultTable
 
 
 
@@ -214,8 +247,8 @@ class ScheduleWindow < Qt::Widget
             attr_reader :categoriesItem, :titleFilterItem, :timeItem, :intervalItem, :folderItem
             alias   :id :categoriesItem
 
-            def initByTitle(title, categories, folder)
-                $log.debug { "title:#{title}, categories:#{categories}, folder:#{folder}" }
+            def initByTitle(title, categories)
+                $log.debug { "title:#{title}, categories:#{categories}" }
 
                 @title = title
                 @categories = categories
@@ -228,7 +261,7 @@ class ScheduleWindow < Qt::Widget
                 #
                 @time = Time.zero
                 @interval = Time.zero
-                @folder = folder
+                @folder = ''
                 initItems
             end
 
@@ -241,7 +274,6 @@ class ScheduleWindow < Qt::Widget
                 @time = saveEntry.time
                 @interval = saveEntry.interval
                 @folder = saveEntry.folder
-                $log.debug { "initBySaveEntry: folder:#{@folder}" }
                 initItems
             end
 
@@ -249,16 +281,15 @@ class ScheduleWindow < Qt::Widget
                 SaveEntry.new(self)
             end
 
-            def self.makeObjByTitle(title, categories, folder)
+            def self.makeObjByTitle(title, categories)
                 obj = self.new
-                obj.initByTitle(title, categories, folder)
+                obj.initByTitle(title, categories)
                 obj
             end
 
             def self.makeObjBySaveEntry(saveEntry)
                 obj = self.new
                 obj.initBySaveEntry(saveEntry)
-                $log.debug { "makeObjBySaveEntry: #{obj.inspect}" }
                 obj
             end
         end
@@ -333,8 +364,8 @@ class ScheduleWindow < Qt::Widget
             end
         end
 
-        def addFilterByTitle( title, categories, folder )
-            filter = ProgrammeFilter::makeObjByTitle(title, categories, folder)
+        def addFilterByTitle( title, categories )
+            filter = ProgrammeFilter::makeObjByTitle(title, categories )
             addFilter( filter )
         end
 
@@ -487,7 +518,7 @@ class ScheduleWindow < Qt::Widget
                         content = e.at_css('content').content
                         categories = e.css('category').map do |c| c['term'] end.join(',')
                         episodeUrl = content[UrlRegexp]       # String[] method extract only 1st one.
-                        @testResultDlg.table.addResult( title, categories, episodeUrl )
+                        @testResultDlg.table.addResult( title, categories, episodeUrl, filter )
                     end
                 end
             end
@@ -498,9 +529,8 @@ class ScheduleWindow < Qt::Widget
 
     slots 'addProgrammeFilter(const QString &, const QString &)'
     def addProgrammeFilter(title, categories)
-        folder = $downloader.getSaveFolder(categories)
         # add filter
-        @programmeFilterTable.addFilterByTitle( title, categories, folder )
+        @programmeFilterTable.addFilterByTitle( title, categories )
     end
 
 
@@ -520,7 +550,8 @@ class ScheduleWindow < Qt::Widget
     def downloadProgramme( filter, title, episodeUrl )
         # download
         $log.debug { "download item { title:#{title}, epUrl:#{episodeUrl} }" }
-        $downloader.download( title, filter.categories, episodeUrl, filter.folder )
+        folder = filter.folder.empty? ? nil : filter.folder
+        Downloader.download( title, filter.categories, episodeUrl, folder, true )
     end
 
     def getFiltersFileName
