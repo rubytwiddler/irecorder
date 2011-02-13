@@ -200,7 +200,7 @@ class FolderSelectorLineEdit < Qt::Widget
         @lineEdit.text
     end
     # compatibility for UrlRequester
-    alias text folder
+    alias :text :folder
 
     def folder=(dir)
         @lineEdit.text = dir
@@ -570,3 +570,14 @@ class String
     end
 end
 
+class Time
+    ZERO = Time.at(0)
+
+    def zero?
+        self == ZERO
+    end
+
+    def self.zero
+        Time.at(0)
+    end
+end

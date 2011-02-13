@@ -26,6 +26,7 @@ class TestResultDialog < Qt::Dialog
         #
         class ResultEntry
             attr_reader :titleItem, :categoriesItem, :durationItem, :dateItem, :urlItem
+            alias :id :titleItem
             def initialize(title, categories, url)
                 $log.misc { "ResultEntry: title:#{title}, categories:#{categories}, url:#{url}" }
                 @titleItem = Item.new(title)
@@ -72,7 +73,7 @@ class TestResultDialog < Qt::Dialog
             setItem( row, DURATION_COL, entry.durationItem )
             setItem( row, DATE_COL, entry.dateItem )
             setItem( row, URL_COL, entry.urlItem )
-            @rowTable[entry.titleItem] = entry    # colum_0 for ID
+            @rowTable[entry.id] = entry    # column_0 for ID
         end
 
         def clearEntries
@@ -101,6 +102,16 @@ class TestResultDialog < Qt::Dialog
     def createWidget
         # create widgets
         @resultTable = ResultTable.new
+        playIcon = KDE::Icon.new(':images/play-22.png')
+        playBtn = KDE::PushButton.new( playIcon, i18n("Play")) do |w|
+            w.objectName = 'playButton'
+#             connect( w, SIGNAL(:clicked), self, SLOT(:playProgramme) )
+        end
+        downloadIcon = KDE::Icon.new(':images/download-22.png')
+        downloadBtn = KDE::PushButton.new( downloadIcon, i18n("Download")) do |w|
+            w.objectName = 'downloadButton'
+#             connect( w, SIGNAL(:clicked), self, SLOT(:startDownload) )
+        end
         closeBtn = KDE::PushButton.new(KDE::Icon.new('dialog-close'), i18n('Close'))
 
         # connect
@@ -109,7 +120,7 @@ class TestResultDialog < Qt::Dialog
         #layout
         l = Qt::VBoxLayout.new
         l.addWidget(@resultTable)
-        l.addWidgets(nil, closeBtn)
+        l.addWidgets(playBtn, downloadBtn, nil, closeBtn)
         setLayout(l)
     end
 
@@ -192,8 +203,8 @@ class ScheduleWindow < Qt::Widget
                 # TableWidgetItem
                 @categoriesItem = Item.new(@categories)
                 @titleFilterItem = Item.new(@titleFilter.source)
-                @timeItem = @time == Time.at(0) ? Item.new('') : Item.new(@time.to_s)
-                @intervalItem = @interval == Time.at(0) ? Item.new('') : Item.new(@interval.to_s)
+                @timeItem = @time.zero? ? Item.new('') : Item.new(@time.to_s)
+                @intervalItem = @interval.zero? ? Item.new('') : Item.new(@interval.to_s)
                 @folderItem = Item.new(@folder)
             end
 
@@ -201,6 +212,7 @@ class ScheduleWindow < Qt::Widget
             public
             attr_reader :title, :categories, :catIndex, :titleFilter, :time, :interval, :folder
             attr_reader :categoriesItem, :titleFilterItem, :timeItem, :intervalItem, :folderItem
+            alias   :id :categoriesItem
 
             def initByTitle(title, categories, folder)
                 $log.debug { "title:#{title}, categories:#{categories}, folder:#{folder}" }
@@ -214,8 +226,8 @@ class ScheduleWindow < Qt::Widget
                     .gsub(/:[\d\/\s]+$/, '') .gsub(/:\s*Episode[\s\d]*$/, '') .gsub(/:.*$/, '') )
 
                 #
-                @time = Time.at(0)
-                @interval = Time.at(0)
+                @time = Time.zero
+                @interval = Time.zero
                 @folder = folder
                 initItems
             end
@@ -229,6 +241,7 @@ class ScheduleWindow < Qt::Widget
                 @time = saveEntry.time
                 @interval = saveEntry.interval
                 @folder = saveEntry.folder
+                $log.debug { "initBySaveEntry: folder:#{@folder}" }
                 initItems
             end
 
@@ -245,6 +258,7 @@ class ScheduleWindow < Qt::Widget
             def self.makeObjBySaveEntry(saveEntry)
                 obj = self.new
                 obj.initBySaveEntry(saveEntry)
+                $log.debug { "makeObjBySaveEntry: #{obj.inspect}" }
                 obj
             end
         end
@@ -252,8 +266,11 @@ class ScheduleWindow < Qt::Widget
 
         # column
         CATEGORY_COL, PROGRAM_COL, TIME_COL, INTERVAL_COL, FOLDER_COL = (0..5).to_a
-
         attr_reader :filters
+
+        #
+        # ProgrammeFilterTable class
+        #
         def initialize()
             super(0,5)
 
@@ -283,15 +300,20 @@ class ScheduleWindow < Qt::Widget
             @table.values
         end
 
+        slots :deleteSelected
         def deleteSelected
-            itemRow = selectedIndexes[0].row
+            index = selectedIndexes[0]
+            return unless index
+            itemRow = index.row
             i = item(itemRow, 0)
             @table.delete(i)
             removeRow(itemRow)
         end
 
         def selectedFilter
-            itemRow = selectedIndexes[0].row
+            index = selectedIndexes[0]
+            return unless index
+            itemRow = index.row
             i = item(itemRow, 0)
             @table[i]
         end
@@ -301,12 +323,22 @@ class ScheduleWindow < Qt::Widget
             selectedIndexes.each do |index|
                 rows[index.row] = true
             end
-#             $log.debug { "selectedFilters: rows:#{rows.inspect}, selectedIndexes:#{selectedIndexes}" }
+            $log.debug { "" }
+            $log.debug { "selectedFilters: rows:#{rows.inspect}, selectedIndexes:#{selectedIndexes}" }
 
-            rows.keys.map do |row|
+            filters = rows.keys.map do |row|
                 i = item(row, 0)
+                unless @table[i] then
+                    $log.error { "selectedFilters: @table[#{i}] is nil" }
+                end
+                $log.debug { "selectedFilters: select @table[#{i}]" }
                 @table[i]
             end
+
+            $log.debug { "selectedFilters @table.keys : #{@table.keys}" }
+            $log.debug { "selectedFilters @table.values : #{@table.values}" }
+            $log.debug { "selectedFilters : #{filters}" }
+            filters
         end
 
         def addFilterByTitle( title, categories, folder )
@@ -322,14 +354,18 @@ class ScheduleWindow < Qt::Widget
         end
 
         def addFilter( filter )
-            row = rowCount
-            self.rowCount = row + 1
-            setItem( row, CATEGORY_COL, filter.categoriesItem )
-            setItem( row, PROGRAM_COL, filter.titleFilterItem )
-            setItem( row, TIME_COL, filter.timeItem )
-            setItem( row, INTERVAL_COL, filter.intervalItem )
-            setItem( row, FOLDER_COL, filter.folderItem )
-            @table[filter.categoriesItem] = filter  # colum_0 for ID
+            sortFlag = sortingEnabled
+            self.sortingEnabled = false
+
+            insertRow(0)
+            setItem( 0, CATEGORY_COL, filter.categoriesItem )
+            setItem( 0, PROGRAM_COL, filter.titleFilterItem )
+            setItem( 0, TIME_COL, filter.timeItem )
+            setItem( 0, INTERVAL_COL, filter.intervalItem )
+            setItem( 0, FOLDER_COL, filter.folderItem )
+            @table[filter.id] = filter  # column_0 for ID
+
+            self.sortingEnabled = sortFlag
         end
     end
 
@@ -361,9 +397,8 @@ class ScheduleWindow < Qt::Widget
         connect(updateAllBtn, SIGNAL(:clicked), self, SLOT(:updateAllFilters))
         connect(updateBtn, SIGNAL(:clicked), self, SLOT(:updateSelectedFilters))
         connect(testFilterBtn, SIGNAL(:clicked), self, SLOT(:testSelectedFilters))
-        connect(deleteBtn, SIGNAL(:clicked)) do
-            @programmeFilterTable.deleteSelected
-        end
+        connect(deleteBtn, SIGNAL(:clicked), @programmeFilterTable, SLOT(:deleteSelected))
+        connect(editBtn, SIGNAL(:clicked), self, SLOT(:editFilter))
 
         # layout
         vLayout = Qt::VBoxLayout.new
@@ -440,7 +475,7 @@ class ScheduleWindow < Qt::Widget
     slots :testSelectedFilters
     def testSelectedFilters
         filters = @programmeFilterTable.selectedFilters
-        return unless filters
+        return if filters.nil? or filters.empty?
 
         @testResultDlg.table.clearEntries
         $log.debug { "testSelectedFilters: filters:#{filters}" }
@@ -474,6 +509,26 @@ class ScheduleWindow < Qt::Widget
         folder = $downloader.getSaveFolder(categories)
         # add filter
         @programmeFilterTable.addFilterByTitle( title, categories, folder )
+    end
+
+
+    slots :editFilter
+    def editFilter
+        filters = @programmeFilterTable.selectedFilters
+        return if filters.nil? or filters.empty?
+
+        $log.debug { "" }
+        $log.debug { "debug filters:#{filters}" }
+        filters.each do |filter|
+            $log.debug { "debug folder:#{filter.folder}" }
+            $log.debug { "debug folderIem:#{filter.folderItem}" }
+            $log.debug { "debug folderItem.text:#{filter.folderItem.text}" }
+
+            $log.debug { "debug titleFilter:#{filter.titleFilter}" }
+            $log.debug { "debug titleFilterItem:#{filter.titleFilterItem}" }
+            $log.debug { "debug titleFilterItem.text:#{filter.titleFilterItem.text}" }
+            $log.debug { "debug filter.inspect:#{filter.inspect}" }
+        end
     end
 
     #

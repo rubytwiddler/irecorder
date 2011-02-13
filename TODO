@@ -6,11 +6,12 @@ TODO - irecorder
 
  *check duration of file after download.
  *multi-select task and do operations.
- *BUG: sort duration, date, update
+ *BUG: disappear schedule items.
  *crash & version check of cache
  *display already saved or not.
 
  *delay update StreamInfo
+ *delete expired cached files.
 
  *install nokogiri for ruby1.9
 
@@ -25,8 +26,6 @@ TODO - irecorder
  *mencoder for dump
  *play/download from proxy (mplayer)
  *status bar for processing.
- *log message level.
- *log limit line number
  *resume task
  *fileName + sub category
  *fileName + date
@@ -38,4 +37,4 @@ TODO - irecorder
 
 
 Knowing issue :
- *64bit latest flash plugin crush webview on the bbc iplayer site.
+ *64bit latest flash plugin crash webview on the bbc iplayer site.

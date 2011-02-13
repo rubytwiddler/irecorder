@@ -10,22 +10,23 @@ class ProgrammeTableWidget < Qt::TableWidget
     class Programme
         attr_reader :titleItem, :categoriesItem, :updatedItem, :onAirItem, \
                 :durationItem, :savedItem
+        alias :id :titleItem
         attr_reader :content, :link
         attr_reader :updated, :onAirDate, :duration
-        DATE_FORMAT = "%Y/%m/%d %a"
+#         DATE_FORMAT = "%Y/%m/%d %a"
 
         def initialize(title, categories, updated, content, link)
             @content = content
             @link = link
             @updated = BBCNet.getTime(updated)
-            @onAirDate = Time.at(0)
+            @onAirDate = Time.zero
             @duration = 0
 
             @titleItem = Item.new(title)
             @categoriesItem = Item.new(categories)
-            @updatedItem = Item.new(@updated.strftime(DATE_FORMAT))
-            @onAirItem = Item.new
-            @durationItem = Item.new
+            @updatedItem = DateItem.new(@updated)
+            @onAirItem = DateItem.new
+            @durationItem = NumItem.new
             @savedItem = Item.new
 
             BBCNet::CachedMetaInfoIO.read(link, self.method(:onReadInfo))
@@ -35,7 +36,7 @@ class ProgrammeTableWidget < Qt::TableWidget
             @minfo = minfo
             @onAirDate = minfo.onAirDate
             @duration = minfo.duration
-            @onAirItem.text = @onAirDate.strftime(DATE_FORMAT) if @onAirDate
+            @onAirItem.date = @onAirDate if @onAirDate
             @durationItem.text = @duration.to_s if @duration
         end
 
@@ -62,6 +63,34 @@ class ProgrammeTableWidget < Qt::TableWidget
         end
     end
 
+    class NumItem < Item
+        def lessThan(i)
+            self.text.to_i < i.text.to_i
+        end
+        alias :'operator<' :lessThan
+    end
+
+    class DateItem < Item
+        def initialize(d=Time.zero)
+            super('')
+            self.date = d
+        end
+        attr_reader :date
+
+        def lessThan(o)
+            date < o.date
+        end
+        alias :'operator<' :lessThan
+
+        def date=(d)
+            @date = d
+            if d.zero? then
+                self.toolTip = self.text = ''
+            else
+                self.toolTip = self.text = d.to_s   #strftime(DATE_FORMAT)
+            end
+        end
+    end
 
     #------------------------------------------------------------------------
     #
@@ -88,7 +117,7 @@ class ProgrammeTableWidget < Qt::TableWidget
         @table = Hash.new
     end
 
-    def addEntry( row, title, categories, updated, content, link )
+    def setEntry( row, title, categories, updated, content, link )
         entry = Programme.new(title, categories, updated, content, link)
         setItem( row, TITLE_COL, entry.titleItem )
         setItem( row, CATEGORIES_COL, entry.categoriesItem )
@@ -96,7 +125,7 @@ class ProgrammeTableWidget < Qt::TableWidget
         setItem( row, ON_AIR_COL, entry.onAirItem )
         setItem( row, DURATION_COL, entry.durationItem )
         setItem( row, SAVED_COL, entry.savedItem )
-        @table[entry.titleItem] = entry
+        @table[entry.id] = entry
     end
 
     def addEntriesFromRss(rss)
@@ -118,7 +147,7 @@ class ProgrammeTableWidget < Qt::TableWidget
             link = linkItem ? linkItem['href'] : nil
             categories = e.css('category').map do |c| c['term'] end.join(',')
             $log.misc { title }
-            addEntry( row, title, categories, updated, content, link )
+            setEntry( row, title, categories, updated, content, link )
         end
 
         self.sortingEnabled = sortFlag
@@ -204,7 +233,7 @@ class ProgrammeTableWidget < Qt::TableWidget
     end
 
     def insertSchedule(menu)
-        a = menu.addAction('Schedule This Title Programme')
+        a = menu.addAction(KDE::Icon.new('view-time-schedule'), i18n('Schedule This Title Programme'))
         a.setVData('schedule@')
     end
 
