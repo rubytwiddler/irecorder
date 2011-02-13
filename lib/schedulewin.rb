@@ -323,22 +323,14 @@ class ScheduleWindow < Qt::Widget
             selectedIndexes.each do |index|
                 rows[index.row] = true
             end
-            $log.debug { "" }
-            $log.debug { "selectedFilters: rows:#{rows.inspect}, selectedIndexes:#{selectedIndexes}" }
 
-            filters = rows.keys.map do |row|
+            rows.keys.map do |row|
                 i = item(row, 0)
                 unless @table[i] then
                     $log.error { "selectedFilters: @table[#{i}] is nil" }
                 end
-                $log.debug { "selectedFilters: select @table[#{i}]" }
                 @table[i]
             end
-
-            $log.debug { "selectedFilters @table.keys : #{@table.keys}" }
-            $log.debug { "selectedFilters @table.values : #{@table.values}" }
-            $log.debug { "selectedFilters : #{filters}" }
-            filters
         end
 
         def addFilterByTitle( title, categories, folder )
@@ -517,17 +509,8 @@ class ScheduleWindow < Qt::Widget
         filters = @programmeFilterTable.selectedFilters
         return if filters.nil? or filters.empty?
 
-        $log.debug { "" }
-        $log.debug { "debug filters:#{filters}" }
         filters.each do |filter|
-            $log.debug { "debug folder:#{filter.folder}" }
-            $log.debug { "debug folderIem:#{filter.folderItem}" }
-            $log.debug { "debug folderItem.text:#{filter.folderItem.text}" }
 
-            $log.debug { "debug titleFilter:#{filter.titleFilter}" }
-            $log.debug { "debug titleFilterItem:#{filter.titleFilterItem}" }
-            $log.debug { "debug titleFilterItem.text:#{filter.titleFilterItem.text}" }
-            $log.debug { "debug filter.inspect:#{filter.inspect}" }
         end
     end
 

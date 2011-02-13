@@ -58,7 +58,6 @@ class MainWindow < KDE::MainWindow
         setCaption(APP_NAME)
 
         $log = MyLogger.new(STDOUT)
-        $log.level = MyLogger::DEBUG
         $log.info { 'Initializing.' }
 
         applyTheme
@@ -415,6 +414,7 @@ class MainWindow < KDE::MainWindow
 
     def readSettings
         config = $config.group(GroupName)
+        $log.level = config.readEntry('LogLevel', MyLogger::DEBUG)
         @mainTabPageHSplitter.restoreState(config.readEntry('MainTabPageState', @mainTabPageHSplitter.saveState))
         @progTableFrame.restoreState(config.readEntry('ProgTableFrame',
                                                       @progTableFrame.saveState))
@@ -431,12 +431,14 @@ class MainWindow < KDE::MainWindow
         @scheduleWin.loadFilters
     end
 
+
     def writeSettings
         config = $config.group(GroupName)
         config.writeEntry('MainTabPageState', @mainTabPageHSplitter.saveState)
         config.writeEntry('ProgTableFrame', @progTableFrame.saveState)
         config.writeEntry('ChannelType', @channelTypeToolBox.currentIndex)
         config.writeEntry('ChannelViewWidth', @channelViewWidth)
+        config.writeEntry('LogLevel', $log.level)
 
         @programmeTable.writeSettings
         @taskWin.writeSettings

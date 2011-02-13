@@ -32,7 +32,6 @@ class LogWindow < Qt::Widget
         #
         @limitLine = 1000
         @lineCount = 0
-        setLevel($log.level)
     end
 
     attr_accessor :limitLine
@@ -56,6 +55,9 @@ class LogWindow < Qt::Widget
         end
     end
 
+    def showEvent(event)
+        setLevel($log.level)
+    end
 
     public
     def write(text)
