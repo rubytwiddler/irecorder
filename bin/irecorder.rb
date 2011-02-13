@@ -90,7 +90,7 @@ class MainWindow < KDE::MainWindow
     def initializeTaskTimer
         # Task Timer
         @timer = Qt::Timer.new(self)
-        connect( @timer, SIGNAL(:timeout), self, SLOT(:updateTask) )
+        connect( @timer, SIGNAL(:timeout), @taskWin, SLOT(:update) )
         @timer.start(1000)          # 1000 msec = 1 sec
     end
 
@@ -759,131 +759,95 @@ class MainWindow < KDE::MainWindow
         titles.each_value do |prog|
             url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
             $log.info { "episode Url : #{url}" }
-            reply = CachedIO::CacheReply.new(url, nil)
-            reply.obj = prog
-            BBCNet::CachedMetaInfoIO.read(url, \
-                    reply.finishedMethod(self.method(:startDownloadAtReadInfo)))
+            $downloader.download( prog.title, prog.categories, url )
         end
     end
 
-    def startDownloadAtReadInfo(reply)
-        minfo = reply.data
-        prog = reply.obj
-        $log.misc { " minfo of download file : #{minfo.inspect}" }
-        unless minfo.streamInfo then
-            passiveMessage(i18n("'%s' don't have downloadable stream.") % [prog.title])
-            return
-        end
-
-        fName = getSaveName(prog, 'wma')
-        $log.info { "save name : #{fName}" }
-
-        startDownOneFile(minfo, fName)
-
-        passiveMessage(i18n("Start Download programme '%s'") % [prog.title])
-     end
-
     #----------------------------------------
     #
+    #   Downloader class
     #
     class Downloader
         def initialize(parent, taskWin)
             @main = parent
-            @downloader = parent
             @taskWin = taskWin
         end
 
-        def getSaveFolder(categories)
-            tags = categories.split(/,/)
-            @downloader.getSaveSubDirName(tags)
-        end
-
-        def download( title, categories, episodeUrl, folder, checkNeedless=true )
+        def download( title, categories, episodeUrl, folder=nil, skipOverWrite=true )
             tags = categories.split(/,/)
 
             $log.info { "episode Url : #{episodeUrl}" }
             reply = CachedIO::CacheReply.new(episodeUrl, nil)
-            reply.obj = [ title, tags, folder, checkNeedless ]
+            reply.obj = [ title, tags, folder, skipOverWrite ]
             BBCNet::CachedMetaInfoIO.read(episodeUrl, \
                     reply.finishedMethod(self.method(:downloadAtReadInfo)))
         end
 
         protected
         def downloadAtReadInfo(reply)
-            title, tags, folder, checkNeedless = reply.obj
+            title, tags, folder, skipOverWrite = reply.obj
+
             minfo = reply.data
-            fName = folder + '/' + @downloader.getSaveBaseName(title, tags, 'wma')
+
+            fName = getSaveName(minfo, tags, folder, 'wma')
             $log.info { "save name : #{fName}" }
 
-            if downloadOne(minfo, fName, checkNeedless) then
+            if downloadOne(minfo, fName, skipOverWrite) then
                 passiveMessage(KDE::i18n("Start Download programme '%s'") % [title])
             else
                 $log.debug { "cancel duplicated download '#{title}'" }
             end
         end
 
-        def downloadOne(metaInfo, fName, checkNeedless=true)
+        def downloadOne(metaInfo, fName, skipOverWrite=true)
             return false if @taskWin.exist?(metaInfo)
             return false unless metaInfo.streamInfo
 
             process = DownloadProcess.new(@main, metaInfo, fName)
-            return false if checkNeedless && process.checkNeedless
+            return false if skipOverWrite && process.overWrite?
 
             process.taskItem = @taskWin.addTask(process)
             process.beginTask
             true
         end
-    end
+
+        public
+        def getSaveName(minfo, tags, folder, ext='wma')
+            dir = folder || getSaveSubDirName(minfo, tags)
+            $log.debug { "save dir : #{dir}" }
+            dir + '/' + getSaveBaseName(minfo, tags, ext)
+        end
 
 
-    #
-    #
-    protected
-    #
-    def getSaveName(prog, ext='wma')
-        tags = prog.categories.split(/,/)
-        dir = getSaveSubDirName(tags)
-        $log.debug { "save dir : #{dir}" }
+        #
+        def getSaveBaseName(minfo, tags, ext)
+            s = IRecSettings
+            head = s.fileAddHeadStr
+            head += minfo.mediaName + ' ' if s.fileAddMediaName
+            head += minfo.channelName + ' ' if s.fileAddChannelName and minfo.channelName
+            head += minfo.genreName(tags) + ' ' if s.fileAddGenreName and minfo.genreName(tags)
+            head += "- " unless head.empty?
+            baseName = head  + minfo.title + '.' + ext
+            baseName.gsub(%r{[\/]}, '-')
+        end
 
-        dir + '/' + getSaveBaseName(prog.title, tags, ext)
-    end
-
-    public
-    #
-    def getSaveBaseName(title, tags, ext)
-        s = IRecSettings
-        head = s.fileAddHeadStr
-        head += getMediaName(tags) + ' ' if s.fileAddMediaName
-        head += getChannelName + ' ' if s.fileAddChannelName and getChannelName
-        head += getGenreName(tags) + ' ' if s.fileAddGenreName and getGenreName(tags)
-        head += "- " unless head.empty?
-        baseName = head  + title + '.' + ext
-        baseName.gsub(%r{[\/]}, '-')
-    end
-
-    #
-    def getSaveSubDirName(tags)
-        s = IRecSettings
-        dir = []
-        dir << getMediaName(tags) if s.dirAddMediaName
-        dir << getChannelName if s.dirAddChannelName and getChannelName
-        dir << getGenreName(tags) if s.dirAddGenreName and getGenreName(tags)
-        File.join(dir.compact)
-    end
-
-    protected
-    # media [TV,Radio,iPod]
-    def getMediaName(tags)
-        tags.find do |t|
-            %w(radio tv ipod).include?(t.downcase)
+        #
+        def getSaveSubDirName(minfo, tags)
+            s = IRecSettings
+            dir = []
+            dir << minfo.mediaName if s.dirAddMediaName
+            dir << minfo.channelName if s.dirAddChannelName and minfo.channelName
+            dir << minfo.genreName(tags) if s.dirAddGenreName and minfo.genreName(tags)
+            File.join(dir.compact)
         end
     end
+    # end of Downloader class
 
-    # channel [BBC Radio 4, ..]
-    def getChannelName
-        getChannelTitle
-    end
 
+
+    #
+    #
+    protected
     def getChannelTitle
         case  @channelType
         when TvType
@@ -894,52 +858,6 @@ class MainWindow < KDE::MainWindow
             BBCNet::RadioChannelRssTbl[ @channelIndex ][0]
         else
             nil
-        end
-    end
-
-    # Main Genre [Drama, Comedy, ..]
-    def getGenreName(tags)
-        BBCNet::CategoryNameTbl.find do |cat|
-            tags.find do |t|
-                cat =~ /#{t}/i
-            end
-        end
-    end
-
-
-    # other genre [Sitcom, SF, etc]
-    def getSubGenreName(tags)
-    end
-
-
-
-
-
-    #-------------------------------------------------------------------
-    # parameter
-    #  metaInfo : source stream MetaInfo of download file.
-    #  fName : save file name.
-    #
-    # start Dwnload One file.
-    public
-    def startDownOneFile(metaInfo, fName)
-        return unless metaInfo.streamInfo
-        process = DownloadProcess.new(self, metaInfo, fName)
-        process.taskItem = @taskWin.addTask(process)
-        process.beginTask
-    end
-
-
-
-
-    #
-    # slot :  periodically called to update task view.
-    #
-    protected
-    slots  :updateTask
-    def updateTask
-        @taskWin.each do |task|
-            task.process.updateView
         end
     end
 end

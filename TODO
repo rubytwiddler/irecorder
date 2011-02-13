@@ -6,10 +6,10 @@ TODO - irecorder
 
  *check duration of file after download.
  *multi-select task and do operations.
- *BUG: disappear schedule items.
  *crash & version check of cache
  *display already saved or not.
 
+ *check exiftool installed
  *delay update StreamInfo
  *delete expired cached files.
 

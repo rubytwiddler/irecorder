@@ -360,6 +360,16 @@ class TaskWindow < Qt::Widget
         @table.each(&block)
     end
 
+    #
+    # slot :  periodically called to update task view.
+    #
+    slots  :update
+    def update
+        @table.each do |task|
+            task.process.updateView
+        end
+    end
+
     def exist?(metaInfo)
         @table.each do |taskItem|
             return true if taskItem.process.metaInfo == metaInfo

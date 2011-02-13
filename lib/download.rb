@@ -174,7 +174,7 @@ class DownloadProcess < Qt::Process
 
     #
     #
-    def checkNeedless
+    def overWrite?
         decideStartTask == FINISHED
     end
 

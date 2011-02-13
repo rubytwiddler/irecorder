@@ -95,6 +95,23 @@ class BBCNet < Qt::Object
             @streams = []
         end
 
+        # media [Radio,TV]
+        def mediaName
+            media.capitalize
+        end
+
+        # channel [BBC Radio 4, ..]
+        alias :channelName :channel
+
+        # Main Genre [Drama, Comedy, ..]
+        def genreName(tags)
+            BBCNet::CategoryNameTbl.find do |cat|
+                tags.find do |t|
+                    cat =~ /#{t}/i
+                end
+            end
+        end
+
         def cleanData
             remove_instance_variable :@onRead
             remove_instance_variable :@reply
@@ -267,6 +284,7 @@ class BBCNet < Qt::Object
         end
     end
 
+    # end of MetaInfo class
 
 
     def self.getTime(str)
