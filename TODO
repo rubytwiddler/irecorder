@@ -1,19 +1,25 @@
 TODO - irecorder
  *schedule download
+   -2 type entry : title filter type, time weekday/time/duratino type.
+
    -schedule download, in system tray, auto restart download.
    -auto start in back ground
+     separate downloader.
    -test filter
 
  *check duration of file after download.
- *multi-select task and do operations.
- *crash & version check of cache
+ *multi-select task and execute operations.
+ *handle crash & version check of cache
  *display already saved or not.
 
- *check exiftool installed
- *delay update StreamInfo
  *delete expired cached files.
+ *add function for edit download folder, title, programme filter tags,
+ *add function for edit interval, duration, channel.
  *add channel in filename/directory
+ *delay update StreamInfo
+ *derived Qt::Object must delete itself. e.g) some Items
 
+ *check exiftool installed => instead use ffruby.
  *install nokogiri for ruby1.9
 
  *error handling
@@ -37,5 +43,5 @@ TODO - irecorder
  x(impossible) change install directory for menu, when you install by gem with --user-install option.
 
 
-Knowing issue :
+Known issue :
  *64bit latest flash plugin crash webview on the bbc iplayer site.

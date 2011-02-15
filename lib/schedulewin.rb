@@ -50,7 +50,7 @@ class TestResultDialog < Qt::Dialog
                 @urlItem.text
             end
         end
-
+        # end of ResultEntry class
 
         #
         # ResultTable class
@@ -104,7 +104,7 @@ class TestResultDialog < Qt::Dialog
             end
         end
     end
-
+    # end of ResultTable class
 
 
     #
@@ -216,17 +216,32 @@ class ScheduleWindow < Qt::Widget
         #
         class ProgrammeFilter
             class SaveEntry
-                attr_reader :title, :categories, :catIndex, :titleFilter, :time, :interval, :folder
+                attr_reader :title, :categories, :catIndex, :titleFilter, \
+                        :time, :duration, :interval, :folder, :url, :orgTitle
                 def initialize(filter)
                     @title = filter.title
+                    @orgTitle = filter.orgTitle
                     @categories = filter.categories
                     @catIndex = filter.catIndex
                     @titleFilter = filter.titleFilter
                     @time = filter.time
+                    @duration = filter.duration
                     @interval = filter.interval
                     @folder = filter.folder
+                    @url = filter.url
                 end
             end
+
+
+            #
+            #  ProgrammeFilter class
+            #
+            public
+            attr_reader :title, :orgTitle, :categories, :catIndex, :titleFilter, \
+                    :time, :duration, :interval, :folder, :url
+            attr_reader :categoriesItem, :titleFilterItem, :timeItem, :durationItem, \
+                    :intervalItem, :folderItem
+            alias   :id :categoriesItem
 
             protected
             def initialize
@@ -236,23 +251,39 @@ class ScheduleWindow < Qt::Widget
                 # TableWidgetItem
                 @categoriesItem = Item.new(@categories)
                 @titleFilterItem = Item.new(@titleFilter.source)
-                @timeItem = @time.zero? ? Item.new('') : Item.new(@time.to_s)
-                @intervalItem = @interval.zero? ? Item.new('') : Item.new(@interval.to_s)
-                @folderItem = Item.new(@folder)
+                @timeItem = Item.new(@time.zero? ? '' : @time.to_s)
+                @durationItem = Item.new(@duration == 0 ? '' : @duration.to_s)
+                @intervalItem = Item.new(@interval.zero? ? '' : @interval.to_s)
+                @folderItem = Item.new(@folder || '')
+
+                unless @folder then
+                    BBCNet::CachedMetaInfoIO.read(@url, self.method(:initOnRead))
+                end
+            end
+
+            def initOnRead(minfo)
+                @minfo = minfo
+                # set folder
+                tags = @categories.split(/,/)
+                if @folder.nil? or @folder.empty? then
+                    @folder = Downloader.getSaveFolderName(minfo, tags)
+                end
+                @duration = minfo.duration
+                @durationItem.text = @duration.to_s
+                @time = minfo.onAirDate
+                @timeItem.text = minfo.onAirDate.to_s
             end
 
 
             public
-            attr_reader :title, :categories, :catIndex, :titleFilter, :time, :interval, :folder
-            attr_reader :categoriesItem, :titleFilterItem, :timeItem, :intervalItem, :folderItem
-            alias   :id :categoriesItem
-
-            def initByTitle(title, categories)
+            def initByTitle(title, categories, url)
                 $log.debug { "title:#{title}, categories:#{categories}" }
 
-                @title = title
+                @title = @orgTitle = title
                 @categories = categories
                 @catIndex = BBCNet::getCategoryIndex(categories)
+                @url = url
+                @folder = nil
 
                 # set title filter
                 @titleFilter = Regexp.new( @title.gsub(/^[^:]+ Catch\-Up:/, '') \
@@ -261,19 +292,21 @@ class ScheduleWindow < Qt::Widget
                 #
                 @time = Time.zero
                 @interval = Time.zero
-                @folder = ''
                 initItems
             end
 
 
             def initBySaveEntry(saveEntry)
                 @title = saveEntry.title
+                @orgTitle = saveEntry.orgTitle
                 @categories = saveEntry.categories
                 @catIndex = saveEntry.catIndex
                 @titleFilter = saveEntry.titleFilter
                 @time = saveEntry.time
+                @duration = saveEntry.duration
                 @interval = saveEntry.interval
                 @folder = saveEntry.folder
+                @url = saveEntry.url
                 initItems
             end
 
@@ -281,9 +314,9 @@ class ScheduleWindow < Qt::Widget
                 SaveEntry.new(self)
             end
 
-            def self.makeObjByTitle(title, categories)
+            def self.makeObjByTitle(title, categories, url)
                 obj = self.new
-                obj.initByTitle(title, categories)
+                obj.initByTitle(title, categories, url)
                 obj
             end
 
@@ -293,19 +326,21 @@ class ScheduleWindow < Qt::Widget
                 obj
             end
         end
+        # end of ProgrammeFilter class
 
-
-        # column
-        CATEGORY_COL, PROGRAM_COL, TIME_COL, INTERVAL_COL, FOLDER_COL = (0..5).to_a
-        attr_reader :filters
 
         #
         # ProgrammeFilterTable class
         #
-        def initialize()
-            super(0,5)
 
-            setHorizontalHeaderLabels(%w{Category Program Time Interval Folder})
+        # column
+        CATEGORY_COL, PROGRAM_COL, TIME_COL, DURATION_COL, INTERVAL_COL, FOLDER_COL = (0..5).to_a
+        attr_reader :filters
+
+        def initialize()
+            super(0,6)
+
+            setHorizontalHeaderLabels(%w{Category Program Time Duration Interval Folder})
             horizontalHeader.stretchLastSection = true
             self.selectionBehavior = Qt::AbstractItemView::SelectRows
             self.selectionMode = Qt::AbstractItemView::SingleSelection
@@ -364,8 +399,8 @@ class ScheduleWindow < Qt::Widget
             end
         end
 
-        def addFilterByTitle( title, categories )
-            filter = ProgrammeFilter::makeObjByTitle(title, categories )
+        def addFilterByTitle( title, categories, url )
+            filter = ProgrammeFilter::makeObjByTitle(title, categories, url )
             addFilter( filter )
         end
 
@@ -384,6 +419,7 @@ class ScheduleWindow < Qt::Widget
             setItem( 0, CATEGORY_COL, filter.categoriesItem )
             setItem( 0, PROGRAM_COL, filter.titleFilterItem )
             setItem( 0, TIME_COL, filter.timeItem )
+            setItem( 0, DURATION_COL, filter.durationItem )
             setItem( 0, INTERVAL_COL, filter.intervalItem )
             setItem( 0, FOLDER_COL, filter.folderItem )
             @table[filter.id] = filter  # column_0 for ID
@@ -391,6 +427,7 @@ class ScheduleWindow < Qt::Widget
             self.sortingEnabled = sortFlag
         end
     end
+    # end of ProgrammeFilterTable class
 
 
     #--------------------------------------------
@@ -527,10 +564,10 @@ class ScheduleWindow < Qt::Widget
 
 
 
-    slots 'addProgrammeFilter(const QString &, const QString &)'
-    def addProgrammeFilter(title, categories)
+    slots 'addProgrammeFilter(const QString &,const QString &,const QString &)'
+    def addProgrammeFilter(title, categories, url)
         # add filter
-        @programmeFilterTable.addFilterByTitle( title, categories )
+        @programmeFilterTable.addFilterByTitle( title, categories, url )
     end
 
 
@@ -581,3 +618,4 @@ class ScheduleWindow < Qt::Widget
         end
     end
 end
+# end of ScheduleWindow class

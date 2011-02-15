@@ -98,8 +98,8 @@ class MainWindow < KDE::MainWindow
     #
     #
     def connectSlots
-        connect(@programmeTable, SIGNAL('scheduleRequest(const QString &, const QString &)'),
-                @scheduleWin, SLOT('addProgrammeFilter(const QString &, const QString &)'))
+        connect(@programmeTable, SIGNAL('addToSchedule(const QString &,const QString &,const QString &)'),
+                @scheduleWin, SLOT('addProgrammeFilter(const QString &,const QString &,const  QString&)'))
     end
 
     #
@@ -694,9 +694,8 @@ class MainWindow < KDE::MainWindow
         end .each do |p| titles[p.title] = p end
 
         titles.each_value do |prog|
-            url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
-            $log.info { "download episode Url : #{url}" }
-            Downloader.download( prog.title, prog.categories, url )
+            $log.info { "download episode Url : #{prog.url}" }
+            Downloader.download( prog.title, prog.categories, prog.url )
         end
     end
 

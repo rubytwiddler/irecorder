@@ -472,6 +472,10 @@ class Downloader
         self.instance.play(*args)
     end
 
+    def self.getSaveFolderName(*args)
+        self.instance.getSaveFolderName(*args)
+    end
+
     def download( title, categories, episodeUrl, folder=nil, skipOverWrite=false )
         tags = categories.split(/,/)
 
@@ -511,7 +515,7 @@ class Downloader
     end
 
     def getSaveName(minfo, tags, folder, ext='wma')
-        dir = folder || getSaveSubDirName(minfo, tags)
+        dir = folder || getSaveFolderName(minfo, tags)
         $log.debug { "save dir : #{dir}" }
         dir + '/' + getSaveBaseName(minfo, tags, ext)
     end
@@ -522,23 +526,23 @@ class Downloader
         head = s.fileAddHeadStr
         head += minfo.mediaName + ' ' if s.fileAddMediaName
         head += minfo.channelName + ' ' if s.fileAddChannelName and minfo.channelName
-        head += minfo.genreName(tags) + ' ' if s.fileAddGenreName and minfo.genreName(tags)
+        head += BBCNet.genreName(tags) + ' ' if s.fileAddGenreName and BBCNet.genreName(tags)
         head += "- " unless head.empty?
         baseName = head  + minfo.title + '.' + ext
         baseName.gsub(%r{[\/]}, '-')
     end
 
-    #
-    def getSaveSubDirName(minfo, tags)
+
+    public
+    def getSaveFolderName(minfo, tags)
         s = IRecSettings
         dir = []
         dir << minfo.mediaName if s.dirAddMediaName
         dir << minfo.channelName if s.dirAddChannelName and minfo.channelName
-        dir << minfo.genreName(tags) if s.dirAddGenreName and minfo.genreName(tags)
+        dir << BBCNet.genreName(tags) if s.dirAddGenreName and BBCNet.genreName(tags)
         File.join(dir.compact)
     end
 
-    public
     #
     #
     #

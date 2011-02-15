@@ -104,14 +104,6 @@ class BBCNet < Qt::Object
         # channel [BBC Radio 4, ..]
         alias :channelName :channel
 
-        # Main Genre [Drama, Comedy, ..]
-        def genreName(tags)
-            BBCNet::CategoryNameTbl.find do |cat|
-                tags.find do |t|
-                    cat =~ /#{t}/i
-                end
-            end
-        end
 
         def cleanData
             remove_instance_variable :@onRead
@@ -280,7 +272,6 @@ class BBCNet < Qt::Object
             end
         end
     end
-
     # end of MetaInfo class
 
 
@@ -522,6 +513,15 @@ class BBCNet < Qt::Object
 
         $log.info{ "feeding from '#{feedAdr}'" }
         CachedRssIO.read(feedAdr, onRead)
+    end
+
+    # Main Genre [Drama, Comedy, ..]
+    def self.genreName(tags)
+        BBCNet::CategoryNameTbl.find do |cat|
+            tags.find do |t|
+                cat =~ /#{t}/i
+            end
+        end
     end
 end
 

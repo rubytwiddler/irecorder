@@ -15,7 +15,7 @@ module CachedIO
 
         def call(*arg)
             @onRead.call(*arg)
-#             deleteLater
+            deleteLater
         end
 
         attr_accessor :url, :id, :data, :obj, :onFinish
@@ -38,7 +38,7 @@ module CachedIO
         def atEnd(data)
             @data = @id = data
             @onFinish.call(self)
-#             deleteLater
+            deleteLater
         end
     end
 

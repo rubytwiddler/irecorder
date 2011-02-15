@@ -7,12 +7,12 @@ class LogWindow < Qt::Widget
         super
 
         # create widgets
+        @findLineEdit = KDE::LineEdit.new
+        findNextBtn = KDE::PushButton.new(KDE::Icon.new('go-down-search'), i18n('Next'))
+        findPrevBtn = KDE::PushButton.new(KDE::Icon.new('go-up-search'), i18n('Previous'))
         @textWidget = KDE::TextEdit.new
         @textWidget.setReadOnly(true)
-        clearBtn = KDE::PushButton.new( KDE::Icon.new('edit-clear'), i18n("C&lear") )
-        connect(clearBtn, SIGNAL(:clicked)) do
-            @textWidget.clear
-        end
+        clearBtn = KDE::PushButton.new( KDE::Icon.new('edit-clear'), i18n("Clear") )
 
         level = MyLogger::FATAL
         @labels = %w{ Fatal Error Warn Info Debug Code Misc }.map do |l|
@@ -23,11 +23,20 @@ class LogWindow < Qt::Widget
             end
         end
 
+
+        # connect
+        connect(clearBtn, SIGNAL(:clicked), @textWidget, SLOT(:clear))
+        connect(@findLineEdit, SIGNAL(:returnPressed), self, SLOT(:findNext))
+        connect(findNextBtn, SIGNAL(:clicked), self, SLOT(:findNext))
+        connect(findPrevBtn, SIGNAL(:clicked), self, SLOT(:findPrevious))
+
+
         # layout
-        layout = Qt::VBoxLayout.new
-        layout.addWidget(@textWidget)
-        layout.addWidgets(*([clearBtn, nil, @labels, nil].flatten))
-        setLayout(layout)
+        l = Qt::VBoxLayout.new
+        l.addWidgets(i18n('Find'), @findLineEdit, findNextBtn, findPrevBtn)
+        l.addWidget(@textWidget)
+        l.addWidgets(*([clearBtn, nil, @labels, nil].flatten))
+        setLayout(l)
 
         #
         @limitLine = 1000
@@ -35,6 +44,24 @@ class LogWindow < Qt::Widget
     end
 
     attr_accessor :limitLine
+
+
+    slots :findNext
+    def findNext
+        f = @textWidget.find( @findLineEdit.text, 0)
+        unless f then
+            # initialize @textWidget
+            cur = @textWidget.textCursor
+            cur.movePosition(Qt::TextCursor::Start)
+            @textWidget.setTextCursor(cur)
+            @textWidget.find( @findLineEdit.text, 0)
+        end
+    end
+
+    slots :findPrevious
+    def findPrevious
+        @textWidget.find( @findLineEdit.text, Qt::TextDocument::FindBackward)
+    end
 
     slots :changeLevel
     def changeLevel
@@ -78,6 +105,10 @@ class LogWindow < Qt::Widget
 
 end
 
+
+#
+#  MyLogger class
+#
 class MyLogger
     MISC, CODE, DEBUG, INFO, WARN, ERROR, FATAL, UNKNOWN = (0..7).to_a
 

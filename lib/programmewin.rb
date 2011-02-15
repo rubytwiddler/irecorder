@@ -11,12 +11,13 @@ class ProgrammeTableWidget < Qt::TableWidget
         attr_reader :titleItem, :categoriesItem, :updatedItem, :onAirItem, \
                 :durationItem, :savedItem
         alias :id :titleItem
-        attr_reader :content, :link
+        attr_reader :content, :url, :link
         attr_reader :updated, :onAirDate, :duration
 #         DATE_FORMAT = "%Y/%m/%d %a"
 
         def initialize(title, categories, updated, content, link)
             @content = content
+            @url = content[UrlRegexp]
             @link = link
             @updated = BBCNet.getTime(updated)
             @onAirDate = Time.zero
@@ -280,9 +281,9 @@ class ProgrammeTableWidget < Qt::TableWidget
         emit filterRequest( prog.categories )
     end
 
-    signals 'scheduleRequest(const QString &, const QString &)'
+    signals 'addToSchedule(const QString &,const QString &,const QString &)'
     def schedule(prog)
-        emit scheduleRequest( prog.title, prog.categories )
+        emit addToSchedule( prog.title, prog.categories, prog.link )
     end
 end
 
