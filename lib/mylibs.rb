@@ -571,13 +571,13 @@ class String
 end
 
 class Time
-    ZERO = Time.at(0)
+    ZERO = Time.at(0).freeze
 
     def zero?
         self == ZERO
     end
 
     def self.zero
-        Time.at(0)
+        ZERO
     end
 end

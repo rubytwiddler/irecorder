@@ -92,7 +92,6 @@ class BBCNet < Qt::Object
                 s = ('@' + k.to_s).to_sym
                 self.instance_variable_set(s, nil)
             end
-
             @streams = []
         end
 
@@ -107,8 +106,6 @@ class BBCNet < Qt::Object
 
         def cleanData
             remove_instance_variable :@onRead
-            remove_instance_variable :@reply
-            remove_instance_variable :@onReadXmlPlaylist
             @aacLow = @aacLow.dup.cleanData if @aacLow
             @aacStd = @aacStd.dup.cleanData if @aacStd
             @real = @real.dup.cleanData if @real
@@ -119,51 +116,6 @@ class BBCNet < Qt::Object
 
         protected
 
-        #
-        # read duration, vpid, group, media, onAirDate, channel
-        #   from XmlPlaylist
-        def readXmlPlaylist(onReadXmlPlaylist)
-            if @vpid then
-                onReadXmlPlaylist.call(self)
-                return
-            end
-            @onReadXmlPlaylist = onReadXmlPlaylist
-            CachedRawXMLIO.read("http://www.bbc.co.uk/iplayer/playlist/#{@pid}", \
-                              self.method(:onReadXmlPlaylist))
-#             onReadXmlPlaylist(IO.read("../tmp/iplayer-playlist-me.xml"))
-        end
-
-        def errorXml(msg, res)
-            $log.warn { "onReadXmlPlaylist: error XML(#{msg}):#{res}" }
-        end
-
-        def onReadXmlPlaylist(res)
-            doc = Nokogiri::XML(res)
-            item = doc.at_css("noItems")
-            #raise "No Playlist " + item[:reason] if item
-            return errorXml("noItems #{item[:reason]}", res) if item      # error!!!
-            item = doc.css("item").find { |i| i[:identifier] }
-            return errorXml('no item', res) unless item
-
-            @duration = item[:duration].to_i
-            @group = item[:group]
-            kind = item[:kind]
-            @media = kind ? kind.gsub(/programme/i, '') : kind
-            @vpid = item[:identifier]
-
-            title = item.at_css("title")
-            if title then
-                @title = title.content.to_s
-                @summary = doc.at_css("summary").content.to_s
-                onAirDate = item.at_css("broadcast")
-                @onAirDate =  onAirDate ? BBCNet.getTime(onAirDate.content.to_s) : ''
-                channel = item.at_css("service")
-                @channel = channel ? channel.content.to_s : ''
-            else
-                @title = @summary = @onAirDate = @channel = ''
-            end
-            @onReadXmlPlaylist.call(self)
-        end
 
         #
         #   class StreamInfo
@@ -194,17 +146,6 @@ class BBCNet < Qt::Object
             end
         end
 
-        def readXmlStreamMeta(onRead, reply=nil)
-            @onRead = onRead
-            @reply = reply
-            if @vpid then
-                readXml_1
-            else
-                readXmlPlaylist(self.method(:readXml_1))
-            end
-        end
-        alias :update :readXmlStreamMeta
-
         def streamInfo(prefered=%w{wma real})
             prefered.each do |name|
                 case name.to_s.downcase.to_sym
@@ -221,8 +162,64 @@ class BBCNet < Qt::Object
             nil
         end
 
+        def readXmlStreamMeta(onRead, reply=nil)
+            if @dataValid then
+                if reply then
+                    onRead.call(self, reply)
+                else
+                    onRead.call(self)
+                end
+            else
+                if @onRead then
+                    @onRead << [ onRead, reply ]
+                    return
+                end
+                @onRead = [ [onRead, reply] ]
+                readXmlPlaylist
+            end
+        end
+        alias :update :readXmlStreamMeta
+
+
         protected
-        def readXml_1(dummy)
+        #
+        # read duration, vpid, group, media, onAirDate, channel
+        #   from XmlPlaylist
+        def readXmlPlaylist
+            CachedRawXMLIO.read("http://www.bbc.co.uk/iplayer/playlist/#{@pid}", \
+                              self.method(:onReadXmlPlaylist))
+#             onReadXmlPlaylist(IO.read("../tmp/iplayer-playlist-me.xml"))
+        end
+
+        def errorXml(msg, res)
+            $log.warn { "MetaInfo.onReadXmlPlaylist: error XML(#{msg}):#{res}" }
+        end
+
+        def onReadXmlPlaylist(res)
+            doc = Nokogiri::XML(res)
+            item = doc.at_css("noItems")
+            #raise "No Playlist " + item[:reason] if item
+            return errorXml("noItems #{item[:reason]}", res) if item      # error!!!
+            item = doc.css("item").find { |i| i[:identifier] }
+            return errorXml('no item', res) unless item
+
+            @duration = item[:duration].to_i
+            @group = item[:group]
+            kind = item[:kind]
+            @media = kind ? kind.gsub(/programme/i, '') : kind
+            @vpid = item[:identifier]
+
+            title = item.at_css("title")
+            if title then
+                @title = title.content.to_s
+                @summary = doc.at_css("summary").content.to_s
+                onAirDate = item.at_css("broadcast")
+                @onAirDate =  onAirDate ? BBCNet.getTime(onAirDate.content.to_s) : ''
+                channel = item.at_css("service")
+                @channel = channel ? channel.content.to_s : ''
+            else
+                @title = @summary = @onAirDate = @channel = ''
+            end
             CachedRawXMLIO.read("http://www.bbc.co.uk/mediaselector/4/mtis/stream/#{@vpid}", \
                               self.method(:onReadXmlStreamMeta))
 #             onReadXmlStreamMeta(IO.read("../tmp/iplayer-stream-meta-me.xml"))
@@ -265,27 +262,83 @@ class BBCNet < Qt::Object
             @updateCount -= 1
             return unless @updateCount == 0
 
-            if @reply then
-                @onRead.call(self, @reply)
-            else
-                @onRead.call(self)
+            @dataValid = true
+            $log.misc { "" }
+            $log.misc { "minfo onRead  <<<  start" }
+            $log.misc { "minfo onRead call @onRead(size:#{@onRead.size}):#{@onRead}" }
+            @onRead.each do |va|
+                onRead, reply = *va
+                $log.misc { "minfo onRead each call onRead:#{onRead.inspect}, reply.onRead:#{reply.onRead}, reply.onFinish:#{reply.onFinish}" }
+                if reply then
+                    onRead.call(self, reply)
+                else
+                    onRead.call(self)
+                end
             end
+            $log.misc { "minfo onRead   end  >>>>" }
         end
     end
     # end of MetaInfo class
 
 
+    class ProgrammeInfo
+        def initialize( *data )
+            @title, @categories, updated, @content, @link = *data
+            @tags = @categories.split(/,/)
+            @updated = BBCNet.getTime(updated)
+            @url = @content[UrlRegexp]
+            @genre = BBCNet.genreName(@tags)
+            @minfo = nil
+        end
+        attr_reader :title, :categories, :updated, :content, :link, \
+                :url, :tags, :genre, :minfo
+
+        def cleanData
+            remove_instance_variable :@onRead
+            @minfo = nil
+            self
+        end
+
+        def readMetaInfo(onRead)
+            if @minfo then
+                onRead(self)
+                return
+            end
+            if @onRead then
+                @onRead.push(onRead)
+                return
+            end
+            @onRead = [onRead]
+            CachedMetaInfoIO.read(@url, self.method(:onEnd))
+        end
+
+        protected
+        def onEnd(minfo)
+            @minfo = minfo
+            $log.misc { " << ProgrammeInfo.onEnd : @onRead(size:#{@onRead.size}): minfo:#{minfo}" }
+            @onRead.each do |c|
+                $log.misc { "ProgrammeInfo.onEnd : onRead.each |c|:#{c})" }
+                c.call(minfo)
+            end
+            $log.misc { " >> ProgrammeInfo.onEnd" }
+#             remove_instance_variable :@onRead
+        end
+    end
+
+
+
+
+    #------------------------------------------------------------------------
+    #
+    #  BBCNet class method
+    #
+    public
     def self.getTime(str)
         tm = str.match(/(\d{4})-(\d\d)-(\d\d)\w(\d\d):(\d\d):(\d\d)/)
         return Time.at(0) unless tm
         par = ((1..6).inject([]) do |a, n| a << tm[n].to_i end)
         Time.gm( *par )
     end
-
-
-    #------------------------------------------------------------------------
-    #
-    #
 
     # convert epsode Url to console Url
     def self.getPlayerConsoleUrl(url)
@@ -306,7 +359,6 @@ class BBCNet < Qt::Object
         end
     end
 
-
     protected
     class RetrievingDirectStreamUrl
         def initialize(url, onRead)
@@ -321,12 +373,12 @@ class BBCNet < Qt::Object
 
         def onReadSearching(res)
             url = res[ DirectStreamRegexp ] || res[ UrlRegexp ] || @old
-            $log.debug { "new url:#{url},  old url:#{@old}" }
+            $log.misc { "new url:#{url},  old url:#{@old}" }
             if url != @old and not url[DirectStreamRegexp] then
                 @old = url
                 BBCNet.read(url, self.method(:onReadSearching))
             elsif not url[ UrlRegexp ] then
-                $log.debug { "no url in response '#{res}'" }
+                $log.info { "no url in response '#{res}'" }
             else
                 @onRead.call(url)
             end
@@ -350,7 +402,7 @@ class BBCNet < Qt::Object
     #
     #  BBCNet class
     #
-    public
+    protected
     def initialize()
         super
         @manager = Qt::NetworkAccessManager.new(self)
@@ -374,7 +426,7 @@ class BBCNet < Qt::Object
         end
     end
 
-
+    public
     def read(url, onRead, obj=nil)
         request = Qt::NetworkRequest.new(Qt::Url.new(url))
         request.setRawHeader(Qt::ByteArray.new("User-Agent"), \
@@ -386,6 +438,7 @@ class BBCNet < Qt::Object
         @manager.get(request)
     end
 
+    protected
     slots 'finished(QNetworkReply*)'
     def finished(reply)
         data = reply.readAll.data
@@ -403,6 +456,7 @@ class BBCNet < Qt::Object
     end
 
 
+    public
     def self.read(url, onRead, obj=nil)
         self.instance.read(url, onRead, obj)
     end

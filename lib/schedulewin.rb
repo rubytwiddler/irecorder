@@ -198,6 +198,8 @@ end
 #
 class ScheduleWindow < Qt::Widget
 
+    SAVE_ENTRY_VERSION = '0.0.1'
+
     #--------------------------------------------
     #
     #
@@ -215,12 +217,78 @@ class ScheduleWindow < Qt::Widget
         #
         #
         class ProgrammeFilter
+            class Interval
+                def initialize(wday)
+                    raise "out of range of week of day" if wday < 0 or wday > 7
+                    @startDay = wday
+                    @endDay = wday
+                end
+
+                def []=(i,v)
+                    raise "out of range of week of day" if i < 0 or i > 7
+                    if i <= @startDay then
+                        @startDay = i
+                    else
+                        @endDay = i
+                    end
+                end
+
+                def to_s
+                    if @startDay == @endDay then
+                        Time::RFC2822_DAY_NAME[@startDay]
+                    else
+                        Time::RFC2822_DAY_NAME[@startDay]+'-'+ \
+                        Time::RFC2822_DAY_NAME[@endDay]
+                    end
+                end
+
+                def ok?(wday)
+                    raise "out of range of week of day" if wday < 0 or wday > 7
+                    wday >= @startDay and wday <= @endDay
+                end
+            end
+
+            class TitleFilter
+                def initialize(progInfo)
+                    @title = progInfo.title
+                end
+
+                def time; Time.zero; end
+                def duration; 0; end
+                def interval; nil; end
+                def channel; ''; end
+            end
+
+
+            class DateFilter
+                def initialize(minfo=nil)
+                    @minfo = minfo
+                    @interval = nil
+                end
+                attr_reader :interval
+                def time
+                    return @minfo.onAirDate if @minfo
+                    Time.zero
+                end
+
+                def duration
+                    return @minfo.duration if @minfo
+                    0
+                end
+
+                def channel
+                    return @minfo.channel if @minfo
+                    ''
+                end
+
+                def title; ''; end
+            end
+
             class SaveEntry
                 attr_reader :title, :categories, :catIndex, :titleFilter, \
                         :time, :duration, :interval, :folder, :url, :orgTitle
                 def initialize(filter)
                     @title = filter.title
-                    @orgTitle = filter.orgTitle
                     @categories = filter.categories
                     @catIndex = filter.catIndex
                     @titleFilter = filter.titleFilter
@@ -237,11 +305,23 @@ class ScheduleWindow < Qt::Widget
             #  ProgrammeFilter class
             #
             public
-            attr_reader :title, :orgTitle, :categories, :catIndex, :titleFilter, \
-                    :time, :duration, :interval, :folder, :url
+#             attr_reader :title, :orgTitle, :categories, :catIndex, :titleFilter, \
+#                     :time, :duration, :interval, :folder, :url
             attr_reader :categoriesItem, :titleFilterItem, :timeItem, :durationItem, \
                     :intervalItem, :folderItem
             alias   :id :categoriesItem
+
+            def orgTitle; @progInfo.title; end
+            def categories; @progInfo.categories; end
+            def catIndex; @progInfo.catIndex; end
+            def url; @progInfo.url; end
+
+            def title; @filterData.title; end
+            def time; @filterData.time; end
+            def duration; @filterData.duration; end
+            def interval; @filterData.interval; end
+            def channel; @filterData.channel; end
+
 
             protected
             def initialize
@@ -251,14 +331,11 @@ class ScheduleWindow < Qt::Widget
                 # TableWidgetItem
                 @categoriesItem = Item.new(@categories)
                 @titleFilterItem = Item.new(@titleFilter.source)
-                @timeItem = Item.new(@time.zero? ? '' : @time.to_s)
-                @durationItem = Item.new(@duration == 0 ? '' : @duration.to_s)
-                @intervalItem = Item.new(@interval.zero? ? '' : @interval.to_s)
-                @folderItem = Item.new(@folder || '')
+                @timeItem = Item.new(time.zero? ? '' : time.to_s)
+                @durationItem = Item.new(duration == 0 ? '' : duration.to_s)
+                @intervalItem = Item.new(interval.zero? ? '' : interval.to_s)
+                @folderItem = Item.new(folder || '')
 
-                unless @folder then
-                    BBCNet::CachedMetaInfoIO.read(@url, self.method(:initOnRead))
-                end
             end
 
             def initOnRead(minfo)
@@ -276,37 +353,27 @@ class ScheduleWindow < Qt::Widget
 
 
             public
-            def initByTitle(title, categories, url)
-                $log.debug { "title:#{title}, categories:#{categories}" }
+            def initByTitle(progInfo)
+                $log.debug { "title:#{progInfo.title}, categories:#{progInfo.categories}" }
+                @progInfo = progInfo
 
-                @title = @orgTitle = title
-                @categories = categories
-                @catIndex = BBCNet::getCategoryIndex(categories)
-                @url = url
+                @filterData = TitleFilter.new(progInfo)
                 @folder = nil
 
                 # set title filter
-                @titleFilter = Regexp.new( @title.gsub(/^[^:]+ Catch\-Up:/, '') \
+                @titleFilter = Regexp.new( progInfo.title.gsub(/^[^:]+ Catch\-Up:/, '') \
                     .gsub(/:[\d\/\s]+$/, '') .gsub(/:\s*Episode[\s\d]*$/, '') .gsub(/:.*$/, '') )
 
-                #
-                @time = Time.zero
-                @interval = Time.zero
                 initItems
             end
 
 
             def initBySaveEntry(saveEntry)
+                @url = saveEntry.url
                 @title = saveEntry.title
-                @orgTitle = saveEntry.orgTitle
-                @categories = saveEntry.categories
-                @catIndex = saveEntry.catIndex
-                @titleFilter = saveEntry.titleFilter
-                @time = saveEntry.time
                 @duration = saveEntry.duration
                 @interval = saveEntry.interval
                 @folder = saveEntry.folder
-                @url = saveEntry.url
                 initItems
             end
 
@@ -314,9 +381,9 @@ class ScheduleWindow < Qt::Widget
                 SaveEntry.new(self)
             end
 
-            def self.makeObjByTitle(title, categories, url)
+            def self.makeObjByTitle(*args)
                 obj = self.new
-                obj.initByTitle(title, categories, url)
+                obj.initByTitle(*args)
                 obj
             end
 
@@ -399,8 +466,8 @@ class ScheduleWindow < Qt::Widget
             end
         end
 
-        def addFilterByTitle( title, categories, url )
-            filter = ProgrammeFilter::makeObjByTitle(title, categories, url )
+        def addFilterByTitle( *args )
+            filter = ProgrammeFilter::makeObjByTitle( *args )
             addFilter( filter )
         end
 
@@ -564,10 +631,10 @@ class ScheduleWindow < Qt::Widget
 
 
 
-    slots 'addProgrammeFilter(const QString &,const QString &,const QString &)'
-    def addProgrammeFilter(title, categories, url)
+    slots 'addProgrammeFilter(const QByteArray &)'
+    def addProgrammeFilter(progInfo)
         # add filter
-        @programmeFilterTable.addFilterByTitle( title, categories, url )
+        @programmeFilterTable.addFilterByTitle( progInfo )
     end
 
 
@@ -598,7 +665,7 @@ class ScheduleWindow < Qt::Widget
 
     public
     def saveFilters
-        saveData = []
+        saveData = [SAVE_ENTRY_VERSION]
         @programmeFilterTable.filters.each do |filter|
             saveData.push( filter.getSaveEntry )
         end
@@ -614,6 +681,7 @@ class ScheduleWindow < Qt::Widget
 
         open(fileName) do |f|
             saveData = YAML.load(f)
+            return unless saveData.shift == SAVE_ENTRY_VERSION
             @programmeFilterTable.addSaveEntries( saveData )
         end
     end

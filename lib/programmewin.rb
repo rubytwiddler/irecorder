@@ -13,9 +13,12 @@ class ProgrammeTableWidget < Qt::TableWidget
         alias :id :titleItem
         attr_reader :content, :url, :link
         attr_reader :updated, :onAirDate, :duration
+        attr_reader :progInfo
+        attr_accessor :deletedFlag
 #         DATE_FORMAT = "%Y/%m/%d %a"
 
         def initialize(title, categories, updated, content, link)
+            @progInfo = BBCNet::ProgrammeInfo.new(title, categories, updated, content, link)
             @content = content
             @url = content[UrlRegexp]
             @link = link
@@ -30,11 +33,13 @@ class ProgrammeTableWidget < Qt::TableWidget
             @durationItem = NumItem.new
             @savedItem = Item.new
 
-            BBCNet::CachedMetaInfoIO.read(link, self.method(:onReadInfo))
+#             BBCNet::CachedMetaInfoIO.read(link, self.method(:onReadInfo))
+            @progInfo.readMetaInfo(self.method(:onReadInfo))
         end
 
         def onReadInfo(minfo)
-            @minfo = minfo
+#             @minfo = minfo
+            return if deletedFlag
             @onAirDate = minfo.onAirDate
             @duration = minfo.duration
             @onAirItem.date = @onAirDate if @onAirDate
@@ -115,6 +120,9 @@ class ProgrammeTableWidget < Qt::TableWidget
     def clearEntries
         clearContents
         self.rowCount = 0
+        @table.each do |k,prog|
+            prog.deletedFlag = true
+        end
         @table = Hash.new
     end
 
@@ -281,9 +289,9 @@ class ProgrammeTableWidget < Qt::TableWidget
         emit filterRequest( prog.categories )
     end
 
-    signals 'addToSchedule(const QString &,const QString &,const QString &)'
+    signals 'addToSchedule(const QByteArray &)'
     def schedule(prog)
-        emit addToSchedule( prog.title, prog.categories, prog.link )
+        emit addToSchedule( prog.progInfo )
     end
 end
 

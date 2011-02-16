@@ -19,7 +19,7 @@ module CachedIO
         end
 
         attr_accessor :url, :id, :data, :obj, :onFinish
-        attr_reader :startTime
+        attr_reader :startTime, :onRead
 
         # @return this object's finished method(name is atEnt)
         #  chain this returned method for other onRead with object.
