@@ -53,12 +53,16 @@ class SelectServiceDlg < KDE::Dialog
 
     def setSelected(name)
         return unless name
+        $log.debug { "<< #{self.class.name}.setSelected" }
+        $log.debug { " @serviceList:#{@serviceList}" }
+
         name.gsub!(/&/, '')
         return if @services.size == 0
         items = @serviceList.findItems(name, Qt::MatchExactly)
         if items.size > 0 then
             items[0].setSelected(true)
         end
+        $log.debug { ">> #{self.class.name}.setSelected" }
     end
 
     def self.exeName2IconName(exeName)

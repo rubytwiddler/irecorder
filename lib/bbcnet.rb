@@ -285,12 +285,13 @@ class BBCNet < Qt::Object
         def initialize( *data )
             @title, @categories, updated, @content, @link = *data
             @tags = @categories.split(/,/)
+            @catIndex = BBCNet::getCategoryIndex(@categories)
             @updated = BBCNet.getTime(updated)
             @url = @content[UrlRegexp]
             @genre = BBCNet.genreName(@tags)
             @minfo = nil
         end
-        attr_reader :title, :categories, :updated, :content, :link, \
+        attr_reader :title, :categories, :catIndex, :updated, :content, :link, \
                 :url, :tags, :genre, :minfo
 
         def cleanData
@@ -301,7 +302,8 @@ class BBCNet < Qt::Object
 
         def readMetaInfo(onRead)
             if @minfo then
-                onRead(self)
+                $log.debug { "#{self.class.name}.readMetaInfo : @minfo:#{@minfo}" }
+                onRead.call(@minfo)
                 return
             end
             if @onRead then

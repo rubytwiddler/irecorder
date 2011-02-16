@@ -28,6 +28,7 @@ class TestResultDialog < Qt::Dialog
             attr_reader :titleItem, :categoriesItem, :durationItem, :dateItem, :urlItem
             alias :id :titleItem
             attr_reader :filter
+            attr_accessor :deletedFlag
             def initialize(title, categories, url, filter)
                 $log.misc { "ResultEntry: title:#{title}, categories:#{categories}, url:#{url}" }
                 @titleItem = Item.new(title)
@@ -81,6 +82,9 @@ class TestResultDialog < Qt::Dialog
         def clearEntries
             clearContents
             self.rowCount = 0
+            @table.each do |k,entry|
+                entry.deletedFlag = true
+            end
             @table = Hash.new
         end
 
@@ -191,6 +195,10 @@ end
 
 
 
+def titleStrip(t)
+    t.gsub(/^[^:]+ Catch\-Up:/, '') .gsub(/:[\d\/\s]+$/, '') \
+            .gsub(/:\s*Episode[\s\d]*$/, '') .gsub(/:.*$/, '')
+end
 
 #-------------------------------------------------------------------------------------------
 #
@@ -248,40 +256,54 @@ class ScheduleWindow < Qt::Widget
                 end
             end
 
+
             class TitleFilter
                 def initialize(progInfo)
-                    @title = progInfo.title
+                    self.titleFilter = progInfo.title
+                end
+
+                def setMetaInfo(minfo)
+                end
+
+                def titleFilter=(t)
+                    @titleFilterRegexp = Regexp.new(titleStrip(t))
+                end
+                attr_reader :titleFilterRegexp
+                def titleFilter
+                    @titleFilterRegexp.source
                 end
 
                 def time; Time.zero; end
-                def duration; 0; end
                 def interval; nil; end
                 def channel; ''; end
             end
 
 
             class DateFilter
-                def initialize(minfo=nil)
-                    @minfo = minfo
+                def initialize(progInfo)
+                    @minfo = progInfo.minfo
                     @interval = nil
+                    @titleFilter = ''
+                    @titleFilterRegexp = /./
                 end
                 attr_reader :interval
+                attr_reader :titleFilter, :titleFilterRegexp
+
+                def setMetaInfo(minfo)
+                    @minfo = minfo
+                    @interval = Interval.new(minfo.onAirDate.wday)
+                    @titleFilter = channel
+                end
+
                 def time
                     return @minfo.onAirDate if @minfo
                     Time.zero
-                end
-
-                def duration
-                    return @minfo.duration if @minfo
-                    0
                 end
 
                 def channel
                     return @minfo.channel if @minfo
                     ''
                 end
-
-                def title; ''; end
             end
 
             class SaveEntry
@@ -315,12 +337,18 @@ class ScheduleWindow < Qt::Widget
             def categories; @progInfo.categories; end
             def catIndex; @progInfo.catIndex; end
             def url; @progInfo.url; end
+            attr_accessor :folder
 
-            def title; @filterData.title; end
+            def titleFilter; @filterData.titleFilter; end
+            def titleFilterRegexp; @filterData.titleFilterRegexp; end
             def time; @filterData.time; end
-            def duration; @filterData.duration; end
             def interval; @filterData.interval; end
             def channel; @filterData.channel; end
+            def duration
+                return @progInfo.minfo.duration if @progInfo.minfo
+                0
+            end
+
 
 
             protected
@@ -329,41 +357,50 @@ class ScheduleWindow < Qt::Widget
 
             def initItems
                 # TableWidgetItem
-                @categoriesItem = Item.new(@categories)
-                @titleFilterItem = Item.new(@titleFilter.source)
+                @categoriesItem = Item.new(categories)
+                @titleFilterItem = Item.new(titleFilter)
                 @timeItem = Item.new(time.zero? ? '' : time.to_s)
                 @durationItem = Item.new(duration == 0 ? '' : duration.to_s)
-                @intervalItem = Item.new(interval.zero? ? '' : interval.to_s)
+                @intervalItem = Item.new(interval ? '' : interval.to_s)
                 @folderItem = Item.new(folder || '')
 
+                @progInfo.readMetaInfo(self.method(:initOnRead))
             end
 
             def initOnRead(minfo)
-                @minfo = minfo
+                $log.debug { "#{self.class.name} initOnRead : minfo:#{minfo}" }
                 # set folder
-                tags = @categories.split(/,/)
-                if @folder.nil? or @folder.empty? then
-                    @folder = Downloader.getSaveFolderName(minfo, tags)
+                if folder.nil? or folder.empty? then
+                    @folderItem.text = self.folder =
+                            Downloader.getSaveFolderName(minfo, @progInfo.tags)
                 end
-                @duration = minfo.duration
-                @durationItem.text = @duration.to_s
-                @time = minfo.onAirDate
-                @timeItem.text = minfo.onAirDate.to_s
+
+                @filterData.setMetaInfo(minfo)
+                @durationItem.text = duration.to_s
+                @timeItem.text = time.to_s
+                @intervalItem.text = interval.to_s
+
+                # titleFilter or channel
+                @titleFilterItem.text = titleFilter
             end
 
 
             public
             def initByTitle(progInfo)
+                $log.debug { "#{self.class.name}.initByTitle  initByTitle:#{progInfo}" }
                 $log.debug { "title:#{progInfo.title}, categories:#{progInfo.categories}" }
                 @progInfo = progInfo
 
                 @filterData = TitleFilter.new(progInfo)
-                @folder = nil
+                initItems
+            end
 
-                # set title filter
-                @titleFilter = Regexp.new( progInfo.title.gsub(/^[^:]+ Catch\-Up:/, '') \
-                    .gsub(/:[\d\/\s]+$/, '') .gsub(/:\s*Episode[\s\d]*$/, '') .gsub(/:.*$/, '') )
+            def initByTime(progInfo)
+                $log.debug { "#{self.class.name}.initByTime  initByTime:#{progInfo}" }
+                $log.debug { "title:#{progInfo.title}, categories:#{progInfo.categories}" }
+                @progInfo = progInfo
 
+                @filterData = DateFilter.new(progInfo)
                 initItems
             end
 
@@ -387,6 +424,12 @@ class ScheduleWindow < Qt::Widget
                 obj
             end
 
+            def self.makeObjByTime(*args)
+                obj = self.new
+                obj.initByTime(*args)
+                obj
+            end
+
             def self.makeObjBySaveEntry(saveEntry)
                 obj = self.new
                 obj.initBySaveEntry(saveEntry)
@@ -407,7 +450,7 @@ class ScheduleWindow < Qt::Widget
         def initialize()
             super(0,6)
 
-            setHorizontalHeaderLabels(%w{Category Program Time Duration Interval Folder})
+            setHorizontalHeaderLabels(%w{Category Program/Channel Time Duration Interval Folder})
             horizontalHeader.stretchLastSection = true
             self.selectionBehavior = Qt::AbstractItemView::SelectRows
             self.selectionMode = Qt::AbstractItemView::SingleSelection
@@ -468,6 +511,11 @@ class ScheduleWindow < Qt::Widget
 
         def addFilterByTitle( *args )
             filter = ProgrammeFilter::makeObjByTitle( *args )
+            addFilter( filter )
+        end
+
+        def addFilterByTime( *args )
+            filter = ProgrammeFilter::makeObjByTime( *args )
             addFilter( filter )
         end
 
@@ -631,12 +679,13 @@ class ScheduleWindow < Qt::Widget
 
 
 
-    slots 'addProgrammeFilter(const QByteArray &)'
-    def addProgrammeFilter(progInfo)
-        # add filter
+    def addFilterByTitle(progInfo)
         @programmeFilterTable.addFilterByTitle( progInfo )
     end
 
+    def addFilterByTime(progInfo)
+        @programmeFilterTable.addFilterByTime( progInfo )
+    end
 
     slots :editFilter
     def editFilter
@@ -676,6 +725,8 @@ class ScheduleWindow < Qt::Widget
     end
 
     def loadFilters
+        return      #!!!!!! for debug  !!!!!!
+
         fileName = getFiltersFileName
         return unless File.exist?(fileName)
 

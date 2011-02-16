@@ -98,8 +98,8 @@ class MainWindow < KDE::MainWindow
     #
     #
     def connectSlots
-        connect(@programmeTable, SIGNAL('addToSchedule(const QByteArray &)'),
-                @scheduleWin, SLOT('addProgrammeFilter(const QByteArray &)'))
+        @programmeTable.addListener(:addFilterByTitle, @scheduleWin.method(:addFilterByTitle))
+        @programmeTable.addListener(:addFilterByTime, @scheduleWin.method(:addFilterByTime))
     end
 
     #

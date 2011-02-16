@@ -581,3 +581,29 @@ class Time
         ZERO
     end
 end
+
+
+# observer pattern
+#  broadcast(subject in object pattern) => listener(observer in object pattern)
+module Broadcaster
+    def broadcast(signal, *args)
+        sig = signal.to_sym
+        return unless @broadcaster and @broadcaster[sig]
+        @broadcaster[sig].each do |m|
+            m.call(*args)
+        end
+    end
+
+    def addListener(signal, listenerMethod)
+        sig = signal.to_sym
+        @broadcaster ||= Hash.new
+        @broadcaster[sig] ||= []
+        @broadcaster[sig] << listenerMethod
+    end
+
+    def removeListener(listener)
+        @broadcaster.delete_if do |k,m|
+            m.receiver == listener
+        end
+    end
+end

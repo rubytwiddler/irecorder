@@ -1,8 +1,8 @@
-
 #---------------------------------------------------------------------------------------------
 #
 #
 class ProgrammeTableWidget < Qt::TableWidget
+    include Broadcaster
     #
     #
     TITLE_COL, CATEGORIES_COL, UPDATED_COL, ON_AIR_COL, DURATION_COL, SAVED_COL = (0..5).to_a
@@ -242,8 +242,10 @@ class ProgrammeTableWidget < Qt::TableWidget
     end
 
     def insertSchedule(menu)
-        a = menu.addAction(KDE::Icon.new('view-time-schedule'), i18n('Schedule This Title Programme'))
-        a.setVData('schedule@')
+        a = menu.addAction(KDE::Icon.new('view-time-schedule'), i18n('Schedule This Title Programmes'))
+        a.setVData('scheduleByTitle@')
+        a = menu.addAction(KDE::Icon.new('view-time-schedule'), i18n('Schedule This Time'))
+        a.setVData('scheduleByTime@')
     end
 
     def insertPlayerActions(menu)
@@ -289,9 +291,12 @@ class ProgrammeTableWidget < Qt::TableWidget
         emit filterRequest( prog.categories )
     end
 
-    signals 'addToSchedule(const QByteArray &)'
-    def schedule(prog)
-        emit addToSchedule( prog.progInfo )
+    def scheduleByTitle(prog)
+        broadcast(:addFilterByTitle, prog.progInfo)
+    end
+
+    def scheduleByTime(prog)
+        broadcast(:addFilterByTime, prog.progInfo)
     end
 end
 
