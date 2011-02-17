@@ -82,17 +82,14 @@ class BBCNet < Qt::Object
 
         attr_reader :pid
         Keys = [ :duration, :vpid, :group, :media, :onAirDate, :channel, :title, :summary, \
-                 :aacLow, :aacStd, :real, :wma, :streams ]
+                 :aacLow, :aacStd, :real, :wma, :streams, :channelIndex ]
         # onAirDate format : '2010-08-05T22:00:00Z'
         attr_reader *Keys
 
         def initialize(pid)
             @pid = pid
-            Keys.each do |k|
-                s = ('@' + k.to_s).to_sym
-                self.instance_variable_set(s, nil)
-            end
             @streams = []
+            @channelIndex = -1
         end
 
         # media [Radio,TV]
@@ -217,7 +214,10 @@ class BBCNet < Qt::Object
                 @onAirDate =  onAirDate ? BBCNet.getTime(onAirDate.content.to_s) : ''
                 channel = item.at_css("service")
                 @channel = channel ? channel.content.to_s : ''
+                @channelIndex = BBCNet::getChannelIndex(@channel)
             else
+                $log.warn { "no title in rss. url:#{@url}" }
+                @channelIndex = -1
                 @title = @summary = @onAirDate = @channel = ''
             end
             CachedRawXMLIO.read("http://www.bbc.co.uk/mediaselector/4/mtis/stream/#{@vpid}", \
@@ -466,7 +466,7 @@ class BBCNet < Qt::Object
 
     protected
     UserAgentList = [
-        'Mozilla/5.0 (X11; U; Linux x86_64; en-US) AppleWebKit/<RAND>.13 (KHTML, like Gecko) Chrome/9.0.<RAND> Safari/<RAND>.1',
+        'Mozilla/5.0 (Windows; U; Windows NT 7.0; en-US) AppleWebKit/<RAND>.13 (KHTML, like Gecko) Chrome/9.0.<RAND> Safari/<RAND>.1',
         'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/<RAND>.8 (KHTML, like Gecko) Chrome/2.0.178.0 Safari/<RAND>.8',
         'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0; YPC 3.2.0; SLCC1; .NET CLR 2.0.50<RAND>; .NET CLR 3.0.04<RAND>)',
         'Mozilla/5.0 (Macintosh; U; PPC Mac OS X 10_4_11; tr) AppleWebKit/<RAND>.4+ (KHTML, like Gecko) Version/4.0dp1 Safari/<RAND>.11.2',
@@ -530,9 +530,17 @@ class BBCNet < Qt::Object
         ['Scotland', 'scotland'],
         ['Wales', 'wales'] ]
 
+    ChannelNameTbl = RadioChannelRssTbl.map do |c|
+        c[0][/[\w\s\'&]+/].gsub(/\'/, '').gsub(/&/, ' and ')
+    end
+
+    ChannelRegexpTbl = RadioChannelRssTbl.map do |c|
+        Regexp.new(c[0].gsub(/BBC /, ''), true)
+    end
+
     CategoryNameTbl = CategoryRssTbl.map do |c|
-            c[0][/[\w\s\'&]+/].gsub(/\'/, '').gsub(/&/, ' and ')
-        end
+        c[0][/[\w\s\'&]+/].gsub(/\'/, '').gsub(/&/, ' and ')
+    end
 
     CategoryRegexpTbl = CategoryRssTbl.map do |c|
         Regexp.new(c[0][/^[\w]+/])
@@ -561,7 +569,7 @@ class BBCNet < Qt::Object
     end
 
     #
-    #
+    # get Rss by category index
     #
     def self.getRssByCategoryIndex(catIndex, onRead)
         feedAdr = getFeedAdrByCategoryIndex(catIndex)
@@ -571,7 +579,47 @@ class BBCNet < Qt::Object
         CachedRssIO.read(feedAdr, onRead)
     end
 
+
+
+    #
+    #   channel index access routines
+    #
+
+    #
+    # get category index for feed
+    #
+    def self.getChannelIndex(channelStr)
+        ca = channelStr.chomp
+        ChannelRegexpTbl.each_with_index do |c, i|
+            return i if c =~ ca
+        end
+        -1
+    end
+
+    #
+    # get feed address by category index
+    #
+    def self.getFeedAdrByChannelIndex(channelIndex)
+        channelStr = BBCNet::RadioChannelRssTbl[ channelIndex ][1]
+        "http://feeds.bbc.co.uk/iplayer/#{channelStr}/list"
+    end
+
+    #
+    # get Rss by category index
+    #
+    def self.getRssByChannelIndex(channelIndex, onRead)
+        feedAdr = getFeedAdrByChannelIndex(channelIndex)
+        return if feedAdr.nil?
+
+        $log.info{ "feeding from '#{feedAdr}'" }
+        CachedRssIO.read(feedAdr, onRead)
+    end
+
+
+
+    #
     # Main Genre [Drama, Comedy, ..]
+    #
     def self.genreName(tags)
         BBCNet::CategoryNameTbl.find do |cat|
             tags.find do |t|

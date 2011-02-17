@@ -25,17 +25,9 @@ class TaskWindow < Qt::Widget
             @savePath = save
         end
 
-        def sourceUrl
-            @sourceUrlItem.text
-        end
-
-        def time
-            @timeItem.text
-        end
-
-        def status
-            @statusItem.text
-        end
+        def sourceUrl; @sourceUrlItem.text; end
+        def time; @timeItem.text; end
+        def status; @statusItem.text; end
 
         def updateTime(lapse)
             @timeItem.text = lapseText(lapse)
@@ -49,7 +41,6 @@ class TaskWindow < Qt::Widget
             a = Time.at(lapse).getgm.to_a
             "%02d:%02d:%02d" % [a[2], a[1], a[0]]
         end
-
     end
 
 

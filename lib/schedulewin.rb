@@ -260,7 +260,9 @@ class ScheduleWindow < Qt::Widget
             class TitleFilter
                 def initialize(progInfo)
                     self.titleFilter = progInfo.title
+                    @id = :title
                 end
+                attr_reader :id
 
                 def setMetaInfo(minfo)
                 end
@@ -276,18 +278,21 @@ class ScheduleWindow < Qt::Widget
                 def time; Time.zero; end
                 def interval; nil; end
                 def channel; ''; end
+                def channelIndex; -1; end
             end
 
 
             class DateFilter
                 def initialize(progInfo)
                     @minfo = progInfo.minfo
+                    @id = :date
                     @interval = nil
                     @titleFilter = ''
                     @titleFilterRegexp = /./
                 end
                 attr_reader :interval
                 attr_reader :titleFilter, :titleFilterRegexp
+                attr_reader :id
 
                 def setMetaInfo(minfo)
                     @minfo = minfo
@@ -303,6 +308,12 @@ class ScheduleWindow < Qt::Widget
                 def channel
                     return @minfo.channel if @minfo
                     ''
+                end
+
+                def channelIndex
+                    $log.debug { "accessing channelIndex @minfo.channelIndex:#{@minfo.channelIndex}" }
+                    return @minfo.channelIndex if @minfo
+                    -1
                 end
             end
 
@@ -339,15 +350,18 @@ class ScheduleWindow < Qt::Widget
             def url; @progInfo.url; end
             attr_accessor :folder
 
+            def ready?; !!@progInfo.minfo; end
+            def filterType; @filterData.id; end
             def titleFilter; @filterData.titleFilter; end
             def titleFilterRegexp; @filterData.titleFilterRegexp; end
-            def time; @filterData.time; end
+            def time; @filterData.time; end     # onAirDate
             def interval; @filterData.interval; end
             def channel; @filterData.channel; end
             def duration
                 return @progInfo.minfo.duration if @progInfo.minfo
                 0
             end
+            def channelIndex; @filterData.channelIndex; end
 
 
 
@@ -612,19 +626,32 @@ class ScheduleWindow < Qt::Widget
 
     def applyToSelectedFilters( filters, method )
         catIndices = {}
+        channelIndices = {}
         filters.each do |f|
-            if catIndices[f.catIndex] then
+            next unless f.ready?
+            case f.filterType
+            when :title
+                catIndices[f.catIndex] ||= []
                 catIndices[f.catIndex].push(f)
-            else
-                catIndices[f.catIndex] = [f]
+            when :date
+                channelIndices[f.channelIndex] ||= []
+                channelIndices[f.channelIndex].push(f)
             end
         end
         catIndices.delete(-1)
+        channelIndices.delete(-1)
 
         catIndices.each do |catIndex, filters|
             reply = CachedIO::CacheReply.new(catIndex, nil)
             reply.obj = filters
             BBCNet::getRssByCategoryIndex(catIndex, \
+                    reply.finishedMethod(method))
+        end
+
+        channelIndices.each do |channelIndex, filters|
+            reply = CachedIO::CacheReply.new(channelIndex, nil)
+            reply.obj = filters
+            BBCNet::getRssByChannelIndex(channelIndex, \
                     reply.finishedMethod(method))
         end
     end
@@ -637,10 +664,19 @@ class ScheduleWindow < Qt::Widget
             filters.each do |filter|
                 entries.each do |e|
                     title = e.at_css('title').content
-                    if filter.titleFilter.match(title) then
-                        content = e.at_css('content').content
-                        episodeUrl = content[UrlRegexp]       # String[] method extract only 1st one.
-                        downloadProgramme( filter, title, episodeUrl )
+                    case filter.filterType
+                    when :title
+                        if filter.titleFilterRegexp.match(title) then
+                            content = e.at_css('content').content
+                            episodeUrl = content[UrlRegexp]       # String[] method extract only 1st one.
+                            downloadProgramme( filter, title, episodeUrl )
+                        end
+                    when :date
+                        if filter.titleFilterRegexp.match(title) then
+                            content = e.at_css('content').content
+                            episodeUrl = content[UrlRegexp]       # String[] method extract only 1st one.
+                            downloadProgramme( filter, title, episodeUrl )
+                        end
                     end
                 end
             end
@@ -659,24 +695,48 @@ class ScheduleWindow < Qt::Widget
     end
 
     def testFiltersAtReadRss(reply)
+        @queryId ||= 0
+        @queryId += 1
         rss = reply.data
         filters = reply.obj
         entries = rss.css('entry')
         if rss and entries and entries.size then
             filters.each do |filter|
+                $log.debug { "testFiltersAtReadRss. entries(size:#{entries.size})" }
                 entries.each do |e|
                     title = e.at_css('title').content
-                    if filter.titleFilter.match(title) then
-                        content = e.at_css('content').content
-                        categories = e.css('category').map do |c| c['term'] end.join(',')
-                        episodeUrl = content[UrlRegexp]       # String[] method extract only 1st one.
-                        @testResultDlg.table.addResult( title, categories, episodeUrl, filter )
+                    content = e.at_css('content').content
+                    categories = e.css('category').map do |c| c['term'] end.join(',')
+                    episodeUrl = content[UrlRegexp]       # String[] method extract only 1st one.
+                    case filter.filterType
+                    when :title
+                        if filter.titleFilterRegexp.match(title) then
+                            $log.debug { "testFiltersAtReadRss adding entry title:#{title}" }
+                            @testResultDlg.table.addResult( title, categories, episodeUrl, filter )
+                        end
+                    when :date
+                        # check channel time
+                        reply = CachedIO::CacheReply.new(episodeUrl, nil)
+                        reply.obj = [ @queryId, title, categories, episodeUrl, filter ]
+                        BBCNet::CachedMetaInfoIO.read(episodeUrl, \
+                                reply.finishedMethod(self.method(:testFiltersAtReadInfo)))
                     end
                 end
             end
         end
     end
 
+
+    def testFiltersAtReadInfo(reply)
+        minfo = reply.data
+        queryId, title, categories, episodeUrl, filter = reply.obj
+        return if queryId != @queryId
+        return unless filter.channelIndex == minfo.channelIndex && \
+            filter.interval.ok?(minfo.onAirDate.wday) && \
+            filter.time.strftime("%H:%M") == minfo.onAirDate.strftime("%H:%M")
+
+        @testResultDlg.table.addResult( title, categories, episodeUrl, filter )
+    end
 
 
     def addFilterByTitle(progInfo)
