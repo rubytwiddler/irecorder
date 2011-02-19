@@ -1,6 +1,7 @@
 require 'Qt'
 
 class LabledRangeWidget < Qt::Widget
+    attr_reader :startPos, :endPos
     def initialize(labels, startPos=0, endPos=0)
         super()
         @labels = labels
@@ -13,7 +14,7 @@ class LabledRangeWidget < Qt::Widget
             h = [h, lrect.height].max
             lrect.width
         end
-        @charWidth = w
+        @charMaxWidth = w
         @charHeight = h
 
         @margin = 4
@@ -43,7 +44,7 @@ class LabledRangeWidget < Qt::Widget
         update
     end
 
-
+    protected
     def paintEvent(event)
         painter = Qt::Painter.new(self)
 

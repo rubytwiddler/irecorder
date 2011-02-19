@@ -167,6 +167,9 @@ class FolderSelectorLineEdit < Qt::Widget
     def initialize(dir=nil, parent=nil)
         super(parent)
 
+        # initial values
+        @implicitParentDir = ''
+
         # widgets
         @lineEdit = KDE::LineEdit.new
         @lineEdit.text = dir if dir
@@ -183,10 +186,17 @@ class FolderSelectorLineEdit < Qt::Widget
         setLayout(lo)
     end
 
+    attr_accessor :implicitParentDir
+
     slots :openSelectDlg
     def openSelectDlg
-        path = Qt::FileDialog::getExistingDirectory(self,'select folder', @lineEdit.text)
+        dir = File.join(@implicitParentDir, @lineEdit.text)
+        path = Qt::FileDialog::getExistingDirectory(self,'select folder', dir)
         unless !path || path.empty?
+            if path.index(@implicitParentDir) == 0 then
+                path = path.slice((@implicitParentDir.length)..-1)
+                path.slice!(0..0) if path[0] == ?/
+            end
             @lineEdit.text = path
         end
     end

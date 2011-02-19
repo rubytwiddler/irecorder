@@ -193,16 +193,13 @@ end
 
 
 #---------------------------------------------------------------------------------------
-class ScheduleEditDlg < Qt::Dialog
+class ScheduleEditDlg < KDE::Dialog
     def initialize
         super
 
+        setButtons( KDE::Dialog::Ok | KDE::Dialog::Cancel )
         @intervalDaysItem = LabledRangeWidget.new(Time::RFC2822_DAY_NAME)
-        closeBtn = KDE::PushButton.new(KDE::Icon.new('dialog-close'), i18n('Close'))
-        @folderItem = Qt::Label.new('Radio/Custom')
-
-        # connect
-        connect(closeBtn, SIGNAL(:clicked), self, SLOT(:accept))
+        @folderItem = FolderSelectorLineEdit.new('')
 
         # layout
         fl = Qt::FormLayout.new
@@ -210,17 +207,22 @@ class ScheduleEditDlg < Qt::Dialog
         fl.addRow(i18n('Time'), Qt::Label.new('--'))
         fl.addRow(i18n('Interval'), @intervalDaysItem)
         fl.addRow(i18n('Folder'), @folderItem)
-        l = Qt::VBoxLayout.new
-        l.addLayout(fl)
-        l.addWidgets(nil, closeBtn)
-        setLayout(l)
+        lw = VBoxLayoutWidget.new
+        lw.addLayout(fl)
+        setMainWidget(lw)
     end
 
     def exec(filter)
         interval = filter.interval
         @intervalDaysItem.setRange(interval.startDay, interval.endDay)
+        @folderItem.implicitParentDir = IRecSettings.downloadDir
+        @folderItem.folder = filter.folder
         super()
     end
+
+    def startDay; @intervalDaysItem.startPos; end
+    def endDay; @intervalDaysItem.endPos; end
+    def folder; @folderItem.folder; end
 end
 # end of ScheduleEditDlg class
 #---------------------------------------------------------------------------------------
@@ -268,14 +270,14 @@ class ScheduleWindow < Qt::Widget
                 attr_reader :startDay, :endDay
 
                 def setRange(startDay, endDay)
-                    startPos = [startPos, 7].min
-                    endPos = [endPos, 7].min
-                    if startPos < endPos then
-                        @startPos = startPos
-                        @endPos = endPos
+                    startDay = [startDay, 7].min
+                    endDay = [endDay, 7].min
+                    if startDay < endDay then
+                        @startDay = startDay
+                        @endDay = endDay
                     else
-                        @startPos = endPos
-                        @endPos = startPos
+                        @startDay = endDay
+                        @endDay = startDay
                     end
                 end
 
@@ -787,9 +789,15 @@ class ScheduleWindow < Qt::Widget
     def editFilter
         filters = @programmeFilterTable.selectedFilters
         return if filters.nil? or filters.empty?
+        filter = filters.first
+        return unless filter.ready?
 
         @editDialog ||= ScheduleEditDlg.new
-        @editDialog.exec(filters.first)
+        if @editDialog.exec(filter) == Qt::Dialog::Accepted then
+            filter.interval.setRange(@editDialog.startDay, @editDialog.endDay)
+            filter.intervalItem.text = filter.interval.to_s
+            filter.folderItem.text = filter.folder = @editDialog.folder
+        end
     end
 
     #
