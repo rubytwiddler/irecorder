@@ -1,11 +1,10 @@
 require 'yaml'
-#-------------------------------------------------------------------------------------------
+require "customwidget"
+#---------------------------------------------------------------------------------------
 #
 #
 #
 class TestResultDialog < Qt::Dialog
-
-
     #
     #
     #
@@ -193,6 +192,40 @@ end
 # end of ResultTable
 
 
+#---------------------------------------------------------------------------------------
+class ScheduleEditDlg < Qt::Dialog
+    def initialize
+        super
+
+        @intervalDaysItem = LabledRangeWidget.new(Time::RFC2822_DAY_NAME)
+        closeBtn = KDE::PushButton.new(KDE::Icon.new('dialog-close'), i18n('Close'))
+        @folderItem = Qt::Label.new('Radio/Custom')
+
+        # connect
+        connect(closeBtn, SIGNAL(:clicked), self, SLOT(:accept))
+
+        # layout
+        fl = Qt::FormLayout.new
+        fl.addRow(i18n('Channel'), Qt::Label.new('BBC Radio ?'))
+        fl.addRow(i18n('Time'), Qt::Label.new('--'))
+        fl.addRow(i18n('Interval'), @intervalDaysItem)
+        fl.addRow(i18n('Folder'), @folderItem)
+        l = Qt::VBoxLayout.new
+        l.addLayout(fl)
+        l.addWidgets(nil, closeBtn)
+        setLayout(l)
+    end
+
+    def exec(filter)
+        interval = filter.interval
+        @intervalDaysItem.setRange(interval.startDay, interval.endDay)
+        super()
+    end
+end
+# end of ScheduleEditDlg class
+#---------------------------------------------------------------------------------------
+
+
 
 
 def titleStrip(t)
@@ -200,7 +233,8 @@ def titleStrip(t)
             .gsub(/:\s*Episode[\s\d]*$/, '') .gsub(/:.*$/, '')
 end
 
-#-------------------------------------------------------------------------------------------
+
+#---------------------------------------------------------------------------------------
 #
 #  Schedule Filter Window
 #
@@ -227,17 +261,21 @@ class ScheduleWindow < Qt::Widget
         class ProgrammeFilter
             class Interval
                 def initialize(wday)
-                    raise "out of range of week of day" if wday < 0 or wday > 7
+                    raise "out of range of week days" if wday < 0 or wday > 7
                     @startDay = wday
                     @endDay = wday
                 end
+                attr_reader :startDay, :endDay
 
-                def []=(i,v)
-                    raise "out of range of week of day" if i < 0 or i > 7
-                    if i <= @startDay then
-                        @startDay = i
+                def setRange(startDay, endDay)
+                    startPos = [startPos, 7].min
+                    endPos = [endPos, 7].min
+                    if startPos < endPos then
+                        @startPos = startPos
+                        @endPos = endPos
                     else
-                        @endDay = i
+                        @startPos = endPos
+                        @endPos = startPos
                     end
                 end
 
@@ -251,7 +289,7 @@ class ScheduleWindow < Qt::Widget
                 end
 
                 def ok?(wday)
-                    raise "out of range of week of day" if wday < 0 or wday > 7
+                    raise "out of range of week days" if wday < 0 or wday > 7
                     wday >= @startDay and wday <= @endDay
                 end
             end
@@ -569,7 +607,7 @@ class ScheduleWindow < Qt::Widget
         createWidget
 
         #
-        @testResultDlg = TestResultDialog.new(self)
+        @testResultDlg ||= TestResultDialog.new(self)
     end
 
 
@@ -658,25 +696,23 @@ class ScheduleWindow < Qt::Widget
 
     def updateFiltersAtReadRss(reply)
         rss = reply.data
+        return unless rss
         filters = reply.obj
         entries = rss.css('entry')
-        if rss and entries and entries.size then
-            filters.each do |filter|
-                entries.each do |e|
-                    title = e.at_css('title').content
-                    case filter.filterType
-                    when :title
-                        if filter.titleFilterRegexp.match(title) then
-                            content = e.at_css('content').content
-                            episodeUrl = content[UrlRegexp]       # String[] method extract only 1st one.
-                            downloadProgramme( filter, title, episodeUrl )
-                        end
-                    when :date
-                        if filter.titleFilterRegexp.match(title) then
-                            content = e.at_css('content').content
-                            episodeUrl = content[UrlRegexp]       # String[] method extract only 1st one.
-                            downloadProgramme( filter, title, episodeUrl )
-                        end
+        return unless entries and entries.size
+        filters.each do |filter|
+            entries.each do |e|
+                title = e.at_css('title').content
+                content = e.at_css('content').content
+                episodeUrl = content[UrlRegexp]       # String[] method extract only 1st one.
+                case filter.filterType
+                when :title
+                    if filter.titleFilterRegexp.match(title) then
+                        downloadProgramme( filter, title, episodeUrl )
+                    end
+                when :date
+                    if filter.titleFilterRegexp.match(title) then
+                        downloadProgramme( filter, title, episodeUrl )
                     end
                 end
             end
@@ -698,29 +734,29 @@ class ScheduleWindow < Qt::Widget
         @queryId ||= 0
         @queryId += 1
         rss = reply.data
+        return unless rss
         filters = reply.obj
         entries = rss.css('entry')
-        if rss and entries and entries.size then
-            filters.each do |filter|
-                $log.debug { "testFiltersAtReadRss. entries(size:#{entries.size})" }
-                entries.each do |e|
-                    title = e.at_css('title').content
-                    content = e.at_css('content').content
-                    categories = e.css('category').map do |c| c['term'] end.join(',')
-                    episodeUrl = content[UrlRegexp]       # String[] method extract only 1st one.
-                    case filter.filterType
-                    when :title
-                        if filter.titleFilterRegexp.match(title) then
-                            $log.debug { "testFiltersAtReadRss adding entry title:#{title}" }
-                            @testResultDlg.table.addResult( title, categories, episodeUrl, filter )
-                        end
-                    when :date
-                        # check channel time
-                        reply = CachedIO::CacheReply.new(episodeUrl, nil)
-                        reply.obj = [ @queryId, title, categories, episodeUrl, filter ]
-                        BBCNet::CachedMetaInfoIO.read(episodeUrl, \
-                                reply.finishedMethod(self.method(:testFiltersAtReadInfo)))
+        return unless entries and entries.size
+        filters.each do |filter|
+            $log.debug { "testFiltersAtReadRss. entries(size:#{entries.size})" }
+            entries.each do |e|
+                title = e.at_css('title').content
+                content = e.at_css('content').content
+                categories = e.css('category').map do |c| c['term'] end.join(',')
+                episodeUrl = content[UrlRegexp]       # String[] method extract only 1st one.
+                case filter.filterType
+                when :title
+                    if filter.titleFilterRegexp.match(title) then
+                        $log.debug { "testFiltersAtReadRss adding entry title:#{title}" }
+                        @testResultDlg.table.addResult( title, categories, episodeUrl, filter )
                     end
+                when :date
+                    # check channel time
+                    reply = CachedIO::CacheReply.new(episodeUrl, nil)
+                    reply.obj = [ @queryId, title, categories, episodeUrl, filter ]
+                    BBCNet::CachedMetaInfoIO.read(episodeUrl, \
+                            reply.finishedMethod(self.method(:testFiltersAtReadInfo)))
                 end
             end
         end
@@ -752,9 +788,8 @@ class ScheduleWindow < Qt::Widget
         filters = @programmeFilterTable.selectedFilters
         return if filters.nil? or filters.empty?
 
-        filters.each do |filter|
-
-        end
+        @editDialog ||= ScheduleEditDlg.new
+        @editDialog.exec(filters.first)
     end
 
     #
@@ -774,6 +809,8 @@ class ScheduleWindow < Qt::Widget
 
     public
     def saveFilters
+        return      #!!!!!! for debug  !!!!!!
+
         saveData = [SAVE_ENTRY_VERSION]
         @programmeFilterTable.filters.each do |filter|
             saveData.push( filter.getSaveEntry )
