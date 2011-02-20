@@ -9,7 +9,7 @@ TODO - irecorder
 
  *check duration of file after download.
  *multi-select task and execute operations.
- *handle crash & version check of cache
+ *handle crash by checking version of cache
  *display already saved or not.
 
  *delete expired cached files.
@@ -31,7 +31,7 @@ TODO - irecorder
  *file dialog combobox text is invisible.
 
  *mencoder for dump
- *play/download from proxy (mplayer)
+ *play/download from proxy (use mplayer proxy parameter)
  *status bar for processing.
  *resume task
  *fileName + sub category

@@ -9,6 +9,7 @@ require 'fileutils'
 require 'tmpdir'
 require 'singleton'
 require 'yaml'
+require 'date'
 require 'Qt'
 
 # my libs
@@ -493,6 +494,8 @@ class BBCNet < Qt::Object
         ['BBC HD', 'bbc_hd'],
         ['BBC ALBA', 'bbc_alba'] ]
 
+    RadioChannelShortNameTbl = %w{ radio1 1xtra radio2 radio3 radio4 5live 5livesportsextra 6music radio7 asiannetwork worldservice radioscotland radionangaidheal radioulster radiofoyle radiowales radiocymru }
+
     RadioChannelRssTbl = [
         ['BBC Radio 1', 'bbc_radio_one'],
         ['BBC 1Xtra', 'bbc_1xtra'],
@@ -615,7 +618,33 @@ class BBCNet < Qt::Object
         CachedRssIO.read(feedAdr, onRead)
     end
 
+    class CachedScheduleHtmlIO < CachedHttpDiskIO
+        def initialize(cacheDuration = 24*60*7, cacheMax=1)
+            super
+        end
 
+        def tempFileName(url)
+            File.join(@tmpdir, url.gsub(%r|^.*\.co\.uk/|, '').gsub(%r/[^\w]/, '_'))
+        end
+    end
+    #
+    def self.getScheduleAdrByWeekdayAndChannel(weekday, channelIndex)
+        raise "out of range of weekday" unless (0..6).include?(weekday)
+        day = Date.today
+        day -= ((day.wday - weekday) % 7)
+        dayStr = day.strftime("20%y/%m/%d")
+        channelStr = BBCNet::RadioChannelShortNameTbl[channelIndex]
+#         "http://www.bbc.co.uk/radio7/programmes/schedules/2011/02/16"
+        "http://www.bbc.co.uk/#{channelStr}/programmes/schedules/#{dayStr}"
+    end
+
+    def self.getScheduleHtmlByWeekdayAndChannel(weekday, channelIndex, onRead)
+        feedAdr = getScheduleAdrByWeekdayAndChannel(weekday, channelIndex)
+        return if feedAdr.nil?
+
+        $log.info{ "feeding from '#{feedAdr}'" }
+        CachedScheduleHtmlIO.read(feedAdr, onRead)
+    end
 
     #
     # Main Genre [Drama, Comedy, ..]

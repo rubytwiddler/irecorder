@@ -192,19 +192,90 @@ end
 # end of ResultTable
 
 
+
+#---------------------------------------------------------------------------------------
+class TimeSelectDlg < KDE::Dialog
+    class ScheduleTimeTable < Qt::TableWidget
+        class Item < Qt::TableWidgetItem
+            def initialize(text)
+                super(text)
+                self.flags = Qt::ItemIsSelectable | Qt::ItemIsEnabled
+                self.toolTip = text
+            end
+        end
+
+        def initialize
+            super(0,2)
+            setHorizontalHeaderLabels(%w{Time Programme})
+            horizontalHeader.stretchLastSection = true
+            self.selectionBehavior = Qt::AbstractItemView::SelectRows
+            self.selectionMode = Qt::AbstractItemView::SingleSelection
+            self.alternatingRowColors = true
+            self.sortingEnabled = false
+        end
+
+        def addTimeProgramme(time, title)
+            row = rowCount
+            self.rowCount = row + 1
+            setItem( row, 0, Item.new(time) )
+            setItem( row, 1, Item.new(title) )
+        end
+
+        def addTimeSchedule(scheduleHtml)
+            clearContents
+            doc = Nokogiri::XML(res)
+            broadcasts = doc.at_css("#broadcasts")
+            broadcasts.css(".clearfix").each do |entry|
+                time = entry.at_css('.starttime').content
+                title = entry.at_css('.title').content
+                addTimeProgramme(time, title)
+            end
+        end
+
+        def selectTime(time)
+        end
+    end
+
+    def initialize(parent)
+        super(parent)
+
+        setButtons( KDE::Dialog::Cancel )
+        @timeTable = ScheduleTimeTable.new
+
+        # layout
+        lw = VBoxLayoutWidget.new
+        lw.addLayout(@timeTable)
+        setMainWidget(lw)
+    end
+
+    def exec(scheduleHtml, selectedTime)
+        @timeTable.addTimeSchedule(scheduleHtml)
+        @timeTable.selectTime(selectedTime)
+        super()
+    end
+end
+
 #---------------------------------------------------------------------------------------
 class ScheduleEditDlg < KDE::Dialog
     def initialize
         super
 
         setButtons( KDE::Dialog::Ok | KDE::Dialog::Cancel )
+
+        # widgets
+        @channelComboBox = Qt::ComboBox.new
+        @channelComboBox.addItems( BBCNet::ChannelNameTbl )
+        @timeBtn = Qt::PushButton.new('00:00')
         @intervalDaysItem = LabledRangeWidget.new(Time::RFC2822_DAY_NAME)
         @folderItem = FolderSelectorLineEdit.new('')
 
+        # connect
+        connect(@timeBtn, SIGNAL(:clicked), self, SLOT(:timePopup))
+
         # layout
         fl = Qt::FormLayout.new
-        fl.addRow(i18n('Channel'), Qt::Label.new('BBC Radio ?'))
-        fl.addRow(i18n('Time'), Qt::Label.new('--'))
+        fl.addRow(i18n('Channel'), @channelComboBox)
+        fl.addRow(i18n('Time'), @timeBtn)
         fl.addRow(i18n('Interval'), @intervalDaysItem)
         fl.addRow(i18n('Folder'), @folderItem)
         lw = VBoxLayoutWidget.new
@@ -214,6 +285,7 @@ class ScheduleEditDlg < KDE::Dialog
 
     def exec(filter)
         interval = filter.interval
+        @channel = filter.channel
         @intervalDaysItem.setRange(interval.startDay, interval.endDay)
         @folderItem.implicitParentDir = IRecSettings.downloadDir
         @folderItem.folder = filter.folder
@@ -223,6 +295,26 @@ class ScheduleEditDlg < KDE::Dialog
     def startDay; @intervalDaysItem.startPos; end
     def endDay; @intervalDaysItem.endPos; end
     def folder; @folderItem.folder; end
+
+    slots :timePopup
+    def timePopup
+        @queryId ||= 0
+        @queryId += 1
+        channelIndex = BBCNet::getChannelIndex(@channel)
+        reply = CachedIO::CacheReply.new(channelIndex, nil)
+        reply.obj = [ @queryId  ]
+        BBCNet::getScheduleHtmlByWeekdayAndChannel(startDay, channelIndex, \
+                    reply.finishedMethod(self.method(:timePopupAtReadSchedule)))
+    end
+
+    def timePopupAtReadSchedule(reply)
+        queryId = reply.obj
+        return unless queryId == @queryId
+
+        @timeSelectDlg ||= TimeSelectDlg.new(self)
+        @timeSelectDlg.exec(reply.data, '')
+    end
+
 end
 # end of ScheduleEditDlg class
 #---------------------------------------------------------------------------------------
