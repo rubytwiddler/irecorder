@@ -181,7 +181,9 @@ class FolderSelectorLineEdit < Qt::Widget
         # layout
         lo = Qt::HBoxLayout.new do |l|
             l.setContentsMargins(0,0,0,0)
-            l.addWidgets(@lineEdit, @dirSelectBtn)
+            l.addWidget(@lineEdit)
+            l.addWidget(@dirSelectBtn)
+#             l.addWidgets(@lineEdit, @dirSelectBtn)
         end
         setLayout(lo)
     end
