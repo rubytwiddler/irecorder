@@ -173,6 +173,7 @@ end
 class SettingsDlg < KDE::ConfigDialog
     def initialize(parent)
         super(parent, "Settings", IRecSettings.instance)
+        GC.start
         addPage(FolderSettingsPage.new, i18n("Folder"), 'folder', i18n('Folder and File Name'))
         addPage(PlayerSettingsPage.new, i18n("Player"), 'internet-web-browser', i18n('Player and web Browser'))
         addPage(ThemeSettingsPage.new, i18n("Theme"), 'view-media-visualization', i18n('Theme'))

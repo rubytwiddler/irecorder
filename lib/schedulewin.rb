@@ -221,20 +221,34 @@ class TimeSelectDlg < KDE::Dialog
             setItem( row, 1, Item.new(title) )
         end
 
-        def addTimeSchedule(scheduleHtml)
-            clearContents
-            doc = Nokogiri::XML(res)
+        def getTimeEntriesFromHtml(html)
+            doc = Nokogiri::XML(html)
             broadcasts = doc.at_css("#broadcasts")
-            broadcasts.css(".clearfix").each do |entry|
+            entries = broadcasts.css(".clearfix")
+            data = []
+            entries.each do |entry|
                 time = entry.at_css('.starttime').content
                 title = entry.at_css('.title').content
-                addTimeProgramme(time, title)
+                data << [time, title]
             end
+            data
+        end
+
+        def addTimeSchedule(scheduleHtml)
+            data = getTimeEntriesFromHtml(scheduleHtml)
+            clearContents
+            hide
+            self.rowCount = 0
+            data.each_with_index do |d, i|
+                addTimeProgramme(*d)
+            end
+            show
         end
 
         def selectTime(time)
         end
     end
+    # end of ScheduleTimeTable class
 
     def initialize(parent)
         super(parent)
@@ -244,7 +258,7 @@ class TimeSelectDlg < KDE::Dialog
 
         # layout
         lw = VBoxLayoutWidget.new
-        lw.addLayout(@timeTable)
+        lw.addWidget(@timeTable)
         setMainWidget(lw)
     end
 
@@ -257,8 +271,8 @@ end
 
 #---------------------------------------------------------------------------------------
 class ScheduleEditDlg < KDE::Dialog
-    def initialize
-        super
+    def initialize(parent)
+        super(parent)
 
         setButtons( KDE::Dialog::Ok | KDE::Dialog::Cancel )
 
@@ -308,7 +322,7 @@ class ScheduleEditDlg < KDE::Dialog
     end
 
     def timePopupAtReadSchedule(reply)
-        queryId = reply.obj
+        queryId,dmy = reply.obj
         return unless queryId == @queryId
 
         @timeSelectDlg ||= TimeSelectDlg.new(self)
@@ -884,7 +898,7 @@ class ScheduleWindow < Qt::Widget
         filter = filters.first
         return unless filter.ready?
 
-        @editDialog ||= ScheduleEditDlg.new
+        @editDialog ||= ScheduleEditDlg.new(self)
         if @editDialog.exec(filter) == Qt::Dialog::Accepted then
             filter.interval.setRange(@editDialog.startDay, @editDialog.endDay)
             filter.intervalItem.text = filter.interval.to_s
