@@ -246,6 +246,13 @@ class TimeSelectDlg < KDE::Dialog
         end
 
         def selectTime(time)
+            timeStr = time.strftime("%H:%M")
+            0.upto(rowCount-1) do |i|
+                if item(i,0).text == timeStr then
+                    setCurrentCell(i,0)
+                    return
+                end
+            end
         end
     end
     # end of ScheduleTimeTable class
@@ -256,16 +263,44 @@ class TimeSelectDlg < KDE::Dialog
         setButtons( KDE::Dialog::Cancel )
         @timeTable = ScheduleTimeTable.new
 
+        #
+        connect(@timeTable, SIGNAL('cellClicked(int,int)'), self, SLOT('cellClicked(int,int)'))
+
         # layout
         lw = VBoxLayoutWidget.new
         lw.addWidget(@timeTable)
         setMainWidget(lw)
     end
 
+    def hideEvent(event)
+        @size= size
+        @headerState = @timeTable.horizontalHeader.saveState
+    end
+
+    def showEvent(event)
+        if @size then
+            self.size = @size
+            @timeTable.horizontalHeader.restoreState(@headerState)
+        end
+    end
+
+    slots 'cellClicked(int,int)'
+    def cellClicked(row, column)
+        accept
+    end
+
     def exec(scheduleHtml, selectedTime)
         @timeTable.addTimeSchedule(scheduleHtml)
         @timeTable.selectTime(selectedTime)
         super()
+    end
+
+    # @return [ time(text), title(text) ]
+    def selectedTime
+        firstItem = @timeTable.selectedItems.first
+        return nil unless firstItem
+        row = firstItem.row
+        [ @timeTable.item(row,0).text, @timeTable.item(row,1).text ]
     end
 end
 
@@ -298,8 +333,10 @@ class ScheduleEditDlg < KDE::Dialog
     end
 
     def exec(filter)
+        @filter = filter
         interval = filter.interval
         @channel = filter.channel
+        @timeBtn.setText(filter.time.strftime("%H:%M"))
         @intervalDaysItem.setRange(interval.startDay, interval.endDay)
         @folderItem.implicitParentDir = IRecSettings.downloadDir
         @folderItem.folder = filter.folder
@@ -326,7 +363,11 @@ class ScheduleEditDlg < KDE::Dialog
         return unless queryId == @queryId
 
         @timeSelectDlg ||= TimeSelectDlg.new(self)
-        @timeSelectDlg.exec(reply.data, '')
+        time = Time.parse(@timeBtn.text, @filter.time)
+        if @timeSelectDlg.exec(reply.data, time) == Qt::Dialog::Accepted and \
+            data = @timeSelectDlg.selectedTime then
+            @timeBtn.text = data[0]
+        end
     end
 
 end
