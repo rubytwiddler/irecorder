@@ -332,6 +332,10 @@ class ScheduleEditDlg < KDE::Dialog
         setMainWidget(lw)
     end
 
+    def selectChannel
+        @channelComboBox.currentIndex = BBCNet::getChannelIndex(@channel)
+    end
+
     def exec(filter)
         @filter = filter
         interval = filter.interval
@@ -340,18 +344,23 @@ class ScheduleEditDlg < KDE::Dialog
         @intervalDaysItem.setRange(interval.startDay, interval.endDay)
         @folderItem.implicitParentDir = IRecSettings.downloadDir
         @folderItem.folder = filter.folder
+        selectChannel
         super()
     end
 
     def startDay; @intervalDaysItem.startPos; end
     def endDay; @intervalDaysItem.endPos; end
     def folder; @folderItem.folder; end
+    def channelIndex; @channelComboBox.currentIndex; end
+    def time; Time.parse(@timeBtn.text, @filter.time); end
+    def channel
+        BBCNet::getChannelStrByIndex(channelIndex)
+    end
 
     slots :timePopup
     def timePopup
         @queryId ||= 0
         @queryId += 1
-        channelIndex = BBCNet::getChannelIndex(@channel)
         reply = CachedIO::CacheReply.new(channelIndex, nil)
         reply.obj = [ @queryId  ]
         BBCNet::getScheduleHtmlByWeekdayAndChannel(startDay, channelIndex, \
@@ -363,7 +372,6 @@ class ScheduleEditDlg < KDE::Dialog
         return unless queryId == @queryId
 
         @timeSelectDlg ||= TimeSelectDlg.new(self)
-        time = Time.parse(@timeBtn.text, @filter.time)
         if @timeSelectDlg.exec(reply.data, time) == Qt::Dialog::Accepted and \
             data = @timeSelectDlg.selectedTime then
             @timeBtn.text = data[0]
@@ -476,31 +484,28 @@ class ScheduleWindow < Qt::Widget
                     @interval = nil
                     @titleFilter = ''
                     @titleFilterRegexp = /./
+                    @time = Time.zero
+                    @channel = ''
+                    @channelIndex = -1
                 end
                 attr_reader :interval
                 attr_reader :titleFilter, :titleFilterRegexp
                 attr_reader :id
+                attr_reader :channel
+                attr_reader :channelIndex
+                attr_accessor :time
 
                 def setMetaInfo(minfo)
                     @minfo = minfo
                     @interval = Interval.new(minfo.onAirDate.wday)
-                    @titleFilter = channel
+                    @time = @minfo.onAirDate
+                    self.channel = @minfo.channel
                 end
 
-                def time
-                    return @minfo.onAirDate if @minfo
-                    Time.zero
-                end
-
-                def channel
-                    return @minfo.channel if @minfo
-                    ''
-                end
-
-                def channelIndex
-                    $log.debug { "accessing channelIndex @minfo.channelIndex:#{@minfo.channelIndex}" }
-                    return @minfo.channelIndex if @minfo
-                    -1
+                def channel=(ch)
+                    @channel = ch
+                    @titleFilter = ch
+                    @channelIndex = BBCNet::getChannelIndex(ch)
                 end
             end
 
@@ -542,8 +547,16 @@ class ScheduleWindow < Qt::Widget
             def titleFilter; @filterData.titleFilter; end
             def titleFilterRegexp; @filterData.titleFilterRegexp; end
             def time; @filterData.time; end     # onAirDate
+            def time=(tm)
+                @filterData.time = tm
+                @timeItem.text = tm.to_s
+            end
             def interval; @filterData.interval; end
             def channel; @filterData.channel; end
+            def channel=(ch)
+                @filterData.channel = ch
+                @titleFilterItem.text = ch
+            end
             def duration
                 return @progInfo.minfo.duration if @progInfo.minfo
                 0
@@ -939,11 +952,17 @@ class ScheduleWindow < Qt::Widget
         filter = filters.first
         return unless filter.ready?
 
-        @editDialog ||= ScheduleEditDlg.new(self)
-        if @editDialog.exec(filter) == Qt::Dialog::Accepted then
-            filter.interval.setRange(@editDialog.startDay, @editDialog.endDay)
-            filter.intervalItem.text = filter.interval.to_s
-            filter.folderItem.text = filter.folder = @editDialog.folder
+        case filter.filterType
+        when :title
+        when :date
+            @editDialog ||= ScheduleEditDlg.new(self)
+            if @editDialog.exec(filter) == Qt::Dialog::Accepted then
+                filter.interval.setRange(@editDialog.startDay, @editDialog.endDay)
+                filter.intervalItem.text = filter.interval.to_s
+                filter.folderItem.text = filter.folder = @editDialog.folder
+                filter.channel = @editDialog.channel
+                filter.time = @editDialog.time
+            end
         end
     end
 

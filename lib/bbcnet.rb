@@ -269,7 +269,7 @@ class BBCNet < Qt::Object
             $log.misc { "minfo onRead call @onRead(size:#{@onRead.size}):#{@onRead}" }
             @onRead.each do |va|
                 onRead, reply = *va
-                $log.misc { "minfo onRead each call onRead:#{onRead.inspect}, reply.onRead:#{reply.onRead}, reply.onFinish:#{reply.onFinish}" }
+                $log.misc { "minfo onRead each call onRead:#{onRead.inspect}, reply.onRead:#{reply ? reply.onRead : nil}, reply.onFinish:#{reply ? reply.onFinish : nil}" }
                 if reply then
                     onRead.call(self, reply)
                 else
@@ -382,6 +382,7 @@ class BBCNet < Qt::Object
                 BBCNet.read(url, self.method(:onReadSearching))
             elsif not url[ UrlRegexp ] then
                 $log.info { "no url in response '#{res}'" }
+                @onRead.call("http://www.bbc.co.uk"+@old)
             else
                 @onRead.call(url)
             end
@@ -589,7 +590,7 @@ class BBCNet < Qt::Object
     #
 
     #
-    # get category index for feed
+    # get channel index for feed
     #
     def self.getChannelIndex(channelStr)
         ca = channelStr.chomp
@@ -597,6 +598,10 @@ class BBCNet < Qt::Object
             return i if c =~ ca
         end
         -1
+    end
+
+    def self.getChannelStrByIndex(index)
+        RadioChannelRssTbl[index][0]
     end
 
     #
@@ -632,7 +637,7 @@ class BBCNet < Qt::Object
         raise "out of range of weekday" unless (0..6).include?(weekday)
         day = Date.today
         day -= ((day.wday - weekday) % 7)
-        dayStr = day.strftime("20%y/%m/%d")
+        dayStr = (channelIndex == 4 ? 'fm/': '') +day.strftime("20%y/%m/%d")
         channelStr = BBCNet::RadioChannelShortNameTbl[channelIndex]
 #         "http://www.bbc.co.uk/radio7/programmes/schedules/2011/02/16"
         "http://www.bbc.co.uk/#{channelStr}/programmes/schedules/#{dayStr}"
@@ -697,13 +702,16 @@ if __FILE__ == $0 then
         puts minfo.title
 
         minfo.streams.each do |s|
-            puts "url : " + s.url
+            if s.url then
+                puts "url : " + s.url
+            end
         end
+        puts minfo.inspect
         exit
     end
 
     $log = MyLogger.new(LogOut.new)
-    pid = "b007jynb"
+    pid = "b00cq611"
     if ARGV.size > 0 then
         pid = ARGV.shift
     end

@@ -62,7 +62,7 @@ class DownloadProcess < Qt::Process
     def status=(st)
         @status = st
         @taskItem.status = statusMessage if @taskItem
-        $log.misc { "status:#{status}" }
+        $log.misc { "status:#{@status}" }
     end
 
     #--------------------------
@@ -558,7 +558,7 @@ class Downloader
             $log.info { "Play on web browser" }
             cmd, args = makeProcCommand(webPlayerCommand, consoleUrl)
             $log.debug { "execute cmd '#{cmd}', args '#{args.inspect}'" }
-            proc = Qt::Process.new(self)
+            proc = Qt::Process.new(@main)
             proc.start(cmd, args)
 
         elsif IRecSettings.useDirectPlayer and directPlayerCommand then
