@@ -599,6 +599,11 @@ class MainWindow < KDE::MainWindow
         proc.start(cmd, args)
     end
 
+    def playWithInnerPlayer(url)
+        @playerDock.show
+        @playerWebView.setUrl(url)
+    end
+
     # ------------------------------------------------------------------------
     #
     # slot: called when 'Get List' Button clicked signal invoked.

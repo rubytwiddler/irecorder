@@ -164,7 +164,7 @@ class CachedHttpDiskIO < CachedIO::CachedIOBase
         reply = CachedIO::CacheReply.new(tmpfname, onRead)
         reply.id = tmpfname
         reply.url = url
-        if File.exist?(tmpfname) and
+        if File.exist?(tmpfname) and File.size(tmpfname) > 0 and
                 File.ctime(tmpfname) + @cacheDuration > Time.now then
             data = restoreCache(tmpfname)
         else

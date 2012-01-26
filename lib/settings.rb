@@ -131,8 +131,8 @@ class IRecSettings < SettingsBase
         addBoolItem(:leaveRawFile, false)
 
         # player
-        addBoolItem(:useInnerPlayer, true)
-        addBoolItem(:useWebPlayer, false)
+        addBoolItem(:useInnerPlayer, false)
+        addBoolItem(:useWebPlayer, true)
         addStringItem(:webPlayerName, 'Konqueror')
         addBoolItem(:useDirectPlayer, false)
         addStringItem(:directPlayerName, 'KMPlayer')

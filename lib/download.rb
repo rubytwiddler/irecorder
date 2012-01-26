@@ -357,7 +357,7 @@ class DownloadProcess < Qt::Process
 
     def checkOutput(msg)
         msgSum = msg.join(' ')
-        @downNG &&= false if msgSum =~ /Everything done/i
+        @downNG = false if msgSum =~ /Everything done/i
     end
 
     # check and read output
@@ -412,7 +412,7 @@ class DownloadProcess < Qt::Process
     def checkErroredStatus
         case @stage
         when DOWNLOAD
-            return @downNG unless @downNG
+            return @downNG if @downNG
             rawFileError?
         when CONVERT
             outFileError?
@@ -552,8 +552,7 @@ class Downloader
 
         consoleUrl = BBCNet.getPlayerConsoleUrl(episodeUrl)
         if IRecSettings.useInnerPlayer then
-            @playerDock.show
-            @playerWebView.setUrl(Qt::Url.new(consoleUrl))
+            @main.playWithInnerPlayer(Qt::Url.new(consoleUrl))
         elsif IRecSettings.useWebPlayer and webPlayerCommand then
             $log.info { "Play on web browser" }
             cmd, args = makeProcCommand(webPlayerCommand, consoleUrl)

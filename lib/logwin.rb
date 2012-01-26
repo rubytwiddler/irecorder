@@ -25,7 +25,7 @@ class LogWindow < Qt::Widget
 
 
         # connect
-        connect(clearBtn, SIGNAL(:clicked), @textWidget, SLOT(:clear))
+        connect(clearBtn, SIGNAL(:clicked), self, SLOT(:clearLog))
         connect(@findLineEdit, SIGNAL(:returnPressed), self, SLOT(:findNext))
         connect(findNextBtn, SIGNAL(:clicked), self, SLOT(:findNext))
         connect(findPrevBtn, SIGNAL(:clicked), self, SLOT(:findPrevious))
@@ -63,6 +63,12 @@ class LogWindow < Qt::Widget
         @textWidget.find( @findLineEdit.text, Qt::TextDocument::FindBackward)
     end
 
+    slots :clearLog
+    def clearLog
+        @textWidget.clear
+        @lineCount = 0
+    end
+    
     slots :changeLevel
     def changeLevel
         label = sender
