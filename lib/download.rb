@@ -245,7 +245,7 @@ class DownloadProcess < Qt::Process
     slots   'taskFinished(int,QProcess::ExitStatus)'
     def taskFinished(exitCode, exitStatus)
         checkReadOutput
-        if error? || ((exitCode.to_i.nonzero? || exitStatus.to_i.nonzero?) && checkErroredStatus) then
+        if error? || exitCode.to_i.nonzero? || exitStatus.to_i.nonzero? || checkErroredStatus then
             errorStop(exitCode, exitStatus)
         else
             $log.info {
@@ -362,7 +362,7 @@ class DownloadProcess < Qt::Process
 
     # check and read output
     def checkReadOutput
-        msg = readAllStandardOutput.data .reject do |l| l.empty? end
+        msg = readAllStandardOutput.data .reject do |l| l.empty? || l =~ /^dump:.*written\s*\n?$/ end
         checkOutput(msg)
         $log.info { msg }
     end
@@ -408,11 +408,12 @@ class DownloadProcess < Qt::Process
         end
     end
 
-    # return error or not
+    # return true if error.
     def checkErroredStatus
         case @stage
         when DOWNLOAD
-            return @downNG if @downNG
+            $log.info{ "check downloaded file. @downNG=#{@downNG}" }
+            return true if @downNG
             rawFileError?
         when CONVERT
             outFileError?
