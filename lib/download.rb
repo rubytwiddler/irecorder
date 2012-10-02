@@ -495,24 +495,25 @@ class Downloader
 
         fName = getSaveName(minfo, tags, folder, 'wma')
         $log.info { "save name : #{fName}" }
+        $log.info { "meta info : #{minfo.inspect}" }
 
-        if downloadOne(minfo, fName, skipOverWrite) then
+        unless ret = downloadOne(minfo, fName, skipOverWrite) then
             passiveMessage(KDE::i18n("Start Download programme '%s'") % [title])
         else
-            $log.info { "cancel duplicated download '#{title}'" }
+            $log.info { ret % title }
         end
     end
 
     def downloadOne(metaInfo, fName, skipOverWrite=true)
-        return false if @taskWin.exist?(metaInfo)
-        return false unless metaInfo.streamInfo
+        return "already in task '%s'" if @taskWin.exist?(metaInfo)
+        return "no stream info '%s'" unless metaInfo.streamInfo and metaInfo.streamInfo.url
 
         process = DownloadProcess.new(@main, metaInfo, fName)
-        return false if skipOverWrite && process.overWrite?
+        return "duplicated download '%s'" if skipOverWrite && process.overWrite?
 
         process.taskItem = @taskWin.addTask(process)
         process.beginTask
-        true
+        nil
     end
 
     def getSaveName(minfo, tags, folder, ext='wma')
@@ -572,7 +573,7 @@ class Downloader
     protected
     def playDirectAtReadInfo(minfo)
         stream = minfo.streamInfo
-        unless stream then
+        unless stream and stream.url then
             title = minfo.title
             passiveMessage(KDE::i18n("No Valid Url to Play Programmme '%s'") % [title])
             $log.info { "No Valid Url to Play Programmme '#{title}'" }

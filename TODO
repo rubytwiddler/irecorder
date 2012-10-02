@@ -1,6 +1,8 @@
 TODO - irecorder
+ *bbc 7 => bbc 4 extra
+ *multiple select at task window.
  *schedule download
-   -2 type entry : title filter type, time weekday/time/duratino type.
+   -2 type entry : title filter type, time weekday/time/duration type.
 
    -schedule download, in system tray, auto restart download.
    -auto start in back ground

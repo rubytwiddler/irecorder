@@ -144,7 +144,7 @@ class BBCNet < Qt::Object
             end
         end
 
-        def streamInfo(prefered=%w{wma real})
+        def streamInfo(prefered=%w{wma real aac aaclow})
             prefered.each do |name|
                 case name.to_s.downcase.to_sym
                 when :wma
@@ -243,7 +243,7 @@ class BBCNet < Qt::Object
                 @streams <<= stmInf
 
                 case stmInf.encoding
-                when /\bwma\b/i
+                when /\bwma\d?\b/i
                     @wma = stmInf
                 when /\baac\b/i
                     if stmInf.bitrate < 64
@@ -711,7 +711,7 @@ if __FILE__ == $0 then
     end
 
     $log = MyLogger.new(LogOut.new)
-    pid = "b00cq611"
+    pid = "b01kpx3m"
     if ARGV.size > 0 then
         pid = ARGV.shift
     end
