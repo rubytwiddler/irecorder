@@ -1,4 +1,4 @@
-#
+# encoding: utf-8
 #
 #
 require 'rubygems'
@@ -135,6 +135,10 @@ class BBCNet < Qt::Object
             def cleanData
                 remove_instance_variable :@onUpdated
                 self
+            end
+
+            def sizeRate
+                940
             end
 
             protected

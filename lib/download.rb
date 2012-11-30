@@ -357,7 +357,7 @@ class DownloadProcess < Qt::Process
 
     def checkOutput(msg)
         msgSum = msg.join(' ')
-        @downNG = false if msgSum =~ /Everything done/i
+        @downNG = false if msgSum =~ /Everything done/i or msgSum =~ / bytes written to /i
     end
 
     # check and read output
@@ -379,7 +379,7 @@ class DownloadProcess < Qt::Process
             end
             return isError if isError
             $log.debug { "check file size for download." }
-            isError = File.size(@rawFilePath) < @metaInfo.duration * 5500
+            isError = File.size(@rawFilePath) < @metaInfo.duration * @metaInfo.streamInfo.sizeRate
             if isError then
                 $log.warn { [ "duration check error",
                               " File.size(@rawFilePath) :#{File.size(@rawFilePath)}",
@@ -495,7 +495,7 @@ class Downloader
 
         fName = getSaveName(minfo, tags, folder, 'wma')
         $log.info { "save name : #{fName}" }
-        $log.info { "meta info : #{minfo.inspect}" }
+        $log.misc { "meta info : #{minfo.inspect}" }
 
         unless ret = downloadOne(minfo, fName, skipOverWrite) then
             passiveMessage(KDE::i18n("Start Download programme '%s'") % [title])
