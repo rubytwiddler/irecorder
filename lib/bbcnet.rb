@@ -25,7 +25,7 @@ class BBCNet
     MmsRegexp = URI.regexp(['mms'])
     DirectStreamRegexp = URI.regexp(['mms', 'rtsp', 'rtmp', 'rtmpt'])
 
-    class CacheMetaInfoDevice < CasheDevice::CacheDeviceBase
+    class CacheMetaInfoDevice < CacheHttpDiskDevice
         def initialize(cacheDuration = 40*60, cacheMax=200)
             super(cacheDuration, cacheMax)
         end
@@ -129,7 +129,7 @@ class BBCNet
                 @streams <<= stmInf
 
                 case stmInf.encoding
-                when /\bwma\b/i
+                when /\bwma\d?\b/i
                     @wma = stmInf
                 when /\baac\b/i
                     if stmInf.bitrate < 64

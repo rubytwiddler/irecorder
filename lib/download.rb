@@ -61,7 +61,7 @@ class DownloadProcess < Qt::Process
     def status=(st)
         @status = st
         @taskItem.status = statusMessage if @taskItem
-        $log.misc { "status:#{status}" }
+        $log.misc { "status:#{@status}" }
     end
 
     #--------------------------
@@ -361,7 +361,8 @@ class DownloadProcess < Qt::Process
 
     # check and read output
     def checkReadOutput
-        msg = readAllStandardOutput.data .reject do |l| l.empty? end
+        msg = readAllStandardOutput.data #.reject do |l| l.empty? end
+        msg = [msg]
         checkOutput(msg)
         $log.info { msg }
     end

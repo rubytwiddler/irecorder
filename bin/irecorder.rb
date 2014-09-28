@@ -58,7 +58,7 @@ class MainWindow < KDE::MainWindow
         setCaption(APP_NAME)
 
         $log = MyLogger.new(STDOUT)
-        $log.level = MyLogger::DEBUG
+        $log.level = MyLogger::MISC
         $log.info { 'Initializing.' }
 
         applyTheme
@@ -749,6 +749,7 @@ class MainWindow < KDE::MainWindow
 
                 $log.info { "episode Url : #{url}" }
                 minfo = BBCNet::CacheMetaInfoDevice.read(url)
+                $log.debug { minfo.inspect }
                 url = minfo.wma.url
 
                 fName = getSaveName(prog, 'wma')

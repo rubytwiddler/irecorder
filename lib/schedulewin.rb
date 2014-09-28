@@ -272,7 +272,7 @@ class ScheduleWindow < Qt::Widget
     def loadFilters
         fileName = getFiltersFileName
         return unless File.exist?(fileName)
-
+ return
         open(fileName) do |f|
             saveData = YAML.load(f)
             @programmeFilterTable.addSaveEntries( saveData )
