@@ -361,18 +361,9 @@ class ScheduleEditDlg < KDE::Dialog
     def timePopup
         @queryId ||= 0
         @queryId += 1
-        reply = CachedIO::CacheReply.new(channelIndex, nil)
-        reply.obj = [ @queryId  ]
-        BBCNet::getScheduleHtmlByWeekdayAndChannel(startDay, channelIndex, \
-                    reply.finishedMethod(self.method(:timePopupAtReadSchedule)))
-    end
-
-    def timePopupAtReadSchedule(reply)
-        queryId,dmy = reply.obj
-        return unless queryId == @queryId
-
+        selectedHtml = BBCNet::getScheduleHtmlByWeekdayAndChannel(startDay, channelIndex)
         @timeSelectDlg ||= TimeSelectDlg.new(self)
-        if @timeSelectDlg.exec(reply.data, time) == Qt::Dialog::Accepted and \
+        if @timeSelectDlg.exec(selectedHtml, time) == Qt::Dialog::Accepted and \
             data = @timeSelectDlg.selectedTime then
             @timeBtn.text = data[0]
         end
@@ -578,10 +569,7 @@ class ScheduleWindow < Qt::Widget
                 @intervalItem = Item.new(interval ? '' : interval.to_s)
                 @folderItem = Item.new(folder || '')
 
-                @progInfo.readMetaInfo(self.method(:initOnRead))
-            end
-
-            def initOnRead(minfo)
+                minfo = @progInfo.readMetaInfo()
                 $log.debug { "#{self.class.name} initOnRead : minfo:#{minfo}" }
                 # set folder
                 if folder.nil? or folder.empty? then
@@ -915,19 +903,15 @@ class ScheduleWindow < Qt::Widget
                     end
                 when :date
                     # check channel time
-                    reply = CachedIO::CacheReply.new(episodeUrl, nil)
-                    reply.obj = [ @queryId, title, categories, episodeUrl, filter ]
-                    BBCNet::CachedMetaInfoIO.read(episodeUrl, \
-                            reply.finishedMethod(self.method(:testFiltersAtReadInfo)))
+                    minfo = BBCNet::CachedMetaInfoIO.read(episodeUrl)
+                    testFiltersAtReadInfo(minfo, @queryId, title, categories, episodeUrl, filter)
                 end
             end
         end
     end
 
 
-    def testFiltersAtReadInfo(reply)
-        minfo = reply.data
-        queryId, title, categories, episodeUrl, filter = reply.obj
+    def testFiltersAtReadInfo(minfo, queryId, title, categories, episodeUrl, filter)
         return if queryId != @queryId
         return unless filter.channelIndex == minfo.channelIndex && \
             filter.interval.ok?(minfo.onAirDate.wday) && \

@@ -33,17 +33,15 @@ class ProgrammeTableWidget < Qt::TableWidget
             @durationItem = NumItem.new
             @savedItem = Item.new
 
-#             BBCNet::CachedMetaInfoIO.read(link, self.method(:onReadInfo))
-            @progInfo.readMetaInfo(self.method(:onReadInfo))
-        end
-
-        def onReadInfo(minfo)
-#             @minfo = minfo
-            return if deletedFlag
-            @onAirDate = minfo.onAirDate
-            @duration = minfo.duration
-            @onAirItem.date = @onAirDate if @onAirDate
-            @durationItem.text = @duration.to_s if @duration
+# #             BBCNet::CachedMetaInfoIO.read(link, self.method(:onReadInfo))
+#             minfo = @progInfo.readMetaInfo()
+# 
+# #             @minfo = minfo
+#             return if deletedFlag
+#             @onAirDate = minfo.onAirDate
+#             @duration = minfo.duration
+#             @onAirItem.date = @onAirDate if @onAirDate
+#             @durationItem.text = @duration.to_s if @duration
         end
 
         def title
@@ -260,15 +258,7 @@ class ProgrammeTableWidget < Qt::TableWidget
         url = prog.content[UrlRegexp]       # String[] method extract only 1st one.
 
         $log.info { "playMedia episode Url:#{url}, exe:#{exe}" }
-        reply = CachedIO::CacheReply.new(url, nil)
-        reply.obj = exe
-        BBCNet::CachedMetaInfoIO.read(url, \
-                reply.finishedMethod(self.method(:playMediaAtReadInfo)))
-    end
-
-    def playMediaAtReadInfo(reply)
-        minfo = reply.data
-        exe = reply.obj
+        minfo = BBCNet::CachedMetaInfoIO.read(url)
         streamInfo = minfo.streamInfo
         return unless streamInfo
         url = streamInfo.url

@@ -356,13 +356,14 @@ class DownloadProcess < Qt::Process
     end
 
     def checkOutput(msg)
-        msgSum = msg.join(' ')
+        msgSum = msg #.join(' ')
         @downNG = false if msgSum =~ /Everything done/i or msgSum =~ / bytes written to /i
     end
 
     # check and read output
     def checkReadOutput
-        msg = readAllStandardOutput.data .reject do |l| l.empty? || l =~ /^dump:.*written\s*\n?$/ end
+        msg = readAllStandardOutput.data #.reject do |l| l.empty? || l =~ /^dump:.*written\s*\n?$/ end
+        return if msg.empty?
         checkOutput(msg)
         $log.info { msg }
     end
@@ -481,17 +482,9 @@ class Downloader
         tags = categories.split(/,/)
 
         $log.info { "episode Url : #{episodeUrl}" }
-        reply = CachedIO::CacheReply.new(episodeUrl, nil)
-        reply.obj = [ title, tags, folder, skipOverWrite ]
-        BBCNet::CachedMetaInfoIO.read(episodeUrl, \
-                reply.finishedMethod(self.method(:downloadAtReadInfo)))
-    end
-
-    protected
-    def downloadAtReadInfo(reply)
-        title, tags, folder, skipOverWrite = reply.obj
-
-        minfo = reply.data
+#         reply = CachedIO::CacheReply.new(episodeUrl, nil)
+#         reply.obj = [ title, tags, folder, skipOverWrite ]
+        minfo = BBCNet::CachedMetaInfoIO.read(episodeUrl)
 
         fName = getSaveName(minfo, tags, folder, 'wma')
         $log.info { "save name : #{fName}" }
@@ -504,6 +497,7 @@ class Downloader
         end
     end
 
+    protected
     def downloadOne(metaInfo, fName, skipOverWrite=true)
         return "already in task '%s'" if @taskWin.exist?(metaInfo)
         return "no stream info '%s'" unless metaInfo.streamInfo and metaInfo.streamInfo.url
@@ -566,7 +560,8 @@ class Downloader
             $log.info { "Play direct" }
 
             $log.info { "episode Url : #{episodeUrl}" }
-            BBCNet::CachedMetaInfoIO.read(episodeUrl, self.method(:playDirectAtReadInfo))
+            minfo = BBCNet::CachedMetaInfoIO.read(episodeUrl)
+            playDirectAtReadInfo(minfo)
         end
     end
 

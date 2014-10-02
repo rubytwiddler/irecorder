@@ -616,12 +616,7 @@ class MainWindow < KDE::MainWindow
 
         $log.info{ "feeding from '#{feedAdr}'" }
 
-        CachedRssIO.read(feedAdr, self.method(:getListAtReadRss))
-    end
-
-
-    protected
-    def getListAtReadRss(rss)
+        rss = CachedRssIO.read(feedAdr)
         makeTablefromRss( rss )
         setListTitle
     end

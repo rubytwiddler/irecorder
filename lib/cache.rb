@@ -1,133 +1,69 @@
-#
+# encoding: utf-8
 #
 #
 module CachedIO
-    #
-    # CacheReply class
-    #
-    class CacheReply < Qt::Object
-        def initialize(url, onRead)
-            super()
-            @url = url
-            @onRead = onRead
-            @startTime = Time.now
-        end
-
-        def call(*arg)
-            @onRead.call(*arg)
-            deleteLater
-        end
-
-        attr_accessor :url, :id, :data, :obj, :onFinish
-        attr_reader :startTime, :onRead
-
-        # @return this object's finished method(name is atEnt)
-        #  chain this returned method for other onRead with object.
-        # e.g :
-        #   OtherRead(url, cacheReply.finishedMethod(self.method(:mainOnRead))
-        # end
-        #
-        # def mainOnRead(reply)
-        #   ..
-        def finishedMethod(onFinish)
-            @onFinish = onFinish
-            self.method(:atEnd)
-        end
-
-        protected
-        def atEnd(data)
-            @data = @id = data
-            @onFinish.call(self)
-            deleteLater
-        end
-    end
-
-    #
-    # CachedIOBase class
-    #
-    class CachedIOBase < Qt::Object
+    class CachedIOBase
         include Singleton
 
-
-        #
-        # CachedData class
-        #
         class CachedData
-            # id is raw data or id to restore data.
-            attr_accessor :expireTime, :id
+            attr_accessor :expireTime, :url, :key
         end
 
-        #---------------------------------------
-        #
-        #   CachedIOBase class
-        #
         attr_accessor :cacheDuration, :cacheMax
         def initialize(cacheDuration = 26*60, cacheMax=10)
-            super()
             @cacheDuration = cacheDuration
             @cache = Hash.new
             @cacheLRU = []          # Least Recently Used
             @cacheMax = cacheMax
-            @debugOut = true
         end
 
         #
         #
-        def self.read(url, onRead)
-            self.instance.read(url, onRead)
+        def self.read(url)
+            self.instance.read(url)
         end
-
-        #
-        #
-        #
-        def read(url, onRead)
+        
+        def read(url)
             startTime = Time.now
             cachedt = @cache[url]
             if cachedt and cachedt.expireTime > startTime then
                 @cacheLRU.delete(cachedt)
                 @cacheLRU.push(cachedt)
-                data = restoreCache(cachedt.id)
-                @debugOut && $log.debug { "cache %s: Time %f sec" %
+                data = restoreCache(cachedt.key)
+                $log.debug { "cachedt %s: Time %f sec" %
                             [self.class.name, (Time.now - startTime).to_f] }
-                onRead.call(data)
-                return
+                return data
             end
             if @cacheLRU.size >= @cacheMax then
                 oldest = @cacheLRU.shift
                 @cache.delete(oldest)
             end
-            directRead(url, onRead)
-        end
-
-        protected
-        # @return : data
-        #   restore data from id.
-        def restoreCache(id)
-            id
-        end
-
-        # @param url : query url
-        # @param onRead : method called when all process is finished.
-        # method finished(reply) will be called when read is finished.
-        def directRead(url, onRead)
-            raise "Not Implemented directRead method."
-            reply = CacheReply.new(url, onRead)
-            reply.data = reply.id = "data"
-            finished(reply)
-        end
-
-        def finished(reply)
-            startTime = reply.startTime
             cachedt = CachedData.new
-            cachedt.id = reply.id
+            cachedt.url = url
             cachedt.expireTime = startTime + @cacheDuration
-            url = reply.url
-
+            data, cachedt.key = directRead(url)
+            saveCache(cachedt.key, data)
             @cache[url] = cachedt
             @cacheLRU.push(cachedt)
-            @debugOut && $log.debug {"direct read %s: Time %f sec" %
+            $log.debug {"direct read %s: Time %f sec" %
                         [self.class.name, (Time.now - startTime).to_f] }
-            reply.call(reply.data)
+            data
+        end
+
+
+        # @return : data
+        #   restore data from key.
+        def restoreCache(key)
+            key
+        end
+
+        def saveCache(id, data)
+        end
+
+        # @return : data, key
+        #  key : key to restore data.
+        def directRead(url)
+            raise "Implement directRead method."
         end
     end
 end
@@ -136,6 +72,8 @@ end
 #
 #   practical implementations.
 #
+
+
 class CachedHttpDiskIO < CachedIO::CachedIOBase
     def initialize(cacheDuration = 12*60, cacheMax=50)
         super(cacheDuration, cacheMax)
@@ -143,15 +81,19 @@ class CachedHttpDiskIO < CachedIO::CachedIOBase
         FileUtils.mkdir_p(@tmpdir)
     end
 
-
-    # @return : data
-    #   restore data from id.
-    def restoreCache(id)
-        IO.read(id)
-    end
-
-    # method finished(reply) will be called when reading is finished.
-    def directRead(url, onRead)
+#     # @return : data
+#     #   restore data from key.
+#     def restoreCache(key)
+#         IO.read(key)
+#     end
+# 
+#     def saveCache(id, data)
+#         IO.write(id, data)
+#     end
+    
+    # @return : [ data, key ]
+    #  key : key to restore data.
+    def directRead(url)
         $log.misc { "directRead(): " + self.class.name }
         tmpfname = tempFileName(url)
 
@@ -161,24 +103,14 @@ class CachedHttpDiskIO < CachedIO::CachedIOBase
             $log.misc { "Now Time    : " + Time.now.to_s }
         end
 
-        reply = CachedIO::CacheReply.new(tmpfname, onRead)
-        reply.id = tmpfname
-        reply.url = url
-        if File.exist?(tmpfname) and File.size(tmpfname) > 0 and
+        if File.exist?(tmpfname) and
                 File.ctime(tmpfname) + @cacheDuration > Time.now then
-            data = restoreCache(tmpfname)
+            data = IO.read(tmpfname)
         else
-            BBCNet.read(url, self.method(:rawFinished), reply)
-            return
+            data = BBCNet.read(url)
+            open(tmpfname, "w") do |f| f.write(data) end
         end
-        reply.data = data
-        finished(reply)
-    end
-
-    def rawFinished(data, reply)
-        reply.data = data
-        open(reply.id, "w") do |f| f.write(reply.data) end
-        finished(reply)
+        [ data, tmpfname ]
     end
 
     def tempFileName(url)
@@ -197,17 +129,20 @@ class CachedObjectDiskIO < CachedIO::CachedIOBase
     # @return : data
     #   restore data from id.
     def restoreCache(id)
-        Marshal.load(IO.read(id))
+        path = tempFileName(id)
+        Marshal.load(IO.read(path))
     end
 
     def saveCache(id, data)
-        open(id, "w") do |f|
+        path = tempFileName(id)
+        open(path, "w") do |f|
             f.write(Marshal.dump(data))
         end
     end
 
-    # method finished(reply) will be called when read is finished.
-    def directRead(url, onRead)
+    # @return : [ data, key ]
+    #  key : key to restore data.
+    def directRead(url)
         $log.misc { "directRead(): " + self.class.name }
         tmpfname = tempFileName(url)
 
@@ -217,55 +152,30 @@ class CachedObjectDiskIO < CachedIO::CachedIOBase
             $log.misc { "Now Time    : " + Time.now.to_s }
         end
 
-        reply = CachedIO::CacheReply.new(tmpfname, onRead)
-        reply.id = tmpfname
-        reply.url = url
         if File.exist?(tmpfname) and
                 File.ctime(tmpfname) + @cacheDuration > Time.now then
-            data = restoreCache(tmpfname)
+            data = IO.read(tmpfname)
         else
-            directRawRead(url, self.method(:rawFinished), reply)
-            return
+            data = BBCNet.read(url)
+            open(tmpfname, "w") do |f| f.write(data) end
         end
-        reply.data = data
-        finished(reply)
-    end
-
-    def directRawRead(url, method, reply)
-        raise "Not Implemented directRawRead method."
-#         BBCNet.read(url, method, reply)
-    end
-
-
-    def rawFinished(data, reply)
-        reply.data = data
-        saveCache(reply.id, data)
-        finished(reply)
+        [ data, tmpfname ]
     end
 
     def tempFileName(url)
-        $log.misc { "tempFileName : url:#{url}, #{url.gsub(%r|[^\w]|, '_')}" }
         File.join(@tmpdir, url.gsub(%r|[^\w]|, '_'))
     end
 end
-
 
 class CachedRssIO < CachedIO::CachedIOBase
     def initialize(cacheDuration = 12*60, cacheMax=6)
         super(cacheDuration, cacheMax)
     end
 
-    # method finished(reply) will be called when read is finished.
-    def directRead(url, onRead)
-        reply = CachedIO::CacheReply.new(url, onRead)
-        CachedHttpDiskIO.read(url, reply.finishedMethod(self.method(:rawFinished)))
-    end
-
-    def rawFinished(reply)
-        data = Nokogiri::XML(reply.data)
-        reply.data = reply.id = data
-        finished(reply)
+    # @return : [ data, key ]
+    #  key : key to restore data.
+    def directRead(url)
+         data = Nokogiri::XML(CachedHttpDiskIO.read(url))
+         [ data, data ]
     end
 end
-
-
