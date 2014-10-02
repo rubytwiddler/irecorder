@@ -263,9 +263,15 @@ class ProgrammeTableWidget < Qt::TableWidget
         return unless streamInfo
         url = streamInfo.url
 
-        cmd, args = exe.split(/\s+/, 2)
-        args = args.split(/\s+/).map do |a|
-            a.gsub(/%\w/, url)
+        args = exe.split(/\s+/)
+        cmd = args.shift
+        args = args.map do |a|
+            case a
+            when /%c/
+                a.gsub(/%c/, prog.title)
+            else    
+                a.gsub(/%\w/, url)
+            end
         end
         $log.debug { "execute cmd '#{cmd}', args '#{args.inspect}'" }
         proc = Qt::Process.new(self)

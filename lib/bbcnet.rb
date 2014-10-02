@@ -168,7 +168,7 @@ class BBCNet
 
             res = BBCNet.read("http://www.bbc.co.uk/iplayer/playlist/#{@pid}")
 #             res = IO.read("../tmp/iplayer-playlist-me.xml")
-            $log.info{ [ "<< pid:#{@pid} playlist :", res, ":>>" ] }
+#             $log.info{ [ "<< pid:#{@pid} playlist :", res, ":>>" ] }
             doc = Nokogiri::XML(res)
             item = doc.at_css("noItems")
             raise "No Playlist " + item[:reason] if item
